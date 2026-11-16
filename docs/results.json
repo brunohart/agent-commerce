@@ -1,0 +1,1662 @@
+{
+ "meta": {
+  "unit": "NZ$m over 5 years, per 100M baseline transactions a year in each segment",
+  "reference": {
+   "agentShare": 0.3,
+   "ticketFactor": 0.6
+  },
+  "draws": 4000
+ },
+ "trace": [
+  {
+   "label": "Today’s gateway",
+   "steps": [
+    {
+     "attempt": 1,
+     "key": "key-a",
+     "status": "unknown",
+     "reason": "issuer_timeout",
+     "stage": "issuer",
+     "issuerTouched": true
+    },
+    {
+     "attempt": 2,
+     "key": "key-b",
+     "status": "approved",
+     "reason": "approved",
+     "stage": "issuer",
+     "issuerTouched": true,
+     "paymentId": "charge-ev-session#1"
+    }
+   ],
+   "charges": 2,
+   "issuerCalls": 2
+  },
+  {
+   "label": "With storm-proofing",
+   "steps": [
+    {
+     "attempt": 1,
+     "key": "key-a",
+     "status": "approved",
+     "reason": "resolved_by_inquiry",
+     "stage": "issuer",
+     "issuerTouched": true,
+     "paymentId": "charge-ev-session#0"
+    }
+   ],
+   "charges": 1,
+   "issuerCalls": 2
+  }
+ ],
+ "headline": {
+  "online": {
+   "human": {
+    "net": 294.509889,
+    "completion": 0,
+    "disputeRatio": 0.002385,
+    "duplicateRate": 0.001449,
+    "merchantLossRate": 0.002131,
+    "cliffShare": 0
+   },
+   "naive": {
+    "net": 218.823722,
+    "completion": 0.261049,
+    "disputeRatio": 0.004747,
+    "duplicateRate": 0.003025,
+    "merchantLossRate": 0.007088,
+    "cliffShare": 0
+   },
+   "railsOnly": {
+    "net": 214.053083,
+    "completion": 0.823365,
+    "disputeRatio": 0.008281,
+    "duplicateRate": 0.006163,
+    "merchantLossRate": 0.012356,
+    "cliffShare": 0.333333
+   },
+   "core": {
+    "net": 258.662557,
+    "completion": 0.842482,
+    "disputeRatio": 0.003208,
+    "duplicateRate": 0,
+    "merchantLossRate": 0.002052,
+    "cliffShare": 0
+   },
+   "full": {
+    "net": 259.68166,
+    "completion": 0.839334,
+    "disputeRatio": 0.002899,
+    "duplicateRate": 0,
+    "merchantLossRate": 0.001922,
+    "cliffShare": 0
+   }
+  },
+  "unattended": {
+   "human": {
+    "net": 89.299278,
+    "completion": 0,
+    "disputeRatio": 0.001747,
+    "duplicateRate": 0.00151,
+    "merchantLossRate": 0.004141,
+    "cliffShare": 0
+   },
+   "naive": {
+    "net": 62.516222,
+    "completion": 0.249225,
+    "disputeRatio": 0.002885,
+    "duplicateRate": 0.002693,
+    "merchantLossRate": 0.011836,
+    "cliffShare": 0
+   },
+   "railsOnly": {
+    "net": 65.239778,
+    "completion": 0.823986,
+    "disputeRatio": 0.003976,
+    "duplicateRate": 0.005501,
+    "merchantLossRate": 0.013983,
+    "cliffShare": 0
+   },
+   "core": {
+    "net": 82.580073,
+    "completion": 0.836518,
+    "disputeRatio": 0.001345,
+    "duplicateRate": 0,
+    "merchantLossRate": 0.003688,
+    "cliffShare": 0
+   },
+   "full": {
+    "net": 91.916782,
+    "completion": 0.879465,
+    "disputeRatio": 0.001487,
+    "duplicateRate": 0,
+    "merchantLossRate": 0.003662,
+    "cliffShare": 0
+   }
+  }
+ },
+ "ablation": {
+  "online": [
+   {
+    "control": "protocolAdapter",
+    "netDelta": -0.025501,
+    "merchantLossDelta": -0.026796,
+    "disputeRatio": 0.002799,
+    "duplicateRate": 0,
+    "completion": 0.406594,
+    "cliffShare": 0
+   },
+   {
+    "control": "attestation",
+    "netDelta": -0.006837,
+    "merchantLossDelta": 0.073498,
+    "disputeRatio": 0.003732,
+    "duplicateRate": 0,
+    "completion": 0.767554,
+    "cliffShare": 0
+   },
+   {
+    "control": "delegatedSca",
+    "netDelta": -0.013319,
+    "merchantLossDelta": -0.0145,
+    "disputeRatio": 0.002418,
+    "duplicateRate": 0,
+    "completion": 0.583317,
+    "cliffShare": 0
+   },
+   {
+    "control": "mandateVerify",
+    "netDelta": -0.001281,
+    "merchantLossDelta": 0.821841,
+    "disputeRatio": 0.005063,
+    "duplicateRate": 0,
+    "completion": 0.857452,
+    "cliffShare": 0
+   },
+   {
+    "control": "mandateEvidence",
+    "netDelta": 0,
+    "merchantLossDelta": 0.047823,
+    "disputeRatio": 0.002899,
+    "duplicateRate": 0,
+    "completion": 0.839334,
+    "cliffShare": 0
+   },
+   {
+    "control": "decisionLayer",
+    "netDelta": -0.004285,
+    "merchantLossDelta": 0.005723,
+    "disputeRatio": 0.003177,
+    "duplicateRate": 0,
+    "completion": 0.783581,
+    "cliffShare": 0
+   },
+   {
+    "control": "decisionGuards",
+    "netDelta": -0.001613,
+    "merchantLossDelta": 0.015852,
+    "disputeRatio": 0.003204,
+    "duplicateRate": 0,
+    "completion": 0.811867,
+    "cliffShare": 0
+   },
+   {
+    "control": "intentIdempotency",
+    "netDelta": -0.008121,
+    "merchantLossDelta": 0.102766,
+    "disputeRatio": 0.004199,
+    "duplicateRate": 0.002624,
+    "completion": 0.865206,
+    "cliffShare": 0
+   },
+   {
+    "control": "retryBudget",
+    "netDelta": -0.0013,
+    "merchantLossDelta": 0.026589,
+    "disputeRatio": 0.003339,
+    "duplicateRate": 0,
+    "completion": 0.839693,
+    "cliffShare": 0
+   },
+   {
+    "control": "aggregation",
+    "netDelta": -0.001019,
+    "merchantLossDelta": 0.011434,
+    "disputeRatio": 0.003208,
+    "duplicateRate": 0,
+    "completion": 0.842482,
+    "cliffShare": 0
+   }
+  ],
+  "unattended": [
+   {
+    "control": "protocolAdapter",
+    "netDelta": -0.013958,
+    "merchantLossDelta": 0.032727,
+    "disputeRatio": 0.001422,
+    "duplicateRate": 0,
+    "completion": 0.427498,
+    "cliffShare": 0
+   },
+   {
+    "control": "attestation",
+    "netDelta": -0.002121,
+    "merchantLossDelta": 0.018673,
+    "disputeRatio": 0.001689,
+    "duplicateRate": 0,
+    "completion": 0.842938,
+    "cliffShare": 0
+   },
+   {
+    "control": "delegatedSca",
+    "netDelta": -0.002503,
+    "merchantLossDelta": 0.020878,
+    "disputeRatio": 0.001408,
+    "duplicateRate": 0,
+    "completion": 0.787464,
+    "cliffShare": 0
+   },
+   {
+    "control": "mandateVerify",
+    "netDelta": -0.002239,
+    "merchantLossDelta": 0.108366,
+    "disputeRatio": 0.002499,
+    "duplicateRate": 0,
+    "completion": 0.892609,
+    "cliffShare": 0
+   },
+   {
+    "control": "mandateEvidence",
+    "netDelta": 0,
+    "merchantLossDelta": 0.005258,
+    "disputeRatio": 0.001487,
+    "duplicateRate": 0,
+    "completion": 0.879465,
+    "cliffShare": 0
+   },
+   {
+    "control": "decisionLayer",
+    "netDelta": -0.002611,
+    "merchantLossDelta": 0.010611,
+    "disputeRatio": 0.001789,
+    "duplicateRate": 0,
+    "completion": 0.824222,
+    "cliffShare": 0
+   },
+   {
+    "control": "decisionGuards",
+    "netDelta": -0.000903,
+    "merchantLossDelta": 0.007739,
+    "disputeRatio": 0.001501,
+    "duplicateRate": 0,
+    "completion": 0.847768,
+    "cliffShare": 0
+   },
+   {
+    "control": "intentIdempotency",
+    "netDelta": -0.007496,
+    "merchantLossDelta": 0.032556,
+    "disputeRatio": 0.002533,
+    "duplicateRate": 0.002564,
+    "completion": 0.888777,
+    "cliffShare": 0
+   },
+   {
+    "control": "retryBudget",
+    "netDelta": -0.001838,
+    "merchantLossDelta": 0.020682,
+    "disputeRatio": 0.001948,
+    "duplicateRate": 0,
+    "completion": 0.877905,
+    "cliffShare": 0
+   },
+   {
+    "control": "aggregation",
+    "netDelta": -0.009337,
+    "merchantLossDelta": -0.000909,
+    "disputeRatio": 0.001345,
+    "duplicateRate": 0,
+    "completion": 0.836518,
+    "cliffShare": 0
+   }
+  ]
+ },
+ "brownout": {
+  "naive": [
+   {
+    "base": 0.004,
+    "effective": 0.004843,
+    "duplicateRate": 0.001344,
+    "disputeRatio": 0.003383,
+    "net": 0.233942,
+    "cliffShare": 0
+   },
+   {
+    "base": 0.008,
+    "effective": 0.010448,
+    "duplicateRate": 0.002266,
+    "disputeRatio": 0.004035,
+    "net": 0.231139,
+    "cliffShare": 0
+   },
+   {
+    "base": 0.015,
+    "effective": 0.02194,
+    "duplicateRate": 0.004767,
+    "disputeRatio": 0.005617,
+    "net": 0.223625,
+    "cliffShare": 0
+   },
+   {
+    "base": 0.025,
+    "effective": 0.039855,
+    "duplicateRate": 0.008617,
+    "disputeRatio": 0.007655,
+    "net": 0.212484,
+    "cliffShare": 0
+   },
+   {
+    "base": 0.04,
+    "effective": 0.081974,
+    "duplicateRate": 0.017166,
+    "disputeRatio": 0.012002,
+    "net": 0.118783,
+    "cliffShare": 1
+   },
+   {
+    "base": 0.06,
+    "effective": 0.207134,
+    "duplicateRate": 0.042486,
+    "disputeRatio": 0.023435,
+    "net": -0.078489,
+    "cliffShare": 1
+   }
+  ],
+  "railsOnly": [
+   {
+    "base": 0.004,
+    "effective": 0.005725,
+    "duplicateRate": 0.004482,
+    "disputeRatio": 0.00831,
+    "net": 0.266307,
+    "cliffShare": 0
+   },
+   {
+    "base": 0.008,
+    "effective": 0.01231,
+    "duplicateRate": 0.00653,
+    "disputeRatio": 0.00911,
+    "net": 0.236093,
+    "cliffShare": 0.333333
+   },
+   {
+    "base": 0.015,
+    "effective": 0.027585,
+    "duplicateRate": 0.011203,
+    "disputeRatio": 0.011855,
+    "net": 0.159855,
+    "cliffShare": 1
+   },
+   {
+    "base": 0.025,
+    "effective": 0.059828,
+    "duplicateRate": 0.020741,
+    "disputeRatio": 0.016569,
+    "net": 0.068583,
+    "cliffShare": 1
+   },
+   {
+    "base": 0.04,
+    "effective": 0.425916,
+    "duplicateRate": 0.143297,
+    "disputeRatio": 0.078116,
+    "net": -0.878063,
+    "cliffShare": 1
+   },
+   {
+    "base": 0.06,
+    "effective": 0.487387,
+    "duplicateRate": 0.169535,
+    "disputeRatio": 0.090103,
+    "net": -1.073162,
+    "cliffShare": 1
+   }
+  ],
+  "core": [
+   {
+    "base": 0.004,
+    "effective": 0.005253,
+    "duplicateRate": 0,
+    "disputeRatio": 0.002842,
+    "net": 0.284926,
+    "cliffShare": 0
+   },
+   {
+    "base": 0.008,
+    "effective": 0.009666,
+    "duplicateRate": 0,
+    "disputeRatio": 0.003089,
+    "net": 0.284594,
+    "cliffShare": 0
+   },
+   {
+    "base": 0.015,
+    "effective": 0.018806,
+    "duplicateRate": 0,
+    "disputeRatio": 0.002785,
+    "net": 0.28332,
+    "cliffShare": 0
+   },
+   {
+    "base": 0.025,
+    "effective": 0.029495,
+    "duplicateRate": 0,
+    "disputeRatio": 0.002954,
+    "net": 0.280919,
+    "cliffShare": 0
+   },
+   {
+    "base": 0.04,
+    "effective": 0.043606,
+    "duplicateRate": 0,
+    "disputeRatio": 0.002881,
+    "net": 0.278147,
+    "cliffShare": 0
+   },
+   {
+    "base": 0.06,
+    "effective": 0.062512,
+    "duplicateRate": 0,
+    "disputeRatio": 0.002817,
+    "net": 0.274671,
+    "cliffShare": 0
+   }
+  ]
+ },
+ "modeCost": {
+  "protocol_fragmentation": {
+   "naive": 1781.052486,
+   "core": 198.667111,
+   "full": 204.233097
+  },
+  "impersonation": {
+   "naive": 4.634028,
+   "core": 0,
+   "full": 0
+  },
+  "false_decline": {
+   "naive": 174.716111,
+   "core": 67.176833,
+   "full": 66.207056
+  },
+  "sca_no_human": {
+   "naive": 679.103458,
+   "core": 250.312681,
+   "full": 243.195097
+  },
+  "mandate_drift": {
+   "naive": 25.356528,
+   "core": 48.061806,
+   "full": 40.29375
+  },
+  "overspend": {
+   "naive": 141.327361,
+   "core": 0,
+   "full": 0
+  },
+  "stale_mandate": {
+   "naive": 6.240972,
+   "core": 58.392264,
+   "full": 61.397375
+  },
+  "issuer_timeout": {
+   "naive": 40.632889,
+   "core": 3.185778,
+   "full": 4.850292
+  },
+  "retry_storm": {
+   "naive": 0.219236,
+   "core": 0.103542,
+   "full": 0.098194
+  },
+  "duplicate_charge": {
+   "naive": 57.674306,
+   "core": 0,
+   "full": 0
+  },
+  "double_fire": {
+   "naive": 17.156389,
+   "core": 0,
+   "full": 0
+  },
+  "micro_burden": {
+   "naive": 26.242208,
+   "core": 27.04225,
+   "full": 0
+  },
+  "settle_fail": {
+   "naive": 0,
+   "core": 0,
+   "full": 5.970833
+  },
+  "service_before_auth": {
+   "naive": 28.460694,
+   "core": 12.255556,
+   "full": 6.265139
+  },
+  "friendly_fraud": {
+   "naive": 13.906944,
+   "core": 13.252639,
+   "full": 13.16
+  },
+  "miscalibration": {
+   "naive": 0,
+   "core": 0,
+   "full": 0
+  },
+  "decision_unavailable": {
+   "naive": 0,
+   "core": 0,
+   "full": 0
+  },
+  "version_drift": {
+   "naive": 0,
+   "core": 0,
+   "full": 0
+  },
+  "state_injection": {
+   "naive": 0,
+   "core": 0,
+   "full": 0
+  },
+  "selective_labels": {
+   "naive": 0,
+   "core": 0,
+   "full": 0
+  },
+  "monitoring_cliff": {
+   "naive": 0,
+   "core": 0,
+   "full": 0
+  }
+ },
+ "decision": {
+  "experiment": [
+   {
+    "key": "static",
+    "label": "Static rule (no decision model)",
+    "group": "baseline",
+    "net": 168.920766,
+    "merchantLoss": 102.694141,
+    "completion": 0.780285,
+    "disputeRatio": 0.002214,
+    "fallbackShare": 0,
+    "unavailableShare": 0,
+    "ece": 0
+   },
+   {
+    "key": "jev",
+    "label": "Jev as assumed, guarded",
+    "group": "baseline",
+    "net": 171.523203,
+    "merchantLoss": 103.767969,
+    "completion": 0.840315,
+    "disputeRatio": 0.002206,
+    "fallbackShare": 0.038201,
+    "unavailableShare": 0,
+    "ece": 0.000652
+   },
+   {
+    "key": "overconfident_raw",
+    "label": "Overconfident, believed as stated",
+    "group": "F17 Miscalibration",
+    "net": 171.262682,
+    "merchantLoss": 110.223594,
+    "completion": 0.844569,
+    "disputeRatio": 0.002283,
+    "fallbackShare": 0.038119,
+    "unavailableShare": 0,
+    "ece": 0.002522
+   },
+   {
+    "key": "overconfident_guarded",
+    "label": "Overconfident, recalibrated",
+    "group": "F17 Miscalibration",
+    "net": 171.549135,
+    "merchantLoss": 100.658281,
+    "completion": 0.843955,
+    "disputeRatio": 0.00217,
+    "fallbackShare": 0.03811,
+    "unavailableShare": 0,
+    "ece": 0.002572
+   },
+   {
+    "key": "outage_raw",
+    "label": "One call in five fails, no fallback",
+    "group": "F18 No answer in time",
+    "net": 164.068875,
+    "merchantLoss": 103.023359,
+    "completion": 0.651257,
+    "disputeRatio": 0.001951,
+    "fallbackShare": 0,
+    "unavailableShare": 0.226573,
+    "ece": 0.000739
+   },
+   {
+    "key": "outage_guarded",
+    "label": "One call in five fails, fallback to static rule",
+    "group": "F18 No answer in time",
+    "net": 170.674893,
+    "merchantLoss": 107.891172,
+    "completion": 0.826542,
+    "disputeRatio": 0.002249,
+    "fallbackShare": 0.227057,
+    "unavailableShare": 0,
+    "ece": 0.000605
+   },
+   {
+    "key": "drift_raw",
+    "label": "Alias moves to a weaker model",
+    "group": "F19 Version drift",
+    "net": 170.865243,
+    "merchantLoss": 110.361719,
+    "completion": 0.84034,
+    "disputeRatio": 0.002348,
+    "fallbackShare": 0.038115,
+    "unavailableShare": 0,
+    "ece": 0.000978
+   },
+   {
+    "key": "drift_guarded",
+    "label": "Version pinned",
+    "group": "F19 Version drift",
+    "net": 171.523203,
+    "merchantLoss": 103.767969,
+    "completion": 0.840315,
+    "disputeRatio": 0.002206,
+    "fallbackShare": 0.038201,
+    "unavailableShare": 0,
+    "ece": 0.000652
+   },
+   {
+    "key": "inject_raw",
+    "label": "Planted text reaches the model",
+    "group": "F20 State injection",
+    "net": 171.403777,
+    "merchantLoss": 109.229609,
+    "completion": 0.839076,
+    "disputeRatio": 0.002277,
+    "fallbackShare": 0.039373,
+    "unavailableShare": 0,
+    "ece": 0.00108
+   },
+   {
+    "key": "inject_guarded",
+    "label": "Untrusted text kept out of the state",
+    "group": "F20 State injection",
+    "net": 171.523203,
+    "merchantLoss": 103.767969,
+    "completion": 0.840315,
+    "disputeRatio": 0.002206,
+    "fallbackShare": 0.038201,
+    "unavailableShare": 0,
+    "ece": 0.000652
+   }
+  ],
+  "skill": [
+   {
+    "separation": 0.6,
+    "net": 170.755242,
+    "merchantLoss": 115.540078,
+    "completion": 0.841052,
+    "disputeRatio": 0.002408,
+    "fallbackShare": 0.038035,
+    "unavailableShare": 0,
+    "ece": 0.001301
+   },
+   {
+    "separation": 1,
+    "net": 170.970187,
+    "merchantLoss": 114.513984,
+    "completion": 0.840328,
+    "disputeRatio": 0.002373,
+    "fallbackShare": 0.038064,
+    "unavailableShare": 0,
+    "ece": 0.000997
+   },
+   {
+    "separation": 1.4,
+    "net": 171.033954,
+    "merchantLoss": 112.969219,
+    "completion": 0.838746,
+    "disputeRatio": 0.002355,
+    "fallbackShare": 0.03811,
+    "unavailableShare": 0,
+    "ece": 0.001059
+   },
+   {
+    "separation": 1.8,
+    "net": 171.318645,
+    "merchantLoss": 106.527188,
+    "completion": 0.84022,
+    "disputeRatio": 0.00232,
+    "fallbackShare": 0.038102,
+    "unavailableShare": 0,
+    "ece": 0.000829
+   },
+   {
+    "separation": 2.2,
+    "net": 171.523203,
+    "merchantLoss": 103.767969,
+    "completion": 0.840315,
+    "disputeRatio": 0.002206,
+    "fallbackShare": 0.038201,
+    "unavailableShare": 0,
+    "ece": 0.000652
+   },
+   {
+    "separation": 2.6,
+    "net": 171.667062,
+    "merchantLoss": 100.18375,
+    "completion": 0.841885,
+    "disputeRatio": 0.002126,
+    "fallbackShare": 0.03817,
+    "unavailableShare": 0,
+    "ece": 0.000523
+   },
+   {
+    "separation": 3,
+    "net": 171.765297,
+    "merchantLoss": 94.837734,
+    "completion": 0.843429,
+    "disputeRatio": 0.002064,
+    "fallbackShare": 0.038116,
+    "unavailableShare": 0,
+    "ece": 0.000423
+   }
+  ],
+  "value": {
+   "jev": {
+    "mean": 0.943192,
+    "p05": 0.299075,
+    "p25": 0.658525,
+    "p50": 0.913004,
+    "p75": 1.213392,
+    "p95": 1.656491,
+    "pLoss": 0.0095
+   },
+   "weak": {
+    "mean": 0.593306,
+    "p05": 0.101822,
+    "p25": 0.372094,
+    "p50": 0.575369,
+    "p75": 0.791034,
+    "p95": 1.14239,
+    "pLoss": 0.023
+   },
+   "strong": {
+    "mean": 1.249067,
+    "p05": 0.584003,
+    "p25": 0.910127,
+    "p50": 1.194732,
+    "p75": 1.542873,
+    "p95": 2.112965,
+    "pLoss": 0
+   },
+   "noFallback": {
+    "mean": -2.516267,
+    "p05": -4.601863,
+    "p25": -3.125376,
+    "p50": -2.381065,
+    "p75": -1.725391,
+    "p95": -1.02705,
+    "pLoss": 1
+   }
+  },
+  "example": {
+   "request": {
+    "model": "jev-1.13",
+    "state": {
+     "payment": {
+      "amount": 50,
+      "currency": "NZD",
+      "merchant_category": "grocery",
+      "unattended": false
+     },
+     "agent": {
+      "identity_verified": true,
+      "mandate_verified": true
+     },
+     "mandate": {
+      "purpose": "the weekly household shop",
+      "max_per_payment": 510,
+      "budget_remaining": 977.6
+     },
+     "item": {
+      "description": "store gift card"
+     }
+    },
+    "questions": {
+     "unauthorised": {
+      "type": "noul",
+      "question": "Is this payment being made without the cardholder having authorised this agent to make it?"
+     },
+     "outside_mandate": {
+      "type": "noul",
+      "question": "Does the item being bought fall outside what the mandate describes, even if the merchant category matches?"
+     }
+    }
+   },
+   "answer": {
+    "unauthorised": 0.003,
+    "outside_mandate": 0.34
+   },
+   "pBad": 0.34198,
+   "action": "step_up",
+   "ev": {
+    "approve": -12.210346,
+    "stepUp": 6.292731,
+    "decline": 0
+   }
+  }
+ },
+ "value": {
+  "baseline": {
+   "mean": 123.909961,
+   "p05": 107.950552,
+   "p25": 118.469448,
+   "p50": 124.722817,
+   "p75": 130.232513,
+   "p95": 136.868566,
+   "pLoss": 0
+  },
+  "ranked": [
+   {
+    "key": "rails+mandate+storm",
+    "bets": [
+     "rails",
+     "mandate",
+     "storm"
+    ],
+    "mean": 13.899676,
+    "p05": 2.747778,
+    "p25": 7.857703,
+    "p50": 12.762608,
+    "p75": 18.688069,
+    "p95": 29.316204,
+    "pLoss": 0.00975,
+    "plainMean": 10.396731,
+    "pBest": 0.7815,
+    "operatingBySegment": {
+     "online": 16.034619,
+     "unattended": 7.684014
+    }
+   },
+   {
+    "key": "rails+mandate+storm+micro",
+    "bets": [
+     "rails",
+     "mandate",
+     "storm",
+     "micro"
+    ],
+    "mean": 12.857033,
+    "p05": 0.602981,
+    "p25": 6.343354,
+    "p50": 11.601414,
+    "p75": 18.004894,
+    "p95": 29.492456,
+    "pLoss": 0.0415,
+    "plainMean": 7.095974,
+    "pBest": 0.175,
+    "operatingBySegment": {
+     "online": 16.186326,
+     "unattended": 10.032466
+    }
+   },
+   {
+    "key": "rails+storm",
+    "bets": [
+     "rails",
+     "storm"
+    ],
+    "mean": 6.845732,
+    "p05": 0.070109,
+    "p25": 3.260821,
+    "p50": 6.194909,
+    "p75": 9.630471,
+    "p95": 16.242452,
+    "pLoss": 0.0475,
+    "plainMean": 5.535895,
+    "pBest": 0.012,
+    "operatingBySegment": {
+     "online": 8.859305,
+     "unattended": 4.180414
+    }
+   },
+   {
+    "key": "rails+mandate",
+    "bets": [
+     "rails",
+     "mandate"
+    ],
+    "mean": 5.674196,
+    "p05": -2.671951,
+    "p25": 1.227256,
+    "p50": 4.832763,
+    "p75": 9.249318,
+    "p95": 17.102539,
+    "pLoss": 0.1765,
+    "plainMean": 4.239425,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 10.90822,
+     "unattended": 3.349533
+    }
+   },
+   {
+    "key": "rails+mandate+micro",
+    "bets": [
+     "rails",
+     "mandate",
+     "micro"
+    ],
+    "mean": 4.450587,
+    "p05": -4.748934,
+    "p25": -0.343082,
+    "p50": 3.50248,
+    "p75": 8.240994,
+    "p95": 16.716429,
+    "pLoss": 0.2735,
+    "plainMean": 1.716048,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 11.209467,
+     "unattended": 5.367479
+    }
+   },
+   {
+    "key": "rails+storm+micro",
+    "bets": [
+     "rails",
+     "storm",
+     "micro"
+    ],
+    "mean": 3.865867,
+    "p05": -3.453817,
+    "p25": -0.001106,
+    "p50": 3.10867,
+    "p75": 6.938119,
+    "p95": 14.175951,
+    "pLoss": 0.25025,
+    "plainMean": 1.843348,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 8.680687,
+     "unattended": 4.921969
+    }
+   },
+   {
+    "key": "storm",
+    "bets": [
+     "storm"
+    ],
+    "mean": 2.291865,
+    "p05": 1.465488,
+    "p25": 1.844301,
+    "p50": 2.155152,
+    "p75": 2.582432,
+    "p95": 3.655618,
+    "pLoss": 0,
+    "plainMean": 1.521909,
+    "pBest": 0.0315,
+    "operatingBySegment": {
+     "online": 2.092024,
+     "unattended": 1.435241
+    }
+   },
+   {
+    "key": "mandate+storm",
+    "bets": [
+     "mandate",
+     "storm"
+    ],
+    "mean": 0.837911,
+    "p05": -1.476743,
+    "p25": -0.462616,
+    "p50": 0.432715,
+    "p75": 1.736342,
+    "p95": 4.461376,
+    "pLoss": 0.3875,
+    "plainMean": -0.293972,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 3.112713,
+     "unattended": 2.585568
+    }
+   },
+   {
+    "key": "none",
+    "bets": [],
+    "mean": 0,
+    "p05": 0,
+    "p25": 0,
+    "p50": 0,
+    "p75": 0,
+    "p95": 0,
+    "pLoss": 0,
+    "plainMean": 0,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 0,
+     "unattended": 0
+    }
+   },
+   {
+    "key": "storm+micro",
+    "bets": [
+     "storm",
+     "micro"
+    ],
+    "mean": -0.528649,
+    "p05": -2.155662,
+    "p25": -1.369612,
+    "p50": -0.717092,
+    "p75": 0.067391,
+    "p95": 1.775281,
+    "pLoss": 0.7355,
+    "plainMean": -1.7948,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 1.813091,
+     "unattended": 2.436462
+    }
+   },
+   {
+    "key": "mandate",
+    "bets": [
+     "mandate"
+    ],
+    "mean": -1.02017,
+    "p05": -3.116585,
+    "p25": -2.20923,
+    "p50": -1.350117,
+    "p75": -0.194231,
+    "p95": 2.23051,
+    "pLoss": 0.77775,
+    "plainMean": -1.528255,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 1.736467,
+     "unattended": 0.868333
+    }
+   },
+   {
+    "key": "mandate+storm+micro",
+    "bets": [
+     "mandate",
+     "storm",
+     "micro"
+    ],
+    "mean": -1.81573,
+    "p05": -4.734383,
+    "p25": -3.423993,
+    "p50": -2.223836,
+    "p75": -0.672969,
+    "p95": 2.78533,
+    "pLoss": 0.82025,
+    "plainMean": -3.504418,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 3.15978,
+     "unattended": 3.427662
+    }
+   },
+   {
+    "key": "micro",
+    "bets": [
+     "micro"
+    ],
+    "mean": -2.982183,
+    "p05": -4.244094,
+    "p25": -3.53009,
+    "p50": -3.007189,
+    "p75": -2.481205,
+    "p95": -1.607427,
+    "pLoss": 0.99875,
+    "plainMean": -3.185338,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 0.021317,
+     "unattended": 0.539303
+    }
+   },
+   {
+    "key": "mandate+micro",
+    "bets": [
+     "mandate",
+     "micro"
+    ],
+    "mean": -3.974046,
+    "p05": -6.530591,
+    "p25": -5.32555,
+    "p50": -4.248331,
+    "p75": -2.943594,
+    "p95": -0.400304,
+    "pLoss": 0.9625,
+    "plainMean": -4.46349,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 1.697466,
+     "unattended": 1.496261
+    }
+   },
+   {
+    "key": "rails",
+    "bets": [
+     "rails"
+    ],
+    "mean": -4.352661,
+    "p05": -12.433194,
+    "p25": -6.909308,
+    "p50": -3.95532,
+    "p75": -1.428629,
+    "p95": 2.332644,
+    "pLoss": 0.84825,
+    "plainMean": -0.960416,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 1.790615,
+     "unattended": -1.184689
+    }
+   },
+   {
+    "key": "rails+micro",
+    "bets": [
+     "rails",
+     "micro"
+    ],
+    "mean": -5.35604,
+    "p05": -13.20401,
+    "p25": -7.935707,
+    "p50": -5.13136,
+    "p75": -2.431482,
+    "p95": 1.633976,
+    "pLoss": 0.89675,
+    "plainMean": -3.05524,
+    "pBest": 0,
+    "operatingBySegment": {
+     "online": 1.689432,
+     "unattended": 1.455917
+    }
+   }
+  ],
+  "best": "rails+mandate+storm",
+  "sequence": [
+   {
+    "bet": "storm",
+    "portfolio": "storm",
+    "marginal": 2.291865,
+    "cumulative": 2.291865,
+    "pLoss": 0
+   },
+   {
+    "bet": "rails",
+    "portfolio": "rails+storm",
+    "marginal": 4.553867,
+    "cumulative": 6.845732,
+    "pLoss": 0.0475
+   },
+   {
+    "bet": "mandate",
+    "portfolio": "rails+mandate+storm",
+    "marginal": 7.053945,
+    "cumulative": 13.899676,
+    "pLoss": 0.00975
+   },
+   {
+    "bet": "micro",
+    "portfolio": "rails+mandate+storm+micro",
+    "marginal": -1.042644,
+    "cumulative": 12.857033,
+    "pLoss": 0.0415
+   }
+  ],
+  "interactions": [
+   {
+    "a": "rails",
+    "b": "mandate",
+    "synergy": 11.047027
+   },
+   {
+    "a": "rails",
+    "b": "storm",
+    "synergy": 8.906528
+   },
+   {
+    "a": "rails",
+    "b": "micro",
+    "synergy": 1.978804
+   },
+   {
+    "a": "mandate",
+    "b": "storm",
+    "synergy": -0.433784
+   },
+   {
+    "a": "mandate",
+    "b": "micro",
+    "synergy": 0.028307
+   },
+   {
+    "a": "storm",
+    "b": "micro",
+    "synergy": 0.161668
+   }
+  ],
+  "sensitivity": {
+   "base": 12.53868,
+   "rows": [
+    {
+     "key": "agentShare.online",
+     "lo": 6.264614,
+     "hi": 21.52861,
+     "swing": 15.263996,
+     "p10": 0.083666,
+     "p90": 0.26421
+    },
+    {
+     "key": "agentShare.unattended",
+     "lo": 9.192476,
+     "hi": 17.459518,
+     "swing": 8.267042,
+     "p10": 0.075136,
+     "p90": 0.293229
+    },
+    {
+     "key": "rampMidpointYear",
+     "lo": 16.254165,
+     "hi": 8.558602,
+     "swing": 7.695563,
+     "p10": 2,
+     "p90": 3.387628
+    },
+    {
+     "key": "erosion",
+     "lo": 9.135899,
+     "hi": 16.509776,
+     "swing": 7.373877,
+     "p10": 0.244949,
+     "p90": 0.910172
+    },
+    {
+     "key": "elasticity.online",
+     "lo": 11.677234,
+     "hi": 14.089435,
+     "swing": 2.412201,
+     "p10": 0.232288,
+     "p90": 0.622518
+    },
+    {
+     "key": "frictionRatio.online",
+     "lo": 13.782065,
+     "hi": 11.744366,
+     "swing": 2.037699,
+     "p10": 0.254881,
+     "p90": 0.561256
+    },
+    {
+     "key": "discountRate",
+     "lo": 13.440504,
+     "hi": 11.428222,
+     "swing": 2.012282,
+     "p10": 0.090954,
+     "p90": 0.124508
+    },
+    {
+     "key": "buildCost.rails",
+     "lo": 13.258907,
+     "hi": 11.581226,
+     "swing": 1.677681,
+     "p10": 2.047723,
+     "p90": 3.725403
+    },
+    {
+     "key": "churnSensitivity",
+     "lo": 11.865796,
+     "hi": 13.465038,
+     "swing": 1.599242,
+     "p10": 8.560702,
+     "p90": 23.158947
+    },
+    {
+     "key": "runCost.rails",
+     "lo": 13.077331,
+     "hi": 11.822609,
+     "swing": 1.254722,
+     "p10": 0.409545,
+     "p90": 0.745081
+    },
+    {
+     "key": "buildCost.mandate",
+     "lo": 13.07819,
+     "hi": 11.852691,
+     "swing": 1.225499,
+     "p10": 1.419524,
+     "p90": 2.645023
+    },
+    {
+     "key": "elasticity.unattended",
+     "lo": 12.039539,
+     "hi": 13.225549,
+     "swing": 1.18601,
+     "p10": 0.4,
+     "p90": 0.955051
+    },
+    {
+     "key": "frictionRatio.unattended",
+     "lo": 13.136214,
+     "hi": 12.063282,
+     "swing": 1.072932,
+     "p10": 0.186603,
+     "p90": 0.467712
+    },
+    {
+     "key": "fragmentation.unattended",
+     "lo": 13.111247,
+     "hi": 12.067782,
+     "swing": 1.043465,
+     "p10": 0.538744,
+     "p90": 0.845119
+    },
+    {
+     "key": "runCost.mandate",
+     "lo": 13.01037,
+     "hi": 11.972576,
+     "swing": 1.037794,
+     "p10": 0.3,
+     "p90": 0.577526
+    },
+    {
+     "key": "fragmentation.online",
+     "lo": 12.919961,
+     "hi": 12.181671,
+     "swing": 0.73829,
+     "p10": 0.434164,
+     "p90": 0.765836
+    },
+    {
+     "key": "buildCost.storm",
+     "lo": 12.754748,
+     "hi": 12.251444,
+     "swing": 0.503304,
+     "p10": 0.564317,
+     "p90": 1.067621
+    },
+    {
+     "key": "runCost.storm",
+     "lo": 12.673343,
+     "hi": 12.359663,
+     "swing": 0.313681,
+     "p10": 0.077386,
+     "p90": 0.16127
+    }
+   ]
+  },
+  "microBreakeven": {
+   "key": "elasticity.unattended",
+   "value": 1.0416,
+   "mode": 0.6,
+   "range": [
+    0.2,
+    1.2
+   ],
+   "curve": [
+    {
+     "value": 0.2,
+     "gap": -2.538703
+    },
+    {
+     "value": 0.216667,
+     "gap": -2.479237
+    },
+    {
+     "value": 0.233333,
+     "gap": -2.41971
+    },
+    {
+     "value": 0.25,
+     "gap": -2.360102
+    },
+    {
+     "value": 0.266667,
+     "gap": -2.30039
+    },
+    {
+     "value": 0.283333,
+     "gap": -2.240555
+    },
+    {
+     "value": 0.3,
+     "gap": -2.180576
+    },
+    {
+     "value": 0.316667,
+     "gap": -2.120432
+    },
+    {
+     "value": 0.333333,
+     "gap": -2.0601
+    },
+    {
+     "value": 0.35,
+     "gap": -1.999561
+    },
+    {
+     "value": 0.366667,
+     "gap": -1.941861
+    },
+    {
+     "value": 0.383333,
+     "gap": -1.885026
+    },
+    {
+     "value": 0.4,
+     "gap": -1.828721
+    },
+    {
+     "value": 0.416667,
+     "gap": -1.772928
+    },
+    {
+     "value": 0.433333,
+     "gap": -1.717633
+    },
+    {
+     "value": 0.45,
+     "gap": -1.662819
+    },
+    {
+     "value": 0.466667,
+     "gap": -1.60847
+    },
+    {
+     "value": 0.483333,
+     "gap": -1.55457
+    },
+    {
+     "value": 0.5,
+     "gap": -1.501103
+    },
+    {
+     "value": 0.516667,
+     "gap": -1.448053
+    },
+    {
+     "value": 0.533333,
+     "gap": -1.395406
+    },
+    {
+     "value": 0.55,
+     "gap": -1.343915
+    },
+    {
+     "value": 0.566667,
+     "gap": -1.294886
+    },
+    {
+     "value": 0.583333,
+     "gap": -1.246285
+    },
+    {
+     "value": 0.6,
+     "gap": -1.198097
+    },
+    {
+     "value": 0.616667,
+     "gap": -1.160789
+    },
+    {
+     "value": 0.633333,
+     "gap": -1.1263
+    },
+    {
+     "value": 0.65,
+     "gap": -1.090716
+    },
+    {
+     "value": 0.666667,
+     "gap": -1.054016
+    },
+    {
+     "value": 0.683333,
+     "gap": -1.018943
+    },
+    {
+     "value": 0.7,
+     "gap": -0.982917
+    },
+    {
+     "value": 0.716667,
+     "gap": -0.945778
+    },
+    {
+     "value": 0.733333,
+     "gap": -0.907503
+    },
+    {
+     "value": 0.75,
+     "gap": -0.868071
+    },
+    {
+     "value": 0.766667,
+     "gap": -0.827457
+    },
+    {
+     "value": 0.783333,
+     "gap": -0.785638
+    },
+    {
+     "value": 0.8,
+     "gap": -0.742587
+    },
+    {
+     "value": 0.816667,
+     "gap": -0.698281
+    },
+    {
+     "value": 0.833333,
+     "gap": -0.652692
+    },
+    {
+     "value": 0.85,
+     "gap": -0.605795
+    },
+    {
+     "value": 0.866667,
+     "gap": -0.557562
+    },
+    {
+     "value": 0.883333,
+     "gap": -0.507966
+    },
+    {
+     "value": 0.9,
+     "gap": -0.456977
+    },
+    {
+     "value": 0.916667,
+     "gap": -0.404566
+    },
+    {
+     "value": 0.933333,
+     "gap": -0.350705
+    },
+    {
+     "value": 0.95,
+     "gap": -0.295361
+    },
+    {
+     "value": 0.966667,
+     "gap": -0.239344
+    },
+    {
+     "value": 0.983333,
+     "gap": -0.189113
+    },
+    {
+     "value": 1,
+     "gap": -0.137356
+    },
+    {
+     "value": 1.016667,
+     "gap": -0.084043
+    },
+    {
+     "value": 1.033333,
+     "gap": -0.02914
+    },
+    {
+     "value": 1.05,
+     "gap": 0.029607
+    },
+    {
+     "value": 1.066667,
+     "gap": 0.094748
+    },
+    {
+     "value": 1.083333,
+     "gap": 0.161219
+    },
+    {
+     "value": 1.1,
+     "gap": 0.229056
+    },
+    {
+     "value": 1.116667,
+     "gap": 0.298294
+    },
+    {
+     "value": 1.133333,
+     "gap": 0.370632
+    },
+    {
+     "value": 1.15,
+     "gap": 0.447311
+    },
+    {
+     "value": 1.166667,
+     "gap": 0.525523
+    },
+    {
+     "value": 1.183333,
+     "gap": 0.604916
+    },
+    {
+     "value": 1.2,
+     "gap": 0.685501
+    }
+   ]
+  }
+ }
+}
