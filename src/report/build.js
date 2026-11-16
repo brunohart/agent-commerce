@@ -11,6 +11,7 @@ import { buildDecisionRequest } from '../decision/request.js';
 import { decide } from '../gateway/risk.js';
 import { existsSync, readFileSync } from 'node:fs';
 import { MEASURED_PATH } from '../decision/measure.js';
+import { labelledCases } from '../decision/cases.js';
 import { BETS, BET_KEYS, CONTROLS, ECONOMICS, BASELINE_TXNS, HORIZON_YEARS } from '../assumptions.js';
 import { FAILURE_MODES } from '../sim/failure-modes.js';
 import { renderPage } from './page.js';
@@ -29,6 +30,7 @@ export function collect({ log = () => {} } = {}) {
   const brown = brownout();
   // What the real Jev did, if it has been measured.
   let measured = null;
+  let measuredExample = null;
   if (existsSync(MEASURED_PATH)) {
     const m = JSON.parse(readFileSync(MEASURED_PATH, 'utf8'));
     if (m.ok) {
@@ -36,6 +38,7 @@ export function collect({ log = () => {} } = {}) {
       const examples = m.cases
         .filter((c) => c.tier === 'hard' && !seen.has(c.item) && seen.add(c.item))
         .map(({ purpose, item, outside, jev }) => ({ purpose, item, outside, jev }));
+      measuredExample = m.cases.find((c) => c.id === 'hard-0-out-0-1') ?? null;
       measured = { asked: m.asked, answered: m.answered, versions: m.versions, quality: m.quality, byTier: m.byTier, latency: m.latency, dials: m.dials, examples };
     }
   }
@@ -52,19 +55,26 @@ export function collect({ log = () => {} } = {}) {
   });
   const decisionValue = compareVariants(variants, CORE, ['jev', 'weak', 'strong', 'noFallback'], 'static');
 
-  // One worked example for the page: a gift card bought under a grocery mandate.
-  // The request is what the gateway would really send. The answer is illustrative.
-  const exampleRequest = buildDecisionRequest(
-    {
-      intentId: 'example', isAgent: true, amount: 50, category: 'grocery', itemDescription: 'store gift card',
-      mandate: { purpose: 'the weekly household shop', maxPerTxn: 510, maxTotal: 1190 },
-    },
-    { attested: true, mandateVerified: true, spent: 212.4, unattended: false },
-  ).wire;
-  const exampleAnswer = { unauthorised: 0.003, outside_mandate: 0.34 };
+  // One worked example for the page. Once Jev has been measured this is a real
+  // request and Jev's real answer to it; before that, an illustrative one.
+  const realCase = measuredExample && labelledCases().find((c) => c.id === measuredExample.id);
+  const exampleAmount = realCase ? realCase.req.amount : 50;
+  const exampleRequest = realCase
+    ? buildDecisionRequest(realCase.req, realCase.ctx).wire
+    : buildDecisionRequest(
+        {
+          intentId: 'example', isAgent: true, amount: 50, category: 'grocery', itemDescription: 'store gift card',
+          mandate: { purpose: 'the weekly household shop', maxPerTxn: 510, maxTotal: 1190 },
+        },
+        { attested: true, mandateVerified: true, spent: 212.4, unattended: false },
+      ).wire;
+  const exampleAnswer = realCase
+    ? { unauthorised: measuredExample.unauthorised, outside_mandate: measuredExample.jev }
+    : { unauthorised: 0.003, outside_mandate: 0.34 };
   const pBad = 1 - (1 - exampleAnswer.unauthorised) * (1 - exampleAnswer.outside_mandate);
   const exampleDecision = decide({
-    amount: 50, pFraud: pBad, fee: 0.225, merchantMargin: ECONOMICS.merchantGrossMargin,
+    amount: exampleAmount, pFraud: pBad, fee: ECONOMICS.gatewayFeePct * exampleAmount + ECONOMICS.gatewayFeeFixed,
+    merchantMargin: ECONOMICS.merchantGrossMargin,
     chargebackFee: ECONOMICS.chargebackFee, stepUpCompletion: 0.85, stepUpCatch: 0.9,
   });
 
@@ -117,7 +127,7 @@ export function collect({ log = () => {} } = {}) {
       experiment,
       skill,
       value: decisionValue,
-      example: { request: exampleRequest, answer: exampleAnswer, pBad, ...exampleDecision },
+      example: { request: exampleRequest, answer: exampleAnswer, real: Boolean(realCase), amount: exampleAmount, pBad, ...exampleDecision },
       measured,
     },
     value: {

@@ -818,7 +818,7 @@
     "model": "jev-1.14.0",
     "state": {
      "payment": {
-      "amount": 50,
+      "amount": 120,
       "currency": "NZD",
       "merchant_category": "grocery",
       "unattended": false
@@ -829,11 +829,11 @@
      },
      "mandate": {
       "purpose": "the weekly household shop",
-      "max_per_payment": 510,
-      "budget_remaining": 977.6
+      "max_per_payment": 500,
+      "budget_remaining": 2000
      },
      "item": {
-      "description": "store gift card"
+      "description": "supermarket-branded prepaid Visa card"
      }
     },
     "questions": {
@@ -852,14 +852,16 @@
     }
    },
    "answer": {
-    "unauthorised": 0.003,
-    "outside_mandate": 0.34
+    "unauthorised": 0.04,
+    "outside_mandate": 0.92
    },
-   "pBad": 0.34198,
-   "action": "step_up",
+   "real": true,
+   "amount": 120,
+   "pBad": 0.9232,
+   "action": "decline",
    "ev": {
-    "approve": -12.210346,
-    "stepUp": 6.292731,
+    "approve": -121.83648,
+    "stepUp": -10.087008,
     "decline": 0
    }
   },

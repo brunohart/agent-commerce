@@ -131,7 +131,7 @@ td.num, th.num { text-align: right; white-space: nowrap; padding-right: 0; paddi
 
 .trio { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px }
 .trio > div { display: flex; flex-direction: column; gap: 10px; min-width: 0 }
-.code { font: 400 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; padding: 12px; margin: 0; overflow-x: auto; white-space: pre }
+.code { font: 400 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; padding: 12px; margin: 0; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere }
 .grouprow th { font: 500 11.5px/1.3 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); padding-top: 16px }
 .formula { font: 400 13.5px/1.7 var(--mono); background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; overflow-x: auto; white-space: pre }
 ul.plain { margin: 0; padding-left: 20px; max-width: 65ch; display: flex; flex-direction: column; gap: 8px }
@@ -160,15 +160,22 @@ footer { border-top: 1px solid var(--rule); padding-top: 20px; font-size: 13.5px
 <section>
   <div class="eyebrow">The decision model</div>
   <h2>Jev estimates. The gateway decides.</h2>
-  <p>Jev is a decision model. It takes a state and a set of typed questions and returns an answer to each with a probability, in a few hundred milliseconds, and it does not generate text. A payment gateway needs exactly that: a number it can act on inside a latency budget.</p>
-  <p>Most of an agent payment can be checked by rule. A signature verifies or it does not; a budget is exceeded or it is not. One question cannot: an agent told to do the weekly shop buys a $50 gift card at the supermarket. The merchant category matches, the cap is respected, and the cardholder will dispute it. That judgement is the model’s job.</p>
+  <p>Jev is TypeSafe’s first System One model: a model built to make fast, structured decisions that software uses directly. You send it a state and a set of typed questions. It evaluates every question in parallel, each in isolation against the same state, and returns typed answers with probabilities. It does not generate text. A payment gateway needs exactly that: a number it can act on inside a latency budget.</p>
+  <p>The typed questions are called primitives. There are four, and this gateway uses one of them.</p>
+  <div class="figure"><div class="scroll"><table><thead><tr><th>Primitive</th><th>Asks</th><th>Returns</th><th>In this gateway</th></tr></thead><tbody>
+    <tr><th scope="row">Noul</th><td>Is this statement true?</td><td class="mono">noul</td><td><strong>Used twice per agent payment.</strong> The value is the probability the answer is yes, which is what an expected-value rule needs.</td></tr>
+    <tr><th scope="row">Choice</th><td>Which option from a list?</td><td class="mono">choice, probabilities, confidence</td><td>Not used. Asking for approve, challenge or decline would put the gateway’s costs inside the model.</td></tr>
+    <tr><th scope="row">Score</th><td>Where on a rubric?</td><td class="mono">score, probabilities, confidence</td><td>Not used. The question is whether, not how much.</td></tr>
+    <tr><th scope="row">Box</th><td>Where in this image?</td><td class="mono">box, confidence</td><td>Not used. There is no image in a payment.</td></tr>
+  </tbody></table></div></div>
+  <p>Most of an agent payment can be checked by rule. A signature verifies or it does not; a budget is exceeded or it is not. One question cannot: an agent told to do the weekly shop buys a prepaid Visa card at the supermarket checkout. The merchant category matches, the cap is respected, and the cardholder will dispute it. That judgement is one Noul. TypeSafe’s own guidance is to use code where code will do, ask one narrow question per judgement, and combine the answers in code. This pipeline is built that way.</p>
   <div class="figure">
     <div class="trio">
-      <div><h3>1. The gateway asks</h3><pre class="code">{
+      <div><h3>1. The gateway sends a state and two Nouls</h3><pre class="code">{
  &quot;model&quot;: &quot;jev-1.14.0&quot;,
  &quot;state&quot;: {
   &quot;payment&quot;: {
-   &quot;amount&quot;: 50,
+   &quot;amount&quot;: 120,
    &quot;currency&quot;: &quot;NZD&quot;,
    &quot;merchant_category&quot;: &quot;grocery&quot;,
    &quot;unattended&quot;: false
@@ -179,37 +186,46 @@ footer { border-top: 1px solid var(--rule); padding-top: 20px; font-size: 13.5px
   },
   &quot;mandate&quot;: {
    &quot;purpose&quot;: &quot;the weekly household shop&quot;,
-   &quot;max_per_payment&quot;: 510,
-   &quot;budget_remaining&quot;: 977.6
+   &quot;max_per_payment&quot;: 500,
+   &quot;budget_remaining&quot;: 2000
   },
   &quot;item&quot;: {
-   &quot;description&quot;: &quot;store gift card&quot;
+   &quot;description&quot;: &quot;supermarket-branded prepaid Visa card&quot;
   }
  },
  &quot;questions&quot;: {
   &quot;unauthorised&quot;: {
-   &quot;type&quot;: &quot;noul&quot;
+   &quot;type&quot;: &quot;noul&quot;,
+   &quot;instructions&quot;: &quot;Is this payment being made without the cardholder having authorised this agent to make it?&quot;
   },
   &quot;outside_mandate&quot;: {
-   &quot;type&quot;: &quot;noul&quot;
+   &quot;type&quot;: &quot;noul&quot;,
+   &quot;instructions&quot;: &quot;Is the item being bought outside what the mandate purpose describes?&quot;,
+   &quot;criteria&quot;: {
+    &quot;true&quot;: &quot;The item is not something the stated purpose covers, even if the merchant category matches.&quot;,
+    &quot;false&quot;: &quot;The item is an ordinary example of what the stated purpose covers.&quot;
+   }
   }
  }
 }</pre></div>
-      <div><h3>2. Jev estimates</h3><pre class="code">{
+      <div><h3>2. Jev answers each one</h3><pre class="code">{
+ &quot;model&quot;: &quot;jev-1.14.0&quot;,
  &quot;answers&quot;: {
   &quot;unauthorised&quot;: {
-   &quot;noul&quot;: 0.003
+   &quot;type&quot;: &quot;noul&quot;,
+   &quot;noul&quot;: 0.04
   },
   &quot;outside_mandate&quot;: {
-   &quot;noul&quot;: 0.34
+   &quot;type&quot;: &quot;noul&quot;,
+   &quot;noul&quot;: 0.92
   }
  }
-}</pre><p class="muted">Illustrative answer. Question text is in <span class="mono">src/decision/request.js</span>.</p></div>
-      <div><h3>3. Expected value decides</h3><table><tbody>
-        <tr><th scope="row">Approve</th><td class="num">−⁠$12.21</td></tr>
-        <tr><th scope="row">Challenge the cardholder</th><td class="num">+$6.29</td></tr>
+}</pre><p class="muted">Jev’s actual answer to this request. A Noul is the probability that the answer is yes.</p></div>
+      <div><h3>3. Code combines them and decides</h3><table><tbody>
+        <tr><th scope="row">Approve</th><td class="num">−⁠$121.84</td></tr>
+        <tr><th scope="row">Challenge the cardholder</th><td class="num">−⁠$10.09</td></tr>
         <tr><th scope="row">Decline</th><td class="num">$0.00</td></tr>
-        </tbody></table><p class="muted">Chosen: <strong>challenge</strong>. The probability is the model’s. The ticket, the margin and the chargeback cost are the gateway’s.</p></div>
+        </tbody></table><p class="muted">Chosen: <strong>decline</strong>. The probability is the model’s. The ticket, the margin and the chargeback cost are the gateway’s.</p></div>
     </div>
   </div>
   <p>Three things are never asked of a model: whether a signature is valid, whether a cap or budget is exceeded, and whether the ledger balances. Those are checked.</p>
