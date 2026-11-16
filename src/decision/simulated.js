@@ -56,7 +56,7 @@ export class SimulatedJev {
     // Which model actually answers? A pinned request always gets the pinned model.
     const drifted = request.wire.model === MOVING_ALIAS && d.driftAt !== null && this.progress() >= d.driftAt;
     const separation = drifted ? d.driftSeparation : d.separation;
-    const version = drifted ? 'jev-1.14' : PINNED_MODEL;
+    const version = drifted ? 'jev-1.14.0' : PINNED_MODEL;
 
     const t = this.truth(request.ref);
     const base = this.baseRates(request.context);

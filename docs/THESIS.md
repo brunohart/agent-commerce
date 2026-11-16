@@ -68,7 +68,7 @@ It is not a forecast, and it does not know Windcave's volumes, margins or roadma
 
 **Windcave.** The description of its business comes from its public site as surfaced in web search (`windcave.com`, `windcave.com/unattended-payments`). I could not load those pages directly from the environment this was built in, so the wording above is deliberately general. Check it against the live pages before relying on it.
 
-**Jev.** Launched in early access by TypeSafe AI in September 2026. The description here (state plus typed questions in, probabilities out, tens to hundreds of milliseconds, the `noul` yes/no type, `jev-latest` and `jev-1.13`) comes from launch coverage and third-party tutorials. Latency and cost figures are vendor-reported. I could not reach `docs.typesafe.ai` from the build environment, so the client in `src/decision/jev-client.js` should be checked against the primary API reference before use.
+**Jev.** Launched in early access by TypeSafe AI in September 2026. The description here (state plus typed questions in, probabilities out, tens to hundreds of milliseconds, the `noul` yes/no type, `jev-latest` and `jev-1.13.0`) comes from launch coverage and was checked against TypeSafe's API reference (`docs.typesafe.ai/api`) on 16 November 2026. Latency and cost figures are vendor-reported. `npm run jev:smoke` proves the client in `src/decision/jev-client.js` against the live API.
 
 - https://typesafe.ai/
 - https://docs.typesafe.ai/introduction

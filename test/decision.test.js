@@ -17,7 +17,7 @@ const req = {
 };
 const ctx = { attested: true, mandateVerified: true, spent: 200, unattended: false };
 const good = { unauthorised: 0.001, outside_mandate: 0.002 };
-const answers = (p) => ({ model: PINNED_MODEL, answers: { unauthorised: { noul: p.unauthorised }, outside_mandate: { noul: p.outside_mandate } } });
+const answers = (p) => ({ model: PINNED_MODEL, answers: { unauthorised: { type: 'noul', noul: p.unauthorised }, outside_mandate: { type: 'noul', noul: p.outside_mandate } } });
 
 // --- Request -------------------------------------------------------------------
 test('request: asks typed questions about gateway-derived state, on a pinned model', () => {
@@ -29,6 +29,20 @@ test('request: asks typed questions about gateway-derived state, on a pinned mod
   assert.equal(wire.state.agent.identity_verified, true);
 });
 
+test('request: matches the documented System One shape', () => {
+  // docs.typesafe.ai/api: model is a full version ID; each question is
+  // { type, instructions, criteria? }; noul criteria has only true/false keys.
+  const { wire } = buildDecisionRequest(req, ctx);
+  assert.match(wire.model, /^jev-\d+\.\d+\.\d+$/);
+  for (const q of Object.values(wire.questions)) {
+    assert.deepEqual(Object.keys(q).filter((k) => !['type', 'instructions', 'criteria'].includes(k)), []);
+    assert.equal(typeof q.instructions, 'string');
+    assert.deepEqual(Object.keys(q.criteria).sort(), ['false', 'true']);
+  }
+  assert.deepEqual(Object.keys(wire).sort(), ['model', 'questions', 'state']);
+});
+
+
 test('request: untrusted text is kept out of the state unless hygiene is off', () => {
   assert.equal(buildDecisionRequest(req, ctx).wire.state.agent.note, undefined);
   assert.equal(buildDecisionRequest(req, ctx, { hygiene: false }).wire.state.agent.note, req.agentNote);
@@ -37,6 +51,8 @@ test('request: untrusted text is kept out of the state unless hygiene is off', (
 test('request: half an answer is no answer', () => {
   assert.deepEqual(parseAnswers(answers(good)), good);
   assert.equal(parseAnswers({ answers: { unauthorised: { noul: 0.1 } } }), null);
+  // An answer without its documented type tag is not trusted either.
+  assert.equal(parseAnswers({ answers: { unauthorised: { noul: 0.1 }, outside_mandate: { noul: 0.1 } } }), null);
   assert.equal(parseAnswers(answers({ unauthorised: 1.2, outside_mandate: 0.1 })), null);
   assert.equal(parseAnswers(answers({ unauthorised: 'low', outside_mandate: 0.1 })), null);
   assert.equal(parseAnswers(null), null);
@@ -109,9 +125,9 @@ test('guard: without a fallback, no answer means no decision', () => {
 });
 
 test('guard: an answer from the wrong version is not acted on', () => {
-  const g = new GuardedDecider({ model: model({ ok: true, p: good, version: 'jev-1.14', latencyMs: 100 }) });
+  const g = new GuardedDecider({ model: model({ ok: true, p: good, version: 'jev-1.14.0', latencyMs: 100 }) });
   assert.equal(g.decideSync(req, ctx).reason, 'wrongVersion');
-  const unpinned = new GuardedDecider({ model: model({ ok: true, p: good, version: 'jev-1.14', latencyMs: 100 }), guards: { ...DEFAULT_GUARDS, pin: false } });
+  const unpinned = new GuardedDecider({ model: model({ ok: true, p: good, version: 'jev-1.14.0', latencyMs: 100 }), guards: { ...DEFAULT_GUARDS, pin: false } });
   assert.equal(unpinned.decideSync(req, ctx).ok, true);
   assert.equal(unpinned.request(req, ctx).wire.model, MOVING_ALIAS);
 });
@@ -131,7 +147,7 @@ const sim = (dials, flags = { unauthorised: false, outside_mandate: true, inject
 test('stand-in: a pinned request never gets the drifted model', () => {
   const m = sim({ driftAt: 0.5 });
   assert.equal(m.decideSync(buildDecisionRequest(req, ctx)).version, PINNED_MODEL);
-  assert.equal(m.decideSync(buildDecisionRequest(req, ctx, { model: MOVING_ALIAS })).version, 'jev-1.14');
+  assert.equal(m.decideSync(buildDecisionRequest(req, ctx, { model: MOVING_ALIAS })).version, 'jev-1.14.0');
 });
 
 test('stand-in: injection only works when untrusted text reaches the state', () => {
