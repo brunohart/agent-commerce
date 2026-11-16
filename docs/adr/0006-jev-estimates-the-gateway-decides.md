@@ -33,12 +33,16 @@ It also makes the model's contribution measurable. A probability can be scored a
 ## Consequences
 
 - The decision is explainable in the gateway's own terms: the three expected values are returned with every result.
-- Miscalibration becomes the failure that matters, because the probability is used as a number. An overconfident model costs merchants about $7 more per 1,000 intents here until the guard's recalibration corrects it.
-- The model's measured value is modest and specific: about +$0.9m against the static rule, almost all of it from honest agent payments no longer declined. It beats the static rule on merchant losses only above an AUC of roughly 0.97.
-- Without a fallback the decision layer is a liability: −$2.5m under a one-in-five outage. The fallback is not optional.
+- Miscalibration becomes the failure that matters, because the probability is used as a number. Measured, Jev is underconfident by a factor of about 2.2 on the log-odds scale. Used as stated, its probabilities complete 78% of honest agent payments, the same as the static rule. Recalibrated, 83%.
+- The decision layer's value is modest and specific: about +$0.8m against the static rule at Jev's measured skill, from more honest agent payments completed and lower merchant losses. A weak model (AUC 0.76) would be worth −$0.5m.
+- Without a fallback the decision layer is a liability: −$2.1m under a one-in-five outage. The fallback is not optional.
 - The async path asks Jev before running the synchronous pipeline, so a payment rejected by an earlier rule still costs one model call. At launch pricing that is negligible; it would need revisiting if pricing changed.
 - Recalibration here is fed every outcome immediately. In production, labels arrive weeks late and only for approved payments (F21). That needs a holdout of payments approved regardless of the model's answer, which this repo does not implement.
 
-## What is unverified
+## What was measured, and what was not
 
-The simulations use a stand-in (`src/decision/simulated.js`) whose skill, calibration and latency are dials. It is not Jev. The HTTP client follows public quickstart material and has not been run against the live API; field names should be checked against TypeSafe's reference before a pilot.
+`node src/cli.js measure` sent 234 labelled payments to `jev-1.14.0`: AUC 0.966 on 72 borderline cases, 1.000 on 162 clear-cut ones, median latency 108 ms, 98.3% inside the 400 ms deadline, every call answered. The simulator replays those measurements (`docs/jev-measured.json`) in place of its priors.
+
+The first client in this repo was written from third-party tutorials and had two bugs that only the primary reference revealed: the question field is `instructions`, and model ids are full versions, so a pin on `jev-1.13` would have rejected every real answer. Reading the reference came before the key, and it should have come before the client.
+
+Not measured: performance on a gateway's real disputes, the `unauthorised` question (every test payment was authorised), and latency from a gateway's own network.

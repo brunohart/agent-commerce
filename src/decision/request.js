@@ -13,23 +13,32 @@
 //   Rules stay rules.    Signatures, caps, budgets and the ledger are never asked
 //                        of a model. They are checked, not estimated.
 //
-// Request shape follows TypeSafe's public quickstart material as of late 2026
-// (state + typed questions; "noul" is their yes/no type that returns a probability).
-// I could not reach the primary API reference from the environment this was built
-// in, so treat field names as provisional and check them against docs.typesafe.ai.
+// Request and response shapes were checked against TypeSafe's API reference
+// (docs.typesafe.ai: quick start, Noul, Models) on 16 November 2026:
+//   POST https://api.typesafe.ai/v1/systemone, bearer key
+//   body     { model, state, questions: { <id>: { type, instructions, criteria? } } }
+//   response { model, answers: { <id>: { type: "noul", noul: 0..1 } }, usage }
+// A Noul is their yes/no primitive; its value is the probability the answer is yes.
+//
+// Model ids are full versions. `jev-latest` is an alias that moves: it now resolves
+// to jev-1.14.0, released 14 October 2026. A gateway pins the version it tested.
 
-export const PINNED_MODEL = 'jev-1.13';
+export const PINNED_MODEL = 'jev-1.14.0';
 export const MOVING_ALIAS = 'jev-latest';
 
 export const QUESTIONS = {
+  // Each question asks one narrow thing, phrased so that a high value means yes.
   unauthorised: {
     type: 'noul',
-    question: 'Is this payment being made without the cardholder having authorised this agent to make it?',
+    instructions: 'Is this payment being made without the cardholder having authorised this agent to make it?',
   },
   outside_mandate: {
     type: 'noul',
-    question:
-      'Does the item being bought fall outside what the mandate describes, even if the merchant category matches?',
+    instructions: 'Is the item being bought outside what the mandate purpose describes?',
+    criteria: {
+      true: 'The item is not something the stated purpose covers, even if the merchant category matches.',
+      false: 'The item is an ordinary example of what the stated purpose covers.',
+    },
   },
 };
 

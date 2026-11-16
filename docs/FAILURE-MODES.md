@@ -6,21 +6,21 @@ Cost is gateway cost + merchant loss + lost sales, per 1,000 purchase intents, a
 
 | ID | Failure mode | Layer | Trigger | Feeds | Mitigated by | Today | With rails + mandate + storm |
 |---|---|---|---|---|---|---:|---:|
-| F01 | Protocol fragmentation | Protocol | Agent speaks a checkout dialect the gateway does not implement. | - | protocolAdapter | $1781 | $199 |
+| F01 | Protocol fragmentation | Protocol | Agent speaks a checkout dialect the gateway does not implement. | - | protocolAdapter | $1781 | $200 |
 | F02 | Agent impersonation | Identity | Forged mandate: a valid signature from a key that is not the principal’s. | F16 | attestation, decisionLayer | $5 | $0 |
-| F03 | False decline of agent traffic | Risk | Static bot rule at the gateway, or an issuer that cannot recognise the agent. | F09 | decisionLayer, attestation | $175 | $67 |
-| F04 | Step-up with no human present | Authentication | Issuer challenges a payment that has nobody there to answer it. | - | delegatedSca | $679 | $250 |
-| F05 | Mandate drift | Intent | Agent buys outside what was delegated (prompt injection, misread instruction). | F16 | mandateVerify, decisionLayer | $25 | $48 |
+| F03 | False decline of agent traffic | Risk | Static bot rule at the gateway, or an issuer that cannot recognise the agent. | F09 | decisionLayer, attestation | $175 | $91 |
+| F04 | Step-up with no human present | Authentication | Issuer challenges a payment that has nobody there to answer it. | - | delegatedSca | $679 | $256 |
+| F05 | Mandate drift | Intent | Agent buys outside what was delegated (prompt injection, misread instruction). | F16 | mandateVerify, decisionLayer | $25 | $34 |
 | F06 | Overspend | Intent | Purchase over the per-transaction cap, or after the budget is used up. | F16 | mandateVerify | $141 | $0 |
-| F07 | Stale mandate | Intent | Agent acts on a mandate that has expired. | F16 | mandateVerify | $6 | $58 |
+| F07 | Stale mandate | Intent | Agent acts on a mandate that has expired. | F16 | mandateVerify | $6 | $59 |
 | F08 | Ambiguous issuer response | Execution | Response lost in transit. The card may or may not have been charged. | F09, F10 | retryBudget | $41 | $3 |
 | F09 | Retry storm | Execution | Agents retry immediately and repeatedly; issuer latency rises with load. | F08, F10 | retryBudget, intentIdempotency | $0 | $0 |
 | F10 | Duplicate charge after timeout | Execution | First attempt succeeded silently, retry succeeds too. | F16 | intentIdempotency, retryBudget | $58 | $0 |
 | F11 | Agent double-fire | Execution | Agent loop replays a tool call: same purchase, fresh idempotency key. | F16 | intentIdempotency | $17 | $0 |
-| F12 | Micro-ticket burden | Economics | Fixed acceptance cost exceeds what a small ticket can carry. | - | aggregation | $26 | $27 |
+| F12 | Micro-ticket burden | Economics | Fixed acceptance cost exceeds what a small ticket can carry. | - | aggregation | $26 | $26 |
 | F13 | Aggregated settlement failure | Settlement | Batch of micro-tickets is declined when it finally settles. | - | none (introduced by aggregation) | $0 | $0 |
-| F14 | Service before authorisation | Device | Unattended device is offline; it delivers, stores, and forwards. | - | none | $28 | $12 |
-| F15 | Friendly fraud | Dispute | "I never told my agent to buy that", about a purchase that was in scope. | F16 | mandateEvidence | $14 | $13 |
+| F14 | Service before authorisation | Device | Unattended device is offline; it delivers, stores, and forwards. | - | none | $28 | $13 |
+| F15 | Friendly fraud | Dispute | "I never told my agent to buy that", about a purchase that was in scope. | F16 | mandateEvidence | $14 | $11 |
 | F17 | Miscalibrated confidence | Decision model | The model’s probabilities do not match outcomes on this traffic. | F02, F05, F03 | decisionGuards | $0 | $0 |
 | F18 | No usable answer in time | Decision model | Slow response, vendor outage, rate limit, or a malformed body. | F03 | decisionGuards | $0 | $0 |
 | F19 | Version drift under a moving alias | Decision model | The alias the gateway calls now points at a different model. | F17 | decisionGuards | $0 | $0 |
@@ -37,5 +37,6 @@ Figures are at normal issuer conditions, where F09 and F16 cost nothing. The bro
 - **F14 Service before authorisation.** Unmitigated in this model. A residual risk the unattended segment already carries.
 - **F15 Friendly fraud.** Evidence only exists if the mandate was verified. mandateEvidence without mandateVerify is worth nothing.
 - **F17 Miscalibrated confidence.** Has no line of its own in the accounts. It shows up as more of the failures it feeds.
+- **F19 Version drift under a moving alias.** Not hypothetical. The jev-latest alias now resolves to jev-1.14.0, released 14 October 2026, a month after launch.
 - **F21 Selective labels.** Unmitigated, and understated here: the simulator hands the guard every label immediately.
 - **F16 Dispute-ratio cliff.** Emergent. Nothing causes it directly; every dispute-producing failure feeds it.

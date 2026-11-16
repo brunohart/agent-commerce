@@ -173,6 +173,7 @@ export const FAILURE_MODES = {
     effect: 'Thresholds tuned on one model are applied to another, silently.',
     feeds: ['miscalibration'],
     mitigatedBy: ['decisionGuards'],
+    note: 'Not hypothetical. The jev-latest alias now resolves to jev-1.14.0, released 14 October 2026, a month after launch.',
   },
   state_injection: {
     id: 'F20',

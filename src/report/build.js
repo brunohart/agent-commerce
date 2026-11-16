@@ -9,6 +9,8 @@ import { buildSurface, buildVariantSurface } from '../value/surface.js';
 import { monteCarlo, sequence, interactions, sensitivity, breakeven, compareVariants } from '../value/model.js';
 import { buildDecisionRequest } from '../decision/request.js';
 import { decide } from '../gateway/risk.js';
+import { existsSync, readFileSync } from 'node:fs';
+import { MEASURED_PATH } from '../decision/measure.js';
 import { BETS, BET_KEYS, CONTROLS, ECONOMICS, BASELINE_TXNS, HORIZON_YEARS } from '../assumptions.js';
 import { FAILURE_MODES } from '../sim/failure-modes.js';
 import { renderPage } from './page.js';
@@ -25,6 +27,19 @@ export function collect({ log = () => {} } = {}) {
   const abl = ablation();
   log('sweeping an issuer brownout');
   const brown = brownout();
+  // What the real Jev did, if it has been measured.
+  let measured = null;
+  if (existsSync(MEASURED_PATH)) {
+    const m = JSON.parse(readFileSync(MEASURED_PATH, 'utf8'));
+    if (m.ok) {
+      const seen = new Set();
+      const examples = m.cases
+        .filter((c) => c.tier === 'hard' && !seen.has(c.item) && seen.add(c.item))
+        .map(({ purpose, item, outside, jev }) => ({ purpose, item, outside, jev }));
+      measured = { asked: m.asked, answered: m.answered, versions: m.versions, quality: m.quality, byTier: m.byTier, latency: m.latency, dials: m.dials, examples };
+    }
+  }
+
   log('attacking the decision model');
   const experiment = decisionExperiment();
   const skill = skillSweep();
@@ -103,6 +118,7 @@ export function collect({ log = () => {} } = {}) {
       skill,
       value: decisionValue,
       example: { request: exampleRequest, answer: exampleAnswer, pBad, ...exampleDecision },
+      measured,
     },
     value: {
       baseline: mc.baseline,

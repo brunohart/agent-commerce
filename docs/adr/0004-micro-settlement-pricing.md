@@ -24,7 +24,7 @@ Price aggregated tickets the way micropayments are generally priced: a lower fix
 
 ## Consequences
 
-- Micro-settlement becomes a real option. It is the best portfolio in about 18% of worlds, and it breaks even when unattended elasticity passes roughly 1.04.
+- Micro-settlement becomes a real option, and still a losing one on my priors. It is the best portfolio in about 9% of worlds, and within my prior range for unattended elasticity it does not break even.
 - It is still not in the recommended build. The trigger is measurable in a pilot, and that is cheaper than building on a guess.
 - Aggregation introduces its own failure mode (F13: the batch is declined at settlement after the goods are delivered). It is in the register with no mitigation.
 - The premium is one number I chose. Its right value is a commercial question, and the model would be a reasonable place to explore it.
