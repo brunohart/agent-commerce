@@ -12,6 +12,11 @@ import { MODE_KEYS } from './failure-modes.js';
 import { SimulatedJev } from '../decision/simulated.js';
 import { GuardedDecider, DEFAULT_GUARDS, NO_GUARDS } from '../decision/guard.js';
 import { ece } from '../decision/calibration.js';
+import { measuredDials } from '../decision/measure.js';
+
+// If the real Jev has been measured (docs/jev-measured.json), the simulator uses
+// its measured skill, calibration, latency and error rate in place of the priors.
+const MEASURED = measuredDials();
 
 // --- Mandate pool -----------------------------------------------------------
 // Key generation and signing are the slow part, and mandates are reusable across
@@ -162,6 +167,7 @@ export function simulate(o = {}) {
       outside_mandate: ctx.mandateVerified ? beh.driftShare * beh.semanticDriftShare : beh.driftShare,
     }),
     progress: () => tick / intents,
+    ...(MEASURED ?? {}),
     ...(o.decision?.model ?? {}),
   });
   const decider = new GuardedDecider({ model: jev, guards, deadlineMs: beh.decisionDeadlineMs });

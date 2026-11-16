@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// node src/cli.js <trace|sim|ablation|decision|value|report|demo>
+// node src/cli.js <trace|sim|ablation|decision|measure|value|report|demo>
 
 import { headline, trace, ablation, decisionExperiment, skillSweep } from './sim/scenarios.js';
 import { buildSurface } from './value/surface.js';
@@ -93,6 +93,37 @@ function cmdDecision() {
   }
 }
 
+async function cmdMeasure() {
+  rule('Measure the real Jev');
+  const { JevClient } = await import('./decision/jev-client.js');
+  const { labelledCases } = await import('./decision/cases.js');
+  const { measure, saveMeasured, MEASURED_PATH } = await import('./decision/measure.js');
+  let client;
+  try {
+    client = new JevClient();
+  } catch {
+    console.log('  TYPESAFE_API_KEY is not set, so Jev cannot be called.');
+    console.log('  Get a key at console.typesafe.ai/keys, export it, and run this again.');
+    console.log('  Until then every simulation uses the priors in src/decision/simulated.js.');
+    process.exitCode = 1;
+    return;
+  }
+  const cases = labelledCases();
+  console.log(`  sending ${cases.length} labelled payments to Jev ...`);
+  const m = await measure({ client, cases });
+  if (!m.ok) {
+    console.log(`  could not measure: ${m.reason}. Answered ${m.answered} of ${m.asked}. Errors: ${JSON.stringify(m.errors)}`);
+    process.exitCode = 1;
+    return;
+  }
+  saveMeasured(m);
+  console.log(`  answered ${m.answered} of ${m.asked}; versions ${JSON.stringify(m.versions)}`);
+  console.log(`  AUC ${m.quality.auc.toFixed(3)}   calibration error ${(m.quality.ece * 100).toFixed(1)}%   Platt slope ${m.quality.plattSlope.toFixed(2)}`);
+  console.log(`  latency median ${m.latency.medianMs.toFixed(0)}ms, p95 ${m.latency.p95Ms.toFixed(0)}ms, ${pct(m.latency.withinGatewayDeadline)} inside the 400ms deadline`);
+  console.log(`  wrote ${MEASURED_PATH}`);
+  console.log('  The simulator now uses these in place of its priors. Run: npm run report');
+}
+
 async function cmdReport() {
   const { buildReport } = await import('./report/build.js');
   await buildReport({ log: (m) => console.log(`  ${m}`) });
@@ -116,6 +147,7 @@ const commands = {
   ablation: cmdAblation,
   value: cmdValue,
   decision: cmdDecision,
+  measure: cmdMeasure,
   report: cmdReport,
   demo: () => {
     cmdTrace();

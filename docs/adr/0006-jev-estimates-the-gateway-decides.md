@@ -41,4 +41,4 @@ It also makes the model's contribution measurable. A probability can be scored a
 
 ## What is unverified
 
-The simulations use a stand-in (`src/decision/simulated.js`) whose skill, calibration and latency are dials. It is not Jev. The HTTP client follows public quickstart material and has not been run against the live API; field names should be checked against TypeSafe's reference before a pilot.
+The simulations use a stand-in (`src/decision/simulated.js`) whose skill, calibration and latency are dials. It is not Jev. The HTTP client matches TypeSafe's API reference as of 16 November 2026 and has not been run against the live API. `node src/cli.js measure` sends 162 labelled payments to the real model and replaces the stand-in's priors with what it measures.

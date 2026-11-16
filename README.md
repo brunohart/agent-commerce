@@ -66,14 +66,17 @@ A fifth failure, **F21 selective labels**, has no guard here. Only approved paym
 Node 20 or later. No dependencies, no network, nothing to install.
 
 ```bash
-npm test                   # 57 tests, about 3 seconds
+npm test                   # 63 tests, about 3 seconds
 node src/cli.js trace      # one payment, two gateways, 1 second
 node src/cli.js decision   # the decision model under attack, about 15 seconds
+node src/cli.js measure    # run the real Jev on 162 labelled payments (needs TYPESAFE_API_KEY)
 npm run demo               # everything above plus the full ranking
 npm run report             # regenerates docs/index.html, docs/results.json, docs/FAILURE-MODES.md
 ```
 
-The simulator and the tests use [`src/decision/simulated.js`](src/decision/simulated.js), a stand-in with dials for skill, calibration, latency, outage, drift and injection. [`src/decision/jev-client.js`](src/decision/jev-client.js) is the real HTTP client with the same interface; it reads `TYPESAFE_API_KEY` from the environment. It follows public quickstart material and has not been run against the live API.
+The simulator and the tests use [`src/decision/simulated.js`](src/decision/simulated.js), a stand-in with dials for skill, calibration, latency, outage, drift and injection. [`src/decision/jev-client.js`](src/decision/jev-client.js) is the real HTTP client with the same interface; it reads `TYPESAFE_API_KEY` from the environment. Its request and response shapes match TypeSafe's API reference, and it has not yet been run against the live API.
+
+To replace the stand-in's priors with the real model's behaviour, run `node src/cli.js measure` with a key. It sends 162 labelled payments to Jev, measures its AUC, calibration, latency and error rate, and writes `docs/jev-measured.json`. From then on the simulator and the report use the measured values.
 
 ## How it fits together
 
@@ -150,8 +153,8 @@ Micro-settlement is a hold. It pays once unattended volume elasticity passes abo
 
 ## Limits
 
-- The decision model in every simulation is a stand-in, not Jev. How well Jev judges payments is unknown outside TypeSafe and its early-access customers. Its skill is a prior here, and the report shows how the answer moves with it.
-- The Jev client follows public quickstart material (endpoint, bearer auth, state plus typed questions, the yes/no `noul` type). I could not reach the primary API reference from the build environment, so field names are provisional.
+- The decision model in every simulation is a stand-in, not Jev. How well Jev judges payments is unknown outside TypeSafe and its early-access customers. Its skill is a prior here, and the report shows how the answer moves with it. `node src/cli.js measure` replaces the prior with a measurement as soon as a key is available.
+- The Jev client matches TypeSafe's API reference as of 16 November 2026 (endpoint, bearer auth, state, typed questions, the `noul` answer, full model ids). It has not been run against the live API, because that needs a key.
 - The other inputs are priors too. Windcave is privately held and I have no inside data.
 - The pipeline is a reference implementation. It implements none of the live agent-payment protocols and talks to no card network.
 - Dispute thresholds and penalties are illustrative. Each scheme's monitoring programme has its own definitions.

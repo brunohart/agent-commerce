@@ -624,7 +624,7 @@ value(bets) = E[ Σₜ intentsₜ × netPerIntent(bets, agentShareₜ, ticket) �
   <h2>What this is and is not</h2>
   <ul class="plain">
     <li>The inputs are priors, not Windcave figures. Windcave is privately held and I have no inside data. The output is reported per 100M baseline transactions so it scales with real volume and does not pretend to know it.</li>
-    <li>The decision model in every simulation is a stand-in, not Jev. How well Jev judges payments is unknown outside TypeSafe and its early-access customers. The client in <span class="mono">src/decision/jev-client.js</span> follows public quickstart material and has not been run against the live API.</li>
+    <li>The decision model in every simulation is a stand-in, not Jev. How well Jev judges payments is unknown outside TypeSafe and its early-access customers. The client in <span class="mono">src/decision/jev-client.js</span> matches TypeSafe’s API reference and has not been run against the live API. Running <span class="mono">node src/cli.js measure</span> with a key replaces the stand-in’s priors with the real model’s measured behaviour.</li>
     <li>The guard is handed every outcome immediately. In production, labels arrive weeks later and only for approved payments, which makes calibration harder to measure than it looks here.</li>
     <li>The pipeline is a reference implementation. Mandates are signed with real Ed25519 and the ledger is double-entry with enforced invariants, but it implements none of the live agent-payment protocols and talks to no card network.</li>
     <li>The dispute thresholds and penalties are illustrative. Each scheme’s monitoring programme has its own definitions.</li>

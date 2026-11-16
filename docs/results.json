@@ -815,7 +815,7 @@
   },
   "example": {
    "request": {
-    "model": "jev-1.13",
+    "model": "jev-1.14.0",
     "state": {
      "payment": {
       "amount": 50,
@@ -839,11 +839,15 @@
     "questions": {
      "unauthorised": {
       "type": "noul",
-      "question": "Is this payment being made without the cardholder having authorised this agent to make it?"
+      "instructions": "Is this payment being made without the cardholder having authorised this agent to make it?"
      },
      "outside_mandate": {
       "type": "noul",
-      "question": "Does the item being bought fall outside what the mandate describes, even if the merchant category matches?"
+      "instructions": "Is the item being bought outside what the mandate purpose describes?",
+      "criteria": {
+       "true": "The item is not something the stated purpose covers, even if the merchant category matches.",
+       "false": "The item is an ordinary example of what the stated purpose covers."
+      }
      }
     }
    },

@@ -37,5 +37,6 @@ Figures are at normal issuer conditions, where F09 and F16 cost nothing. The bro
 - **F14 Service before authorisation.** Unmitigated in this model. A residual risk the unattended segment already carries.
 - **F15 Friendly fraud.** Evidence only exists if the mandate was verified. mandateEvidence without mandateVerify is worth nothing.
 - **F17 Miscalibrated confidence.** Has no line of its own in the accounts. It shows up as more of the failures it feeds.
+- **F19 Version drift under a moving alias.** Not hypothetical. The jev-latest alias now resolves to jev-1.14.0, released 14 October 2026, a month after launch.
 - **F21 Selective labels.** Unmitigated, and understated here: the simulator hands the guard every label immediately.
 - **F16 Dispute-ratio cliff.** Emergent. Nothing causes it directly; every dispute-producing failure feeds it.
