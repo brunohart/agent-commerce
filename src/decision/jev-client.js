@@ -2,10 +2,10 @@
 // against src/decision/simulated.js. This is the piece you would swap in for a
 // shadow-mode pilot: same interface, real model.
 //
-// It has NOT been run against the live API. I had no key and no route to
-// api.typesafe.ai from the build environment. The endpoint, auth and request shape
-// follow public quickstart material; the response is parsed defensively for that
-// reason. The key is read from the environment and never logged.
+// The endpoint, auth, request and response shapes match TypeSafe's API reference
+// (see request.js). It has NOT been run against the live API, because that needs a
+// key. `node src/cli.js measure` is the first thing to run once one is available.
+// The key is read from the environment and never logged.
 
 import { parseAnswers } from './request.js';
 

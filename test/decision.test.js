@@ -109,9 +109,9 @@ test('guard: without a fallback, no answer means no decision', () => {
 });
 
 test('guard: an answer from the wrong version is not acted on', () => {
-  const g = new GuardedDecider({ model: model({ ok: true, p: good, version: 'jev-1.14', latencyMs: 100 }) });
+  const g = new GuardedDecider({ model: model({ ok: true, p: good, version: 'jev-next', latencyMs: 100 }) });
   assert.equal(g.decideSync(req, ctx).reason, 'wrongVersion');
-  const unpinned = new GuardedDecider({ model: model({ ok: true, p: good, version: 'jev-1.14', latencyMs: 100 }), guards: { ...DEFAULT_GUARDS, pin: false } });
+  const unpinned = new GuardedDecider({ model: model({ ok: true, p: good, version: 'jev-next', latencyMs: 100 }), guards: { ...DEFAULT_GUARDS, pin: false } });
   assert.equal(unpinned.decideSync(req, ctx).ok, true);
   assert.equal(unpinned.request(req, ctx).wire.model, MOVING_ALIAS);
 });
@@ -131,7 +131,7 @@ const sim = (dials, flags = { unauthorised: false, outside_mandate: true, inject
 test('stand-in: a pinned request never gets the drifted model', () => {
   const m = sim({ driftAt: 0.5 });
   assert.equal(m.decideSync(buildDecisionRequest(req, ctx)).version, PINNED_MODEL);
-  assert.equal(m.decideSync(buildDecisionRequest(req, ctx, { model: MOVING_ALIAS })).version, 'jev-1.14');
+  assert.equal(m.decideSync(buildDecisionRequest(req, ctx, { model: MOVING_ALIAS })).version, 'jev-next');
 });
 
 test('stand-in: injection only works when untrusted text reaches the state', () => {
