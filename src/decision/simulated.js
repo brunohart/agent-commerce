@@ -26,6 +26,7 @@ export const JEV_PRIORS = {
   latencyMedianMs: 180, // vendor-reported range is 70 to 500 ms
   latencySigma: 0.45,
   outage: 0.002,
+  slowShare: 0, // extra share of calls slower than any deadline (measured, not fitted)
   driftAt: null, // fraction of the run after which jev-latest changes
   driftSeparation: 0.8,
   injectionEffect: 0.08, // multiplier on stated probability when injection lands
@@ -50,7 +51,8 @@ export class SimulatedJev {
 
   decideSync(request) {
     const d = this.d;
-    const latencyMs = this.rng.lognormal(d.latencyMedianMs, d.latencySigma);
+    let latencyMs = this.rng.lognormal(d.latencyMedianMs, d.latencySigma);
+    if (d.slowShare > 0 && this.rng.bool(d.slowShare)) latencyMs = 5000;
     if (this.rng.bool(d.outage)) return { ok: false, error: 'http_529', latencyMs };
 
     // Which model actually answers? A pinned request always gets the pinned model.

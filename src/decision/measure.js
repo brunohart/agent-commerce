@@ -57,6 +57,7 @@ export function separationFromAuc(a) {
  */
 export async function measure({ client, cases, deadlineMs = 5000, concurrency = 4, gatewayDeadlineMs = 400, model = PINNED_MODEL }) {
   const pairs = [];
+  const rows = [];
   const latencies = [];
   const errors = {};
   const versions = {};
@@ -70,6 +71,7 @@ export async function measure({ client, cases, deadlineMs = 5000, concurrency = 
         continue;
       }
       pairs.push([out.p.outside_mandate, c.outside ? 1 : 0]);
+      rows.push({ id: c.id, tier: c.tier, purpose: c.purpose, item: c.item, amount: c.req.amount, outside: c.outside, jev: out.p.outside_mandate, unauthorised: out.p.unauthorised });
       latencies.push(out.latencyMs);
       versions[out.version ?? 'unknown'] = (versions[out.version ?? 'unknown'] ?? 0) + 1;
     }
@@ -86,28 +88,50 @@ export async function measure({ client, cases, deadlineMs = 5000, concurrency = 
   const meanLog = logs.reduce((a, b) => a + b, 0) / logs.length;
   const sigma = Math.sqrt(logs.reduce((s, l) => s + (l - meanLog) ** 2, 0) / logs.length);
   const a = auc(pairs);
-  const platt = fitPlatt(pairs);
+  const tierPairs = (tier) => rows.filter((r) => r.tier === tier).map((r) => [r.jev, r.outside ? 1 : 0]);
+  const byTier = Object.fromEntries(
+    [...new Set(rows.map((r) => r.tier))].map((tier) => {
+      const tp = tierPairs(tier);
+      return [tier, { n: tp.length, auc: auc(tp), brier: brier(tp), ece: ece(tp, 5) }];
+    }),
+  );
+  // Calibration can only be fitted if the two classes overlap. If every bad case
+  // scores above every good one, the fit runs away and means nothing.
+  const maxGood = Math.max(...pairs.filter(([, y]) => y === 0).map(([p]) => p));
+  const minBad = Math.min(...pairs.filter(([, y]) => y === 1).map(([p]) => p));
+  const identifiable = maxGood > minBad;
+  const platt = identifiable ? fitPlatt(pairs) : { a: null, b: null };
+  // Skill is taken from the borderline tier where there is one. The clear tier only
+  // shows that the task is possible; a perfect score there means the cases were too
+  // easy, not that the model is perfect.
+  const skillAuc = byTier.hard?.n >= 20 ? byTier.hard.auc : a;
+  const atCeiling = skillAuc >= 0.999;
+  const dials = {
+    separation: atCeiling ? 3.0 : Math.min(3.5, separationFromAuc(skillAuc)),
+    latencyMedianMs: quantile(sorted, 0.5),
+    latencySigma: Math.max(0.05, sigma),
+    // The measured tail is heavier than a lognormal fit, so carry it across as is.
+    slowShare: latencies.filter((l) => l > gatewayDeadlineMs).length / answered,
+    outage: failed / cases.length,
+  };
+  // Platt slope a < 1 means overconfident by a factor of 1 / a; a > 1, underconfident.
+  if (identifiable && platt.a > 0) dials.slope = Math.min(4, Math.max(0.25, 1 / platt.a));
   return {
     ok: true,
     asked: cases.length,
     answered,
     errors,
     versions,
-    quality: { auc: a, brier: brier(pairs), ece: ece(pairs), plattSlope: platt.a, plattBias: platt.b },
+    quality: { auc: a, skillAuc, atCeiling, brier: brier(pairs), ece: ece(pairs), calibrationIdentifiable: identifiable, plattSlope: platt.a, plattBias: platt.b },
+    byTier,
+    cases: rows.sort((x, y) => (x.id < y.id ? -1 : 1)),
     latency: {
       medianMs: quantile(sorted, 0.5),
       p95Ms: quantile(sorted, 0.95),
       withinGatewayDeadline: latencies.filter((l) => l <= gatewayDeadlineMs).length / answered,
     },
     // What the simulator should use in place of its priors.
-    dials: {
-      separation: separationFromAuc(a),
-      // Platt slope a < 1 means the model was overconfident by a factor of 1 / a.
-      slope: platt.a > 0 ? 1 / platt.a : 1,
-      latencyMedianMs: quantile(sorted, 0.5),
-      latencySigma: Math.max(0.05, sigma),
-      outage: failed / cases.length,
-    },
+    dials,
   };
 }
 

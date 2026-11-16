@@ -31,8 +31,9 @@ test('wire format: matches the documented request and response shapes', () => {
 
 test('cases: balanced, labelled, and each builds a request', () => {
   const cases = labelledCases();
-  assert.equal(cases.length, 162);
-  assert.equal(cases.filter((c) => c.outside).length, 81);
+  assert.equal(cases.length, 234);
+  assert.equal(cases.filter((c) => c.outside).length, 117);
+  assert.equal(cases.filter((c) => c.tier === 'hard').length, 72);
   assert.equal(new Set(cases.map((c) => c.id)).size, cases.length);
   for (const c of cases) {
     const { wire } = buildDecisionRequest(c.req, c.ctx);
@@ -66,7 +67,9 @@ function fakeClient({ skill = 2.5, failEvery = 0, latency = 150 } = {}) {
 test('measure: turns real answers into the dials the simulator uses', async () => {
   const m = await measure({ client: fakeClient(), cases: labelledCases() });
   assert.equal(m.ok, true);
-  assert.equal(m.answered, 162);
+  assert.equal(m.answered, 234);
+  assert.deepEqual(Object.keys(m.byTier).sort(), ['clear', 'hard']);
+  assert.equal(m.cases.length, 234);
   assert.ok(m.quality.auc > 0.9 && m.quality.auc <= 1);
   assert.ok(m.dials.separation > 1.8);
   assert.ok(m.dials.slope > 0);
@@ -89,5 +92,11 @@ test('measured dials: absent until measured, then read back', async () => {
   const m = await measure({ client: fakeClient(), cases: labelledCases() });
   saveMeasured(m, path);
   assert.deepEqual(measuredDials(path), m.dials);
-  assert.equal(measuredDials(), null, 'the repo ships without a measurement, so simulations use the priors');
+  // The repo ships a real measurement. Whatever it says, it has to be usable.
+  const shipped = measuredDials();
+  if (shipped) {
+    assert.ok(shipped.separation > 0.3 && shipped.separation <= 3.5);
+    assert.ok(shipped.latencyMedianMs > 0 && shipped.outage >= 0 && shipped.outage < 1);
+    if ('slope' in shipped) assert.ok(shipped.slope >= 0.25 && shipped.slope <= 4);
+  }
 });

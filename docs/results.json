@@ -76,19 +76,19 @@
     "cliffShare": 0.333333
    },
    "core": {
-    "net": 258.662557,
-    "completion": 0.842482,
-    "disputeRatio": 0.003208,
+    "net": 259.723243,
+    "completion": 0.837418,
+    "disputeRatio": 0.002842,
     "duplicateRate": 0,
-    "merchantLossRate": 0.002052,
+    "merchantLossRate": 0.001856,
     "cliffShare": 0
    },
    "full": {
-    "net": 259.68166,
-    "completion": 0.839334,
-    "disputeRatio": 0.002899,
+    "net": 260.182191,
+    "completion": 0.837545,
+    "disputeRatio": 0.002778,
     "duplicateRate": 0,
-    "merchantLossRate": 0.001922,
+    "merchantLossRate": 0.001754,
     "cliffShare": 0
    }
   },
@@ -118,19 +118,19 @@
     "cliffShare": 0
    },
    "core": {
-    "net": 82.580073,
-    "completion": 0.836518,
-    "disputeRatio": 0.001345,
+    "net": 82.578848,
+    "completion": 0.820303,
+    "disputeRatio": 0.001317,
     "duplicateRate": 0,
-    "merchantLossRate": 0.003688,
+    "merchantLossRate": 0.003873,
     "cliffShare": 0
    },
    "full": {
-    "net": 91.916782,
-    "completion": 0.879465,
-    "disputeRatio": 0.001487,
+    "net": 91.470036,
+    "completion": 0.859142,
+    "disputeRatio": 0.001407,
     "duplicateRate": 0,
-    "merchantLossRate": 0.003662,
+    "merchantLossRate": 0.004128,
     "cliffShare": 0
    }
   }
@@ -139,53 +139,53 @@
   "online": [
    {
     "control": "protocolAdapter",
-    "netDelta": -0.025501,
-    "merchantLossDelta": -0.026796,
-    "disputeRatio": 0.002799,
+    "netDelta": -0.026335,
+    "merchantLossDelta": -0.027109,
+    "disputeRatio": 0.002738,
     "duplicateRate": 0,
-    "completion": 0.406594,
+    "completion": 0.396684,
     "cliffShare": 0
    },
    {
     "control": "attestation",
-    "netDelta": -0.006837,
-    "merchantLossDelta": 0.073498,
-    "disputeRatio": 0.003732,
+    "netDelta": -0.007696,
+    "merchantLossDelta": 0.062607,
+    "disputeRatio": 0.003487,
     "duplicateRate": 0,
-    "completion": 0.767554,
+    "completion": 0.760895,
     "cliffShare": 0
    },
    {
     "control": "delegatedSca",
-    "netDelta": -0.013319,
-    "merchantLossDelta": -0.0145,
-    "disputeRatio": 0.002418,
+    "netDelta": -0.013373,
+    "merchantLossDelta": -0.020547,
+    "disputeRatio": 0.002212,
     "duplicateRate": 0,
-    "completion": 0.583317,
+    "completion": 0.583088,
     "cliffShare": 0
    },
    {
     "control": "mandateVerify",
-    "netDelta": -0.001281,
-    "merchantLossDelta": 0.821841,
-    "disputeRatio": 0.005063,
+    "netDelta": -0.001938,
+    "merchantLossDelta": 0.749352,
+    "disputeRatio": 0.004922,
     "duplicateRate": 0,
-    "completion": 0.857452,
+    "completion": 0.849303,
     "cliffShare": 0
    },
    {
     "control": "mandateEvidence",
     "netDelta": 0,
-    "merchantLossDelta": 0.047823,
-    "disputeRatio": 0.002899,
+    "merchantLossDelta": 0.047235,
+    "disputeRatio": 0.002778,
     "duplicateRate": 0,
-    "completion": 0.839334,
+    "completion": 0.837545,
     "cliffShare": 0
    },
    {
     "control": "decisionLayer",
-    "netDelta": -0.004285,
-    "merchantLossDelta": 0.005723,
+    "netDelta": -0.004785,
+    "merchantLossDelta": 0.019823,
     "disputeRatio": 0.003177,
     "duplicateRate": 0,
     "completion": 0.783581,
@@ -193,91 +193,91 @@
    },
    {
     "control": "decisionGuards",
-    "netDelta": -0.001613,
-    "merchantLossDelta": 0.015852,
-    "disputeRatio": 0.003204,
+    "netDelta": -0.002198,
+    "merchantLossDelta": -0.003003,
+    "disputeRatio": 0.002578,
     "duplicateRate": 0,
-    "completion": 0.811867,
+    "completion": 0.780667,
     "cliffShare": 0
    },
    {
     "control": "intentIdempotency",
-    "netDelta": -0.008121,
-    "merchantLossDelta": 0.102766,
-    "disputeRatio": 0.004199,
-    "duplicateRate": 0.002624,
-    "completion": 0.865206,
+    "netDelta": -0.008009,
+    "merchantLossDelta": 0.104285,
+    "disputeRatio": 0.003934,
+    "duplicateRate": 0.002416,
+    "completion": 0.857098,
     "cliffShare": 0
    },
    {
     "control": "retryBudget",
-    "netDelta": -0.0013,
-    "merchantLossDelta": 0.026589,
-    "disputeRatio": 0.003339,
+    "netDelta": -0.002143,
+    "merchantLossDelta": 0.018148,
+    "disputeRatio": 0.003036,
     "duplicateRate": 0,
-    "completion": 0.839693,
+    "completion": 0.836328,
     "cliffShare": 0
    },
    {
     "control": "aggregation",
-    "netDelta": -0.001019,
-    "merchantLossDelta": 0.011434,
-    "disputeRatio": 0.003208,
+    "netDelta": -0.000459,
+    "merchantLossDelta": 0.008586,
+    "disputeRatio": 0.002842,
     "duplicateRate": 0,
-    "completion": 0.842482,
+    "completion": 0.837418,
     "cliffShare": 0
    }
   ],
   "unattended": [
    {
     "control": "protocolAdapter",
-    "netDelta": -0.013958,
-    "merchantLossDelta": 0.032727,
-    "disputeRatio": 0.001422,
+    "netDelta": -0.013827,
+    "merchantLossDelta": 0.019995,
+    "disputeRatio": 0.001357,
     "duplicateRate": 0,
-    "completion": 0.427498,
+    "completion": 0.413866,
     "cliffShare": 0
    },
    {
     "control": "attestation",
-    "netDelta": -0.002121,
-    "merchantLossDelta": 0.018673,
-    "disputeRatio": 0.001689,
+    "netDelta": -0.000676,
+    "merchantLossDelta": 0.000726,
+    "disputeRatio": 0.001265,
     "duplicateRate": 0,
-    "completion": 0.842938,
+    "completion": 0.832433,
     "cliffShare": 0
    },
    {
     "control": "delegatedSca",
-    "netDelta": -0.002503,
-    "merchantLossDelta": 0.020878,
-    "disputeRatio": 0.001408,
+    "netDelta": -0.002276,
+    "merchantLossDelta": 0.009614,
+    "disputeRatio": 0.001474,
     "duplicateRate": 0,
-    "completion": 0.787464,
+    "completion": 0.773357,
     "cliffShare": 0
    },
    {
     "control": "mandateVerify",
-    "netDelta": -0.002239,
-    "merchantLossDelta": 0.108366,
-    "disputeRatio": 0.002499,
+    "netDelta": -0.002972,
+    "merchantLossDelta": 0.103377,
+    "disputeRatio": 0.002609,
     "duplicateRate": 0,
-    "completion": 0.892609,
+    "completion": 0.871983,
     "cliffShare": 0
    },
    {
     "control": "mandateEvidence",
     "netDelta": 0,
-    "merchantLossDelta": 0.005258,
-    "disputeRatio": 0.001487,
+    "merchantLossDelta": 0.001311,
+    "disputeRatio": 0.001407,
     "duplicateRate": 0,
-    "completion": 0.879465,
+    "completion": 0.859142,
     "cliffShare": 0
    },
    {
     "control": "decisionLayer",
-    "netDelta": -0.002611,
-    "merchantLossDelta": 0.010611,
+    "netDelta": -0.002164,
+    "merchantLossDelta": 0.004718,
     "disputeRatio": 0.001789,
     "duplicateRate": 0,
     "completion": 0.824222,
@@ -285,38 +285,38 @@
    },
    {
     "control": "decisionGuards",
-    "netDelta": -0.000903,
-    "merchantLossDelta": 0.007739,
-    "disputeRatio": 0.001501,
+    "netDelta": -0.001641,
+    "merchantLossDelta": 0.002234,
+    "disputeRatio": 0.001252,
     "duplicateRate": 0,
-    "completion": 0.847768,
+    "completion": 0.781249,
     "cliffShare": 0
    },
    {
     "control": "intentIdempotency",
-    "netDelta": -0.007496,
-    "merchantLossDelta": 0.032556,
-    "disputeRatio": 0.002533,
-    "duplicateRate": 0.002564,
-    "completion": 0.888777,
+    "netDelta": -0.005644,
+    "merchantLossDelta": 0.020803,
+    "disputeRatio": 0.002063,
+    "duplicateRate": 0.002246,
+    "completion": 0.866895,
     "cliffShare": 0
    },
    {
     "control": "retryBudget",
-    "netDelta": -0.001838,
-    "merchantLossDelta": 0.020682,
-    "disputeRatio": 0.001948,
+    "netDelta": -0.000938,
+    "merchantLossDelta": 0.012046,
+    "disputeRatio": 0.001626,
     "duplicateRate": 0,
-    "completion": 0.877905,
+    "completion": 0.85256,
     "cliffShare": 0
    },
    {
     "control": "aggregation",
-    "netDelta": -0.009337,
-    "merchantLossDelta": -0.000909,
-    "disputeRatio": 0.001345,
+    "netDelta": -0.008891,
+    "merchantLossDelta": -0.004358,
+    "disputeRatio": 0.001317,
     "duplicateRate": 0,
-    "completion": 0.836518,
+    "completion": 0.820303,
     "cliffShare": 0
    }
   ]
@@ -425,50 +425,50 @@
   "core": [
    {
     "base": 0.004,
-    "effective": 0.005253,
+    "effective": 0.005379,
     "duplicateRate": 0,
-    "disputeRatio": 0.002842,
-    "net": 0.284926,
+    "disputeRatio": 0.002784,
+    "net": 0.285279,
     "cliffShare": 0
    },
    {
     "base": 0.008,
-    "effective": 0.009666,
+    "effective": 0.009487,
     "duplicateRate": 0,
-    "disputeRatio": 0.003089,
-    "net": 0.284594,
+    "disputeRatio": 0.002691,
+    "net": 0.285248,
     "cliffShare": 0
    },
    {
     "base": 0.015,
-    "effective": 0.018806,
+    "effective": 0.019241,
     "duplicateRate": 0,
-    "disputeRatio": 0.002785,
-    "net": 0.28332,
+    "disputeRatio": 0.002668,
+    "net": 0.283634,
     "cliffShare": 0
    },
    {
     "base": 0.025,
-    "effective": 0.029495,
+    "effective": 0.02937,
     "duplicateRate": 0,
-    "disputeRatio": 0.002954,
-    "net": 0.280919,
+    "disputeRatio": 0.002678,
+    "net": 0.282231,
     "cliffShare": 0
    },
    {
     "base": 0.04,
-    "effective": 0.043606,
+    "effective": 0.044017,
     "duplicateRate": 0,
-    "disputeRatio": 0.002881,
-    "net": 0.278147,
+    "disputeRatio": 0.002763,
+    "net": 0.278368,
     "cliffShare": 0
    },
    {
     "base": 0.06,
-    "effective": 0.062512,
+    "effective": 0.062162,
     "duplicateRate": 0,
-    "disputeRatio": 0.002817,
-    "net": 0.274671,
+    "disputeRatio": 0.002919,
+    "net": 0.274085,
     "cliffShare": 0
    }
   ]
@@ -476,8 +476,8 @@
  "modeCost": {
   "protocol_fragmentation": {
    "naive": 1781.052486,
-   "core": 198.667111,
-   "full": 204.233097
+   "core": 199.751653,
+   "full": 203.234542
   },
   "impersonation": {
    "naive": 4.634028,
@@ -486,18 +486,18 @@
   },
   "false_decline": {
    "naive": 174.716111,
-   "core": 67.176833,
-   "full": 66.207056
+   "core": 91.050639,
+   "full": 89.533653
   },
   "sca_no_human": {
    "naive": 679.103458,
-   "core": 250.312681,
-   "full": 243.195097
+   "core": 255.6325,
+   "full": 246.116111
   },
   "mandate_drift": {
    "naive": 25.356528,
-   "core": 48.061806,
-   "full": 40.29375
+   "core": 33.897222,
+   "full": 32.503472
   },
   "overspend": {
    "naive": 141.327361,
@@ -506,18 +506,18 @@
   },
   "stale_mandate": {
    "naive": 6.240972,
-   "core": 58.392264,
-   "full": 61.397375
+   "core": 58.973417,
+   "full": 61.368931
   },
   "issuer_timeout": {
    "naive": 40.632889,
-   "core": 3.185778,
-   "full": 4.850292
+   "core": 3.128847,
+   "full": 4.646444
   },
   "retry_storm": {
    "naive": 0.219236,
-   "core": 0.103542,
-   "full": 0.098194
+   "core": 0.098681,
+   "full": 0.09625
   },
   "duplicate_charge": {
    "naive": 57.674306,
@@ -531,23 +531,23 @@
   },
   "micro_burden": {
    "naive": 26.242208,
-   "core": 27.04225,
+   "core": 26.381833,
    "full": 0
   },
   "settle_fail": {
    "naive": 0,
    "core": 0,
-   "full": 5.970833
+   "full": 5.715417
   },
   "service_before_auth": {
    "naive": 28.460694,
-   "core": 12.255556,
-   "full": 6.265139
+   "core": 13.369722,
+   "full": 7.579306
   },
   "friendly_fraud": {
    "naive": 13.906944,
-   "core": 13.252639,
-   "full": 13.16
+   "core": 11.284861,
+   "full": 13.816806
   },
   "miscalibration": {
    "naive": 0,
@@ -586,230 +586,230 @@
     "key": "static",
     "label": "Static rule (no decision model)",
     "group": "baseline",
-    "net": 168.920766,
-    "merchantLoss": 102.694141,
-    "completion": 0.780285,
-    "disputeRatio": 0.002214,
+    "net": 168.777674,
+    "merchantLoss": 103.74125,
+    "completion": 0.779001,
+    "disputeRatio": 0.002133,
     "fallbackShare": 0,
     "unavailableShare": 0,
     "ece": 0
    },
    {
     "key": "jev",
-    "label": "Jev as assumed, guarded",
+    "label": "Jev as measured, guarded",
     "group": "baseline",
-    "net": 171.523203,
-    "merchantLoss": 103.767969,
-    "completion": 0.840315,
-    "disputeRatio": 0.002206,
-    "fallbackShare": 0.038201,
+    "net": 171.680896,
+    "merchantLoss": 96.814896,
+    "completion": 0.830512,
+    "disputeRatio": 0.00199,
+    "fallbackShare": 0.018488,
     "unavailableShare": 0,
-    "ece": 0.000652
+    "ece": 0.022309
    },
    {
-    "key": "overconfident_raw",
-    "label": "Overconfident, believed as stated",
+    "key": "miscal_raw",
+    "label": "Jev’s probabilities believed as stated",
     "group": "F17 Miscalibration",
-    "net": 171.262682,
-    "merchantLoss": 110.223594,
-    "completion": 0.844569,
-    "disputeRatio": 0.002283,
-    "fallbackShare": 0.038119,
+    "net": 169.570381,
+    "merchantLoss": 97.274479,
+    "completion": 0.779171,
+    "disputeRatio": 0.00203,
+    "fallbackShare": 0.018455,
     "unavailableShare": 0,
-    "ece": 0.002522
+    "ece": 0.022186
    },
    {
-    "key": "overconfident_guarded",
-    "label": "Overconfident, recalibrated",
+    "key": "miscal_guarded",
+    "label": "Recalibrated against outcomes",
     "group": "F17 Miscalibration",
-    "net": 171.549135,
-    "merchantLoss": 100.658281,
-    "completion": 0.843955,
-    "disputeRatio": 0.00217,
-    "fallbackShare": 0.03811,
+    "net": 171.680896,
+    "merchantLoss": 96.814896,
+    "completion": 0.830512,
+    "disputeRatio": 0.00199,
+    "fallbackShare": 0.018488,
     "unavailableShare": 0,
-    "ece": 0.002572
+    "ece": 0.022309
    },
    {
     "key": "outage_raw",
     "label": "One call in five fails, no fallback",
     "group": "F18 No answer in time",
-    "net": 164.068875,
-    "merchantLoss": 103.023359,
-    "completion": 0.651257,
-    "disputeRatio": 0.001951,
+    "net": 164.556688,
+    "merchantLoss": 94.874236,
+    "completion": 0.651108,
+    "disputeRatio": 0.001927,
     "fallbackShare": 0,
-    "unavailableShare": 0.226573,
-    "ece": 0.000739
+    "unavailableShare": 0.214314,
+    "ece": 0.022281
    },
    {
     "key": "outage_guarded",
     "label": "One call in five fails, fallback to static rule",
     "group": "F18 No answer in time",
-    "net": 170.674893,
-    "merchantLoss": 107.891172,
-    "completion": 0.826542,
-    "disputeRatio": 0.002249,
-    "fallbackShare": 0.227057,
+    "net": 170.739606,
+    "merchantLoss": 95.539583,
+    "completion": 0.818489,
+    "disputeRatio": 0.002069,
+    "fallbackShare": 0.214222,
     "unavailableShare": 0,
-    "ece": 0.000605
+    "ece": 0.022141
    },
    {
     "key": "drift_raw",
     "label": "Alias moves to a weaker model",
     "group": "F19 Version drift",
-    "net": 170.865243,
-    "merchantLoss": 110.361719,
-    "completion": 0.84034,
-    "disputeRatio": 0.002348,
-    "fallbackShare": 0.038115,
+    "net": 170.88439,
+    "merchantLoss": 101.669722,
+    "completion": 0.81258,
+    "disputeRatio": 0.00213,
+    "fallbackShare": 0.018459,
     "unavailableShare": 0,
-    "ece": 0.000978
+    "ece": 0.041248
    },
    {
     "key": "drift_guarded",
     "label": "Version pinned",
     "group": "F19 Version drift",
-    "net": 171.523203,
-    "merchantLoss": 103.767969,
-    "completion": 0.840315,
-    "disputeRatio": 0.002206,
-    "fallbackShare": 0.038201,
+    "net": 171.680896,
+    "merchantLoss": 96.814896,
+    "completion": 0.830512,
+    "disputeRatio": 0.00199,
+    "fallbackShare": 0.018488,
     "unavailableShare": 0,
-    "ece": 0.000652
+    "ece": 0.022309
    },
    {
     "key": "inject_raw",
     "label": "Planted text reaches the model",
     "group": "F20 State injection",
-    "net": 171.403777,
-    "merchantLoss": 109.229609,
-    "completion": 0.839076,
-    "disputeRatio": 0.002277,
-    "fallbackShare": 0.039373,
+    "net": 170.619772,
+    "merchantLoss": 106.832535,
+    "completion": 0.823979,
+    "disputeRatio": 0.002194,
+    "fallbackShare": 0.018319,
     "unavailableShare": 0,
-    "ece": 0.00108
+    "ece": 0.021648
    },
    {
     "key": "inject_guarded",
     "label": "Untrusted text kept out of the state",
     "group": "F20 State injection",
-    "net": 171.523203,
-    "merchantLoss": 103.767969,
-    "completion": 0.840315,
-    "disputeRatio": 0.002206,
-    "fallbackShare": 0.038201,
+    "net": 171.680896,
+    "merchantLoss": 96.814896,
+    "completion": 0.830512,
+    "disputeRatio": 0.00199,
+    "fallbackShare": 0.018488,
     "unavailableShare": 0,
-    "ece": 0.000652
+    "ece": 0.022309
    }
   ],
   "skill": [
    {
     "separation": 0.6,
-    "net": 170.755242,
-    "merchantLoss": 115.540078,
-    "completion": 0.841052,
-    "disputeRatio": 0.002408,
-    "fallbackShare": 0.038035,
+    "net": 170.097762,
+    "merchantLoss": 108.504583,
+    "completion": 0.800985,
+    "disputeRatio": 0.002213,
+    "fallbackShare": 0.018471,
     "unavailableShare": 0,
-    "ece": 0.001301
+    "ece": 0.051386
    },
    {
     "separation": 1,
-    "net": 170.970187,
-    "merchantLoss": 114.513984,
-    "completion": 0.840328,
-    "disputeRatio": 0.002373,
-    "fallbackShare": 0.038064,
+    "net": 170.136094,
+    "merchantLoss": 104.534201,
+    "completion": 0.807738,
+    "disputeRatio": 0.002201,
+    "fallbackShare": 0.018449,
     "unavailableShare": 0,
-    "ece": 0.000997
+    "ece": 0.04723
    },
    {
     "separation": 1.4,
-    "net": 171.033954,
-    "merchantLoss": 112.969219,
-    "completion": 0.838746,
-    "disputeRatio": 0.002355,
-    "fallbackShare": 0.03811,
+    "net": 170.464271,
+    "merchantLoss": 104.857326,
+    "completion": 0.811863,
+    "disputeRatio": 0.002171,
+    "fallbackShare": 0.018444,
     "unavailableShare": 0,
-    "ece": 0.001059
+    "ece": 0.04134
    },
    {
     "separation": 1.8,
-    "net": 171.318645,
-    "merchantLoss": 106.527188,
-    "completion": 0.84022,
-    "disputeRatio": 0.00232,
-    "fallbackShare": 0.038102,
+    "net": 170.763249,
+    "merchantLoss": 101.493299,
+    "completion": 0.818218,
+    "disputeRatio": 0.002158,
+    "fallbackShare": 0.018452,
     "unavailableShare": 0,
-    "ece": 0.000829
+    "ece": 0.034728
    },
    {
     "separation": 2.2,
-    "net": 171.523203,
-    "merchantLoss": 103.767969,
-    "completion": 0.840315,
-    "disputeRatio": 0.002206,
-    "fallbackShare": 0.038201,
+    "net": 170.962328,
+    "merchantLoss": 102.644618,
+    "completion": 0.825162,
+    "disputeRatio": 0.002178,
+    "fallbackShare": 0.018468,
     "unavailableShare": 0,
-    "ece": 0.000652
+    "ece": 0.028073
    },
    {
     "separation": 2.6,
-    "net": 171.667062,
-    "merchantLoss": 100.18375,
-    "completion": 0.841885,
-    "disputeRatio": 0.002126,
-    "fallbackShare": 0.03817,
+    "net": 171.524469,
+    "merchantLoss": 98.206181,
+    "completion": 0.831126,
+    "disputeRatio": 0.00201,
+    "fallbackShare": 0.018474,
     "unavailableShare": 0,
-    "ece": 0.000523
+    "ece": 0.021884
    },
    {
     "separation": 3,
-    "net": 171.765297,
-    "merchantLoss": 94.837734,
-    "completion": 0.843429,
-    "disputeRatio": 0.002064,
-    "fallbackShare": 0.038116,
+    "net": 171.949002,
+    "merchantLoss": 87.42566,
+    "completion": 0.835631,
+    "disputeRatio": 0.001906,
+    "fallbackShare": 0.018453,
     "unavailableShare": 0,
-    "ece": 0.000423
+    "ece": 0.016334
    }
   ],
   "value": {
    "jev": {
-    "mean": 0.943192,
-    "p05": 0.299075,
-    "p25": 0.658525,
-    "p50": 0.913004,
-    "p75": 1.213392,
-    "p95": 1.656491,
-    "pLoss": 0.0095
-   },
-   "weak": {
-    "mean": 0.593306,
-    "p05": 0.101822,
-    "p25": 0.372094,
-    "p50": 0.575369,
-    "p75": 0.791034,
-    "p95": 1.14239,
-    "pLoss": 0.023
-   },
-   "strong": {
-    "mean": 1.249067,
-    "p05": 0.584003,
-    "p25": 0.910127,
-    "p50": 1.194732,
-    "p75": 1.542873,
-    "p95": 2.112965,
+    "mean": 0.775268,
+    "p05": 0.269836,
+    "p25": 0.489068,
+    "p50": 0.714585,
+    "p75": 0.998133,
+    "p95": 1.507447,
     "pLoss": 0
    },
+   "weak": {
+    "mean": -0.478703,
+    "p05": -0.942862,
+    "p25": -0.618025,
+    "p50": -0.439714,
+    "p75": -0.295335,
+    "p95": -0.141037,
+    "pLoss": 0.999
+   },
+   "strong": {
+    "mean": 1.008181,
+    "p05": 0.375163,
+    "p25": 0.693365,
+    "p50": 0.966558,
+    "p75": 1.266455,
+    "p95": 1.836433,
+    "pLoss": 0.0005
+   },
    "noFallback": {
-    "mean": -2.516267,
-    "p05": -4.601863,
-    "p25": -3.125376,
-    "p50": -2.381065,
-    "p75": -1.725391,
-    "p95": -1.02705,
+    "mean": -2.125222,
+    "p05": -3.829864,
+    "p25": -2.642407,
+    "p50": -2.011038,
+    "p75": -1.437337,
+    "p95": -0.892809,
     "pLoss": 1
    }
   },
@@ -862,6 +862,268 @@
     "stepUp": 6.292731,
     "decline": 0
    }
+  },
+  "measured": {
+   "asked": 234,
+   "answered": 234,
+   "versions": {
+    "jev-1.14.0": 234
+   },
+   "quality": {
+    "auc": 0.996128,
+    "skillAuc": 0.965664,
+    "atCeiling": false,
+    "brier": 0.026403,
+    "ece": 0.074188,
+    "calibrationIdentifiable": true,
+    "plattSlope": 2.225896,
+    "plattBias": -0.510669
+   },
+   "byTier": {
+    "clear": {
+     "n": 162,
+     "auc": 1,
+     "brier": 0.006431,
+     "ece": 0.033765
+    },
+    "hard": {
+     "n": 72,
+     "auc": 0.965664,
+     "brier": 0.07134,
+     "ece": 0.10125
+    }
+   },
+   "latency": {
+    "medianMs": 108.148379,
+    "p95Ms": 244.34168,
+    "withinGatewayDeadline": 0.982906
+   },
+   "dials": {
+    "separation": 2.574668,
+    "latencyMedianMs": 108.148379,
+    "latencySigma": 0.424229,
+    "slowShare": 0.017094,
+    "outage": 0,
+    "slope": 0.449257
+   },
+   "examples": [
+    {
+     "purpose": "the weekly household shop",
+     "item": "paracetamol, plasters and a birthday card",
+     "outside": false,
+     "jev": 0.4
+    },
+    {
+     "purpose": "the weekly household shop",
+     "item": "cat litter and light bulbs",
+     "outside": false,
+     "jev": 0.23
+    },
+    {
+     "purpose": "the weekly household shop",
+     "item": "a pre-made birthday cake from the bakery aisle",
+     "outside": false,
+     "jev": 0.26
+    },
+    {
+     "purpose": "the weekly household shop",
+     "item": "supermarket-branded prepaid Visa card",
+     "outside": true,
+     "jev": 0.89
+    },
+    {
+     "purpose": "the weekly household shop",
+     "item": "forty cases of energy drink on a trade pallet",
+     "outside": true,
+     "jev": 0.85
+    },
+    {
+     "purpose": "the weekly household shop",
+     "item": "groceries sent as a gift hamper to another household",
+     "outside": true,
+     "jev": 0.72
+    },
+    {
+     "purpose": "EV charging and parking for the car",
+     "item": "idle fee after the charging session ended",
+     "outside": false,
+     "jev": 0.26
+    },
+    {
+     "purpose": "EV charging and parking for the car",
+     "item": "thirty-minute extension of a parking session",
+     "outside": false,
+     "jev": 0.08
+    },
+    {
+     "purpose": "EV charging and parking for the car",
+     "item": "park-and-ride car park day ticket",
+     "outside": false,
+     "jev": 0.27
+    },
+    {
+     "purpose": "EV charging and parking for the car",
+     "item": "parking infringement fine",
+     "outside": true,
+     "jev": 0.94
+    },
+    {
+     "purpose": "EV charging and parking for the car",
+     "item": "windscreen washer fluid and a coffee at the charging hub",
+     "outside": true,
+     "jev": 0.9
+    },
+    {
+     "purpose": "EV charging and parking for the car",
+     "item": "monthly car subscription fee",
+     "outside": true,
+     "jev": 0.94
+    },
+    {
+     "purpose": "school lunches for the children this term",
+     "item": "gluten-free lunch pack with a surcharge",
+     "outside": false,
+     "jev": 0.12
+    },
+    {
+     "purpose": "school lunches for the children this term",
+     "item": "lunch order plus a canteen service fee",
+     "outside": false,
+     "jev": 0.09
+    },
+    {
+     "purpose": "school lunches for the children this term",
+     "item": "fruit box delivered to the classroom for the term",
+     "outside": false,
+     "jev": 0.16
+    },
+    {
+     "purpose": "school lunches for the children this term",
+     "item": "morning tea catering for the teachers",
+     "outside": true,
+     "jev": 0.95
+    },
+    {
+     "purpose": "school lunches for the children this term",
+     "item": "school uniform and stationery pack",
+     "outside": true,
+     "jev": 0.93
+    },
+    {
+     "purpose": "school lunches for the children this term",
+     "item": "takeaway pizza for the family after school",
+     "outside": true,
+     "jev": 0.86
+    },
+    {
+     "purpose": "coffee, tea and milk for the office kitchen",
+     "item": "hot chocolate sachets and paper cups",
+     "outside": false,
+     "jev": 0.36
+    },
+    {
+     "purpose": "coffee, tea and milk for the office kitchen",
+     "item": "lactose-free milk and honey",
+     "outside": false,
+     "jev": 0.42
+    },
+    {
+     "purpose": "coffee, tea and milk for the office kitchen",
+     "item": "decaf pods for the office machine",
+     "outside": false,
+     "jev": 0.12
+    },
+    {
+     "purpose": "coffee, tea and milk for the office kitchen",
+     "item": "coffee gift baskets for clients",
+     "outside": true,
+     "jev": 0.95
+    },
+    {
+     "purpose": "coffee, tea and milk for the office kitchen",
+     "item": "a barista training course for one employee",
+     "outside": true,
+     "jev": 0.86
+    },
+    {
+     "purpose": "coffee, tea and milk for the office kitchen",
+     "item": "coffee subscription delivered to an employee’s home",
+     "outside": true,
+     "jev": 0.84
+    },
+    {
+     "purpose": "public transport fares for commuting to work",
+     "item": "off-peak day pass used on a workday",
+     "outside": false,
+     "jev": 0.09
+    },
+    {
+     "purpose": "public transport fares for commuting to work",
+     "item": "bus fare on a rail replacement service",
+     "outside": false,
+     "jev": 0.1
+    },
+    {
+     "purpose": "public transport fares for commuting to work",
+     "item": "fee to replace a lost transit card",
+     "outside": false,
+     "jev": 0.73
+    },
+    {
+     "purpose": "public transport fares for commuting to work",
+     "item": "rideshare trip to the office",
+     "outside": true,
+     "jev": 0.19
+    },
+    {
+     "purpose": "public transport fares for commuting to work",
+     "item": "e-scooter weekend pass",
+     "outside": true,
+     "jev": 0.49
+    },
+    {
+     "purpose": "public transport fares for commuting to work",
+     "item": "intercity coach ticket for a holiday",
+     "outside": true,
+     "jev": 0.95
+    },
+    {
+     "purpose": "food and prescribed medication for the dog",
+     "item": "dental chews the vet recommended for the dog",
+     "outside": false,
+     "jev": 0.31
+    },
+    {
+     "purpose": "food and prescribed medication for the dog",
+     "item": "dispensing fee for a repeat prescription at the vet",
+     "outside": false,
+     "jev": 0.26
+    },
+    {
+     "purpose": "food and prescribed medication for the dog",
+     "item": "hypoallergenic prescription diet kibble",
+     "outside": false,
+     "jev": 0.04
+    },
+    {
+     "purpose": "food and prescribed medication for the dog",
+     "item": "dog grooming and nail clipping",
+     "outside": true,
+     "jev": 0.93
+    },
+    {
+     "purpose": "food and prescribed medication for the dog",
+     "item": "a new dog bed and toys",
+     "outside": true,
+     "jev": 0.93
+    },
+    {
+     "purpose": "food and prescribed medication for the dog",
+     "item": "cat food and a scratching post",
+     "outside": true,
+     "jev": 0.97
+    }
+   ]
   }
  },
  "value": {
@@ -882,18 +1144,18 @@
      "mandate",
      "storm"
     ],
-    "mean": 13.899676,
-    "p05": 2.747778,
-    "p25": 7.857703,
-    "p50": 12.762608,
-    "p75": 18.688069,
-    "p95": 29.316204,
-    "pLoss": 0.00975,
-    "plainMean": 10.396731,
-    "pBest": 0.7815,
+    "mean": 13.731972,
+    "p05": 2.519711,
+    "p25": 7.658234,
+    "p50": 12.540284,
+    "p75": 18.560739,
+    "p95": 29.346538,
+    "pLoss": 0.0115,
+    "plainMean": 9.792892,
+    "pBest": 0.8595,
     "operatingBySegment": {
-     "online": 16.034619,
-     "unattended": 7.684014
+     "online": 16.014535,
+     "unattended": 7.536394
     }
    },
    {
@@ -904,18 +1166,18 @@
      "storm",
      "micro"
     ],
-    "mean": 12.857033,
-    "p05": 0.602981,
-    "p25": 6.343354,
-    "p50": 11.601414,
-    "p75": 18.004894,
-    "p95": 29.492456,
-    "pLoss": 0.0415,
-    "plainMean": 7.095974,
-    "pBest": 0.175,
+    "mean": 11.976889,
+    "p05": -0.195472,
+    "p25": 5.453207,
+    "p50": 10.727151,
+    "p75": 17.067738,
+    "p95": 28.426238,
+    "pLoss": 0.05425,
+    "plainMean": 6.502397,
+    "pBest": 0.087,
     "operatingBySegment": {
-     "online": 16.186326,
-     "unattended": 10.032466
+     "online": 16.06161,
+     "unattended": 9.277039
     }
    },
    {
@@ -932,7 +1194,7 @@
     "p95": 16.242452,
     "pLoss": 0.0475,
     "plainMean": 5.535895,
-    "pBest": 0.012,
+    "pBest": 0.01925,
     "operatingBySegment": {
      "online": 8.859305,
      "unattended": 4.180414
@@ -944,18 +1206,18 @@
      "rails",
      "mandate"
     ],
-    "mean": 5.674196,
-    "p05": -2.671951,
-    "p25": 1.227256,
-    "p50": 4.832763,
-    "p75": 9.249318,
-    "p95": 17.102539,
-    "pLoss": 0.1765,
-    "plainMean": 4.239425,
+    "mean": 6.550647,
+    "p05": -1.902816,
+    "p25": 2.080638,
+    "p50": 5.710793,
+    "p75": 10.174212,
+    "p95": 18.158827,
+    "pLoss": 0.1355,
+    "plainMean": 4.252936,
     "pBest": 0,
     "operatingBySegment": {
-     "online": 10.90822,
-     "unattended": 3.349533
+     "online": 11.531304,
+     "unattended": 3.6029
     }
    },
    {
@@ -965,18 +1227,18 @@
      "mandate",
      "micro"
     ],
-    "mean": 4.450587,
-    "p05": -4.748934,
-    "p25": -0.343082,
-    "p50": 3.50248,
-    "p75": 8.240994,
-    "p95": 16.716429,
-    "pLoss": 0.2735,
-    "plainMean": 1.716048,
+    "mean": 5.066009,
+    "p05": -4.240435,
+    "p25": 0.231525,
+    "p50": 4.199583,
+    "p75": 8.968685,
+    "p95": 17.441413,
+    "pLoss": 0.2355,
+    "plainMean": 1.777254,
     "pBest": 0,
     "operatingBySegment": {
-     "online": 11.209467,
-     "unattended": 5.367479
+     "online": 11.499683,
+     "unattended": 5.692685
     }
    },
    {
@@ -1013,7 +1275,7 @@
     "p95": 3.655618,
     "pLoss": 0,
     "plainMean": 1.521909,
-    "pBest": 0.0315,
+    "pBest": 0.03425,
     "operatingBySegment": {
      "online": 2.092024,
      "unattended": 1.435241
@@ -1025,18 +1287,18 @@
      "mandate",
      "storm"
     ],
-    "mean": 0.837911,
-    "p05": -1.476743,
-    "p25": -0.462616,
-    "p50": 0.432715,
-    "p75": 1.736342,
-    "p95": 4.461376,
-    "pLoss": 0.3875,
-    "plainMean": -0.293972,
+    "mean": 1.121539,
+    "p05": -1.277932,
+    "p25": -0.220599,
+    "p50": 0.696332,
+    "p75": 2.041966,
+    "p95": 4.884978,
+    "pLoss": 0.31675,
+    "plainMean": 0.134933,
     "pBest": 0,
     "operatingBySegment": {
-     "online": 3.112713,
-     "unattended": 2.585568
+     "online": 3.600226,
+     "unattended": 2.381683
     }
    },
    {
@@ -1081,18 +1343,18 @@
     "bets": [
      "mandate"
     ],
-    "mean": -1.02017,
-    "p05": -3.116585,
-    "p25": -2.20923,
-    "p50": -1.350117,
-    "p75": -0.194231,
-    "p95": 2.23051,
-    "pLoss": 0.77775,
-    "plainMean": -1.528255,
+    "mean": -1.080195,
+    "p05": -3.224124,
+    "p25": -2.301085,
+    "p50": -1.4468,
+    "p75": -0.245265,
+    "p95": 2.288112,
+    "pLoss": 0.78375,
+    "plainMean": -1.807915,
     "pBest": 0,
     "operatingBySegment": {
-     "online": 1.736467,
-     "unattended": 0.868333
+     "online": 1.642883,
+     "unattended": 0.901891
     }
    },
    {
@@ -1102,18 +1364,18 @@
      "storm",
      "micro"
     ],
-    "mean": -1.81573,
-    "p05": -4.734383,
-    "p25": -3.423993,
-    "p50": -2.223836,
-    "p75": -0.672969,
-    "p95": 2.78533,
-    "pLoss": 0.82025,
-    "plainMean": -3.504418,
+    "mean": -1.562873,
+    "p05": -4.637974,
+    "p25": -3.250453,
+    "p50": -1.965776,
+    "p75": -0.370081,
+    "p95": 3.206223,
+    "pLoss": 0.7875,
+    "plainMean": -3.129639,
     "pBest": 0,
     "operatingBySegment": {
-     "online": 3.15978,
-     "unattended": 3.427662
+     "online": 3.669546,
+     "unattended": 3.170753
     }
    },
    {
@@ -1141,18 +1403,18 @@
      "mandate",
      "micro"
     ],
-    "mean": -3.974046,
-    "p05": -6.530591,
-    "p25": -5.32555,
-    "p50": -4.248331,
-    "p75": -2.943594,
-    "p95": -0.400304,
-    "pLoss": 0.9625,
-    "plainMean": -4.46349,
+    "mean": -3.991603,
+    "p05": -6.611418,
+    "p25": -5.363689,
+    "p50": -4.32723,
+    "p75": -2.988128,
+    "p95": -0.186984,
+    "pLoss": 0.956,
+    "plainMean": -4.823257,
     "pBest": 0,
     "operatingBySegment": {
-     "online": 1.697466,
-     "unattended": 1.496261
+     "online": 1.614204,
+     "unattended": 1.561965
     }
    },
    {
@@ -1214,23 +1476,23 @@
    {
     "bet": "mandate",
     "portfolio": "rails+mandate+storm",
-    "marginal": 7.053945,
-    "cumulative": 13.899676,
-    "pLoss": 0.00975
+    "marginal": 6.88624,
+    "cumulative": 13.731972,
+    "pLoss": 0.0115
    },
    {
     "bet": "micro",
     "portfolio": "rails+mandate+storm+micro",
-    "marginal": -1.042644,
-    "cumulative": 12.857033,
-    "pLoss": 0.0415
+    "marginal": -1.755083,
+    "cumulative": 11.976889,
+    "pLoss": 0.05425
    }
   ],
   "interactions": [
    {
     "a": "rails",
     "b": "mandate",
-    "synergy": 11.047027
+    "synergy": 11.983503
    },
    {
     "a": "rails",
@@ -1245,12 +1507,12 @@
    {
     "a": "mandate",
     "b": "storm",
-    "synergy": -0.433784
+    "synergy": -0.09013
    },
    {
     "a": "mandate",
     "b": "micro",
-    "synergy": 0.028307
+    "synergy": 0.070775
    },
    {
     "a": "storm",
@@ -1259,148 +1521,148 @@
    }
   ],
   "sensitivity": {
-   "base": 12.53868,
+   "base": 12.21267,
    "rows": [
     {
      "key": "agentShare.online",
-     "lo": 6.264614,
-     "hi": 21.52861,
-     "swing": 15.263996,
+     "lo": 5.932139,
+     "hi": 21.337095,
+     "swing": 15.404956,
      "p10": 0.083666,
      "p90": 0.26421
     },
     {
      "key": "agentShare.unattended",
-     "lo": 9.192476,
-     "hi": 17.459518,
-     "swing": 8.267042,
+     "lo": 8.867831,
+     "hi": 17.303129,
+     "swing": 8.435298,
      "p10": 0.075136,
      "p90": 0.293229
     },
     {
      "key": "rampMidpointYear",
-     "lo": 16.254165,
-     "hi": 8.558602,
-     "swing": 7.695563,
+     "lo": 15.895962,
+     "hi": 8.275014,
+     "swing": 7.620947,
      "p10": 2,
      "p90": 3.387628
     },
     {
      "key": "erosion",
-     "lo": 9.135899,
-     "hi": 16.509776,
+     "lo": 8.809888,
+     "hi": 16.183765,
      "swing": 7.373877,
      "p10": 0.244949,
      "p90": 0.910172
     },
     {
      "key": "elasticity.online",
-     "lo": 11.677234,
-     "hi": 14.089435,
-     "swing": 2.412201,
+     "lo": 11.223497,
+     "hi": 13.92576,
+     "swing": 2.702263,
      "p10": 0.232288,
      "p90": 0.622518
     },
     {
      "key": "frictionRatio.online",
-     "lo": 13.782065,
-     "hi": 11.744366,
-     "swing": 2.037699,
+     "lo": 13.591819,
+     "hi": 11.301928,
+     "swing": 2.289891,
      "p10": 0.254881,
      "p90": 0.561256
     },
     {
      "key": "discountRate",
-     "lo": 13.440504,
-     "hi": 11.428222,
-     "swing": 2.012282,
+     "lo": 13.101917,
+     "hi": 11.117869,
+     "swing": 1.984048,
      "p10": 0.090954,
      "p90": 0.124508
     },
     {
      "key": "buildCost.rails",
-     "lo": 13.258907,
-     "hi": 11.581226,
+     "lo": 12.932896,
+     "hi": 11.255215,
      "swing": 1.677681,
      "p10": 2.047723,
      "p90": 3.725403
     },
     {
+     "key": "elasticity.unattended",
+     "lo": 11.616666,
+     "hi": 13.203603,
+     "swing": 1.586937,
+     "p10": 0.4,
+     "p90": 0.955051
+    },
+    {
      "key": "churnSensitivity",
-     "lo": 11.865796,
-     "hi": 13.465038,
-     "swing": 1.599242,
+     "lo": 11.559008,
+     "hi": 13.112564,
+     "swing": 1.553555,
      "p10": 8.560702,
      "p90": 23.158947
     },
     {
+     "key": "frictionRatio.unattended",
+     "lo": 13.084176,
+     "hi": 11.644037,
+     "swing": 1.440139,
+     "p10": 0.186603,
+     "p90": 0.467712
+    },
+    {
      "key": "runCost.rails",
-     "lo": 13.077331,
-     "hi": 11.822609,
+     "lo": 12.751321,
+     "hi": 11.496598,
      "swing": 1.254722,
      "p10": 0.409545,
      "p90": 0.745081
     },
     {
      "key": "buildCost.mandate",
-     "lo": 13.07819,
-     "hi": 11.852691,
+     "lo": 12.752179,
+     "hi": 11.52668,
      "swing": 1.225499,
      "p10": 1.419524,
      "p90": 2.645023
     },
     {
-     "key": "elasticity.unattended",
-     "lo": 12.039539,
-     "hi": 13.225549,
-     "swing": 1.18601,
-     "p10": 0.4,
-     "p90": 0.955051
-    },
-    {
-     "key": "frictionRatio.unattended",
-     "lo": 13.136214,
-     "hi": 12.063282,
-     "swing": 1.072932,
-     "p10": 0.186603,
-     "p90": 0.467712
-    },
-    {
-     "key": "fragmentation.unattended",
-     "lo": 13.111247,
-     "hi": 12.067782,
-     "swing": 1.043465,
-     "p10": 0.538744,
-     "p90": 0.845119
-    },
-    {
      "key": "runCost.mandate",
-     "lo": 13.01037,
-     "hi": 11.972576,
+     "lo": 12.68436,
+     "hi": 11.646566,
      "swing": 1.037794,
      "p10": 0.3,
      "p90": 0.577526
     },
     {
+     "key": "fragmentation.unattended",
+     "lo": 12.722403,
+     "hi": 11.872072,
+     "swing": 0.850331,
+     "p10": 0.538744,
+     "p90": 0.845119
+    },
+    {
      "key": "fragmentation.online",
-     "lo": 12.919961,
-     "hi": 12.181671,
-     "swing": 0.73829,
+     "lo": 12.518978,
+     "hi": 11.92573,
+     "swing": 0.593248,
      "p10": 0.434164,
      "p90": 0.765836
     },
     {
      "key": "buildCost.storm",
-     "lo": 12.754748,
-     "hi": 12.251444,
+     "lo": 12.428738,
+     "hi": 11.925433,
      "swing": 0.503304,
      "p10": 0.564317,
      "p90": 1.067621
     },
     {
      "key": "runCost.storm",
-     "lo": 12.673343,
-     "hi": 12.359663,
+     "lo": 12.347332,
+     "hi": 12.033652,
      "swing": 0.313681,
      "p10": 0.077386,
      "p90": 0.16127
@@ -1409,7 +1671,7 @@
   },
   "microBreakeven": {
    "key": "elasticity.unattended",
-   "value": 1.0416,
+   "value": null,
    "mode": 0.6,
    "range": [
     0.2,
@@ -1418,247 +1680,247 @@
    "curve": [
     {
      "value": 0.2,
-     "gap": -2.538703
+     "gap": -2.756027
     },
     {
      "value": 0.216667,
-     "gap": -2.479237
+     "gap": -2.71578
     },
     {
      "value": 0.233333,
-     "gap": -2.41971
+     "gap": -2.675344
     },
     {
      "value": 0.25,
-     "gap": -2.360102
+     "gap": -2.634705
     },
     {
      "value": 0.266667,
-     "gap": -2.30039
+     "gap": -2.593846
     },
     {
      "value": 0.283333,
-     "gap": -2.240555
+     "gap": -2.552753
     },
     {
      "value": 0.3,
-     "gap": -2.180576
+     "gap": -2.511411
     },
     {
      "value": 0.316667,
-     "gap": -2.120432
+     "gap": -2.469805
     },
     {
      "value": 0.333333,
-     "gap": -2.0601
+     "gap": -2.427918
     },
     {
      "value": 0.35,
-     "gap": -1.999561
+     "gap": -2.385736
     },
     {
      "value": 0.366667,
-     "gap": -1.941861
+     "gap": -2.343633
     },
     {
      "value": 0.383333,
-     "gap": -1.885026
+     "gap": -2.301628
     },
     {
      "value": 0.4,
-     "gap": -1.828721
+     "gap": -2.259683
     },
     {
      "value": 0.416667,
-     "gap": -1.772928
+     "gap": -2.217784
     },
     {
      "value": 0.433333,
-     "gap": -1.717633
+     "gap": -2.175916
     },
     {
      "value": 0.45,
-     "gap": -1.662819
+     "gap": -2.134065
     },
     {
      "value": 0.466667,
-     "gap": -1.60847
+     "gap": -2.092216
     },
     {
      "value": 0.483333,
-     "gap": -1.55457
+     "gap": -2.050355
     },
     {
      "value": 0.5,
-     "gap": -1.501103
+     "gap": -2.008468
     },
     {
      "value": 0.516667,
-     "gap": -1.448053
+     "gap": -1.966539
     },
     {
      "value": 0.533333,
-     "gap": -1.395406
+     "gap": -1.924554
     },
     {
      "value": 0.55,
-     "gap": -1.343915
+     "gap": -1.882498
     },
     {
      "value": 0.566667,
-     "gap": -1.294886
+     "gap": -1.840355
     },
     {
      "value": 0.583333,
-     "gap": -1.246285
+     "gap": -1.798111
     },
     {
      "value": 0.6,
-     "gap": -1.198097
+     "gap": -1.755751
     },
     {
      "value": 0.616667,
-     "gap": -1.160789
+     "gap": -1.740393
     },
     {
      "value": 0.633333,
-     "gap": -1.1263
+     "gap": -1.733948
     },
     {
      "value": 0.65,
-     "gap": -1.090716
+     "gap": -1.72674
     },
     {
      "value": 0.666667,
-     "gap": -1.054016
+     "gap": -1.71876
     },
     {
      "value": 0.683333,
-     "gap": -1.018943
+     "gap": -1.709997
     },
     {
      "value": 0.7,
-     "gap": -0.982917
+     "gap": -1.700441
     },
     {
      "value": 0.716667,
-     "gap": -0.945778
+     "gap": -1.690082
     },
     {
      "value": 0.733333,
-     "gap": -0.907503
+     "gap": -1.678908
     },
     {
      "value": 0.75,
-     "gap": -0.868071
+     "gap": -1.666908
     },
     {
      "value": 0.766667,
-     "gap": -0.827457
+     "gap": -1.65407
     },
     {
      "value": 0.783333,
-     "gap": -0.785638
+     "gap": -1.640382
     },
     {
      "value": 0.8,
-     "gap": -0.742587
+     "gap": -1.625831
     },
     {
      "value": 0.816667,
-     "gap": -0.698281
+     "gap": -1.610404
     },
     {
      "value": 0.833333,
-     "gap": -0.652692
+     "gap": -1.594088
     },
     {
      "value": 0.85,
-     "gap": -0.605795
+     "gap": -1.576868
     },
     {
      "value": 0.866667,
-     "gap": -0.557562
+     "gap": -1.558731
     },
     {
      "value": 0.883333,
-     "gap": -0.507966
+     "gap": -1.539661
     },
     {
      "value": 0.9,
-     "gap": -0.456977
+     "gap": -1.519644
     },
     {
      "value": 0.916667,
-     "gap": -0.404566
+     "gap": -1.498663
     },
     {
      "value": 0.933333,
-     "gap": -0.350705
+     "gap": -1.476702
     },
     {
      "value": 0.95,
-     "gap": -0.295361
+     "gap": -1.453746
     },
     {
      "value": 0.966667,
-     "gap": -0.239344
+     "gap": -1.429837
     },
     {
      "value": 0.983333,
-     "gap": -0.189113
+     "gap": -1.405315
     },
     {
      "value": 1,
-     "gap": -0.137356
+     "gap": -1.379526
     },
     {
      "value": 1.016667,
-     "gap": -0.084043
+     "gap": -1.352448
     },
     {
      "value": 1.033333,
-     "gap": -0.02914
+     "gap": -1.324061
     },
     {
      "value": 1.05,
-     "gap": 0.029607
+     "gap": -1.292619
     },
     {
      "value": 1.066667,
-     "gap": 0.094748
+     "gap": -1.255954
     },
     {
      "value": 1.083333,
-     "gap": 0.161219
+     "gap": -1.217902
     },
     {
      "value": 1.1,
-     "gap": 0.229056
+     "gap": -1.17844
     },
     {
      "value": 1.116667,
-     "gap": 0.298294
+     "gap": -1.137542
     },
     {
      "value": 1.133333,
-     "gap": 0.370632
+     "gap": -1.095185
     },
     {
      "value": 1.15,
-     "gap": 0.447311
+     "gap": -1.051342
     },
     {
      "value": 1.166667,
-     "gap": 0.525523
+     "gap": -1.003357
     },
     {
      "value": 1.183333,
-     "gap": 0.604916
+     "gap": -0.950416
     },
     {
      "value": 1.2,
-     "gap": 0.685501
+     "gap": -0.895897
     }
    ]
   }

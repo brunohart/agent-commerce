@@ -118,7 +118,10 @@ async function cmdMeasure() {
   }
   saveMeasured(m);
   console.log(`  answered ${m.answered} of ${m.asked}; versions ${JSON.stringify(m.versions)}`);
-  console.log(`  AUC ${m.quality.auc.toFixed(3)}   calibration error ${(m.quality.ece * 100).toFixed(1)}%   Platt slope ${m.quality.plattSlope.toFixed(2)}`);
+  for (const [tier, q] of Object.entries(m.byTier)) {
+    console.log(`  ${pad(tier, 6)} n=${q.n}  AUC ${q.auc.toFixed(3)}  calibration error ${(q.ece * 100).toFixed(1)}%`);
+  }
+  console.log(`  overall AUC ${m.quality.auc.toFixed(3)}${m.quality.atCeiling ? ' (at ceiling: cases too easy to rank the model)' : ''}   Platt slope ${m.quality.calibrationIdentifiable ? m.quality.plattSlope.toFixed(2) : 'not identifiable'}`);
   console.log(`  latency median ${m.latency.medianMs.toFixed(0)}ms, p95 ${m.latency.p95Ms.toFixed(0)}ms, ${pct(m.latency.withinGatewayDeadline)} inside the 400ms deadline`);
   console.log(`  wrote ${MEASURED_PATH}`);
   console.log('  The simulator now uses these in place of its priors. Run: npm run report');

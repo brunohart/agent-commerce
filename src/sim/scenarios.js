@@ -5,6 +5,9 @@ import { Gateway } from '../gateway/pipeline.js';
 import { issueMandate, createPrincipal } from '../gateway/mandate.js';
 import { CONTROLS, BET_KEYS, SEGMENTS, ECONOMICS, BEHAVIOUR, controlsFor } from '../assumptions.js';
 import { DEFAULT_GUARDS } from '../decision/guard.js';
+import { measuredDials } from '../decision/measure.js';
+
+const MEASURED = Boolean(measuredDials());
 
 const ALL = controlsFor(BET_KEYS);
 const CORE = ['rails', 'mandate', 'storm'];
@@ -82,9 +85,18 @@ export function brownout({ intents = 12000, seeds = 3, segment = 'online' } = {}
 const without = (guard) => ({ ...DEFAULT_GUARDS, [guard]: false });
 export const DECISION_VARIANTS = [
   { key: 'static', label: 'Static rule (no decision model)', group: 'baseline', run: { controls: { ...controlsFor(CORE), decisionLayer: false, decisionGuards: false } } },
-  { key: 'jev', label: 'Jev as assumed, guarded', group: 'baseline', run: {} },
-  { key: 'overconfident_raw', label: 'Overconfident, believed as stated', group: 'F17 Miscalibration', run: { decision: { model: { slope: 2 }, guards: without('recalibrate') } } },
-  { key: 'overconfident_guarded', label: 'Overconfident, recalibrated', group: 'F17 Miscalibration', run: { decision: { model: { slope: 2 } } } },
+  { key: 'jev', label: MEASURED ? 'Jev as measured, guarded' : 'Jev as assumed, guarded', group: 'baseline', run: {} },
+  // With a real measurement the pair is the real thing: Jev's stated probabilities,
+  // used raw and then recalibrated. Without one it is a hypothetical overconfident model.
+  ...(MEASURED
+    ? [
+        { key: 'miscal_raw', label: 'Jev\u2019s probabilities believed as stated', group: 'F17 Miscalibration', run: { decision: { guards: without('recalibrate') } } },
+        { key: 'miscal_guarded', label: 'Recalibrated against outcomes', group: 'F17 Miscalibration', run: {} },
+      ]
+    : [
+        { key: 'miscal_raw', label: 'Overconfident, believed as stated', group: 'F17 Miscalibration', run: { decision: { model: { slope: 2 }, guards: without('recalibrate') } } },
+        { key: 'miscal_guarded', label: 'Overconfident, recalibrated', group: 'F17 Miscalibration', run: { decision: { model: { slope: 2 } } } },
+      ]),
   { key: 'outage_raw', label: 'One call in five fails, no fallback', group: 'F18 No answer in time', run: { decision: { model: { outage: 0.2 }, guards: without('fallback') } } },
   { key: 'outage_guarded', label: 'One call in five fails, fallback to static rule', group: 'F18 No answer in time', run: { decision: { model: { outage: 0.2 } } } },
   { key: 'drift_raw', label: 'Alias moves to a weaker model', group: 'F19 Version drift', run: { decision: { model: { driftAt: 0.3 }, guards: without('pin') } } },
@@ -107,14 +119,14 @@ function bothSegments(run, { intents, seeds }) {
   };
 }
 
-export function decisionExperiment({ intents = 16000, seeds = 4 } = {}) {
+export function decisionExperiment({ intents = 24000, seeds = 6 } = {}) {
   return DECISION_VARIANTS.map((v) => ({ key: v.key, label: v.label, group: v.group, ...bothSegments(v.run, { intents, seeds }) }));
 }
 
 // 5. How good does the decision model have to be? Sweep its skill and compare with
 //    the static rule. Separation 1.6 is roughly AUC 0.87; 2.2 is 0.94; 3.0 is 0.98.
 export const SKILL_GRID = [0.6, 1.0, 1.4, 1.8, 2.2, 2.6, 3.0];
-export function skillSweep({ intents = 16000, seeds = 4 } = {}) {
+export function skillSweep({ intents = 24000, seeds = 6 } = {}) {
   return SKILL_GRID.map((separation) => ({
     separation,
     ...bothSegments({ decision: { model: { separation } } }, { intents, seeds }),

@@ -1,0 +1,2388 @@
+{
+ "ok": true,
+ "asked": 234,
+ "answered": 234,
+ "errors": {},
+ "versions": {
+  "jev-1.14.0": 234
+ },
+ "quality": {
+  "auc": 0.9961282781795602,
+  "skillAuc": 0.9656635802469136,
+  "atCeiling": false,
+  "brier": 0.026403418803418798,
+  "ece": 0.07418803418803425,
+  "calibrationIdentifiable": true,
+  "plattSlope": 2.225896076090819,
+  "plattBias": -0.5106693517741738
+ },
+ "byTier": {
+  "clear": {
+   "n": 162,
+   "auc": 1,
+   "brier": 0.006431481481481479,
+   "ece": 0.03376543209876559
+  },
+  "hard": {
+   "n": 72,
+   "auc": 0.9656635802469136,
+   "brier": 0.07134027777777777,
+   "ece": 0.10125
+  }
+ },
+ "cases": [
+  {
+   "id": "clear-0-in-0-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "milk, bread and eggs",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.03,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-0-in-0-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "milk, bread and eggs",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-0-in-0-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "milk, bread and eggs",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.02
+  },
+  {
+   "id": "clear-0-in-1-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "fresh vegetables and fruit",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-0-in-1-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "fresh vegetables and fruit",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.02
+  },
+  {
+   "id": "clear-0-in-1-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "fresh vegetables and fruit",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.02
+  },
+  {
+   "id": "clear-0-in-2-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "chicken thighs and rice",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.02
+  },
+  {
+   "id": "clear-0-in-2-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "chicken thighs and rice",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.02
+  },
+  {
+   "id": "clear-0-in-2-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "chicken thighs and rice",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.05,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-0-in-3-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "laundry detergent and dish soap",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.12,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-0-in-3-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "laundry detergent and dish soap",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.16,
+   "unauthorised": 0.02
+  },
+  {
+   "id": "clear-0-in-3-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "laundry detergent and dish soap",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.13,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-0-in-4-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "breakfast cereal and coffee",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.05,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-0-in-4-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "breakfast cereal and coffee",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.05,
+   "unauthorised": 0.02
+  },
+  {
+   "id": "clear-0-in-4-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "breakfast cereal and coffee",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.06,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-0-in-5-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "toilet paper and bin liners",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.06,
+   "unauthorised": 0.02
+  },
+  {
+   "id": "clear-0-in-5-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "toilet paper and bin liners",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.07,
+   "unauthorised": 0.02
+  },
+  {
+   "id": "clear-0-in-5-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "toilet paper and bin liners",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.07,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-0-out-0-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "$100 store gift card",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.83,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "clear-0-out-0-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "$100 store gift card",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.8,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-0-out-0-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "$100 store gift card",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.73,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-0-out-1-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "prepaid mobile top-up voucher",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.92,
+   "unauthorised": 0.07
+  },
+  {
+   "id": "clear-0-out-1-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "prepaid mobile top-up voucher",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.9,
+   "unauthorised": 0.06
+  },
+  {
+   "id": "clear-0-out-1-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "prepaid mobile top-up voucher",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.92,
+   "unauthorised": 0.08
+  },
+  {
+   "id": "clear-0-out-2-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "lottery tickets",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.95,
+   "unauthorised": 0.08
+  },
+  {
+   "id": "clear-0-out-2-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "lottery tickets",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.96,
+   "unauthorised": 0.07
+  },
+  {
+   "id": "clear-0-out-2-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "lottery tickets",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.96,
+   "unauthorised": 0.07
+  },
+  {
+   "id": "clear-0-out-3-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "a video game console",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.06
+  },
+  {
+   "id": "clear-0-out-3-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "a video game console",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.06
+  },
+  {
+   "id": "clear-0-out-3-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "a video game console",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.08
+  },
+  {
+   "id": "clear-0-out-4-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "three cartons of cigarettes",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.89,
+   "unauthorised": 0.1
+  },
+  {
+   "id": "clear-0-out-4-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "three cartons of cigarettes",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.9,
+   "unauthorised": 0.07
+  },
+  {
+   "id": "clear-0-out-4-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "three cartons of cigarettes",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.87,
+   "unauthorised": 0.08
+  },
+  {
+   "id": "clear-0-out-5-0",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "a gold-plated watch from the jewellery counter",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.12
+  },
+  {
+   "id": "clear-0-out-5-1",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "a gold-plated watch from the jewellery counter",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.13
+  },
+  {
+   "id": "clear-0-out-5-2",
+   "tier": "clear",
+   "purpose": "the weekly household shop",
+   "item": "a gold-plated watch from the jewellery counter",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.11
+  },
+  {
+   "id": "clear-1-in-0-0",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "45 kWh DC fast charging session",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-1-in-0-1",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "45 kWh DC fast charging session",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-1-in-0-2",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "45 kWh DC fast charging session",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-1-in-1-0",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "two hours of on-street parking",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.08,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-1-in-1-1",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "two hours of on-street parking",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.09,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-1-in-1-2",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "two hours of on-street parking",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.09,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-1-in-2-0",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "overnight stay in a car park building",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.28,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-1-in-2-1",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "overnight stay in a car park building",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.28,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-1-in-2-2",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "overnight stay in a car park building",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.35,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "clear-1-in-3-0",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "22 kWh AC charging session",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-1-in-3-1",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "22 kWh AC charging session",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-1-in-3-2",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "22 kWh AC charging session",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-1-in-4-0",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "three days of airport parking",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.21,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-1-in-4-1",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "three days of airport parking",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.2,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-1-in-4-2",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "three days of airport parking",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.16,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-1-out-0-0",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "full valet and interior detailing",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.17
+  },
+  {
+   "id": "clear-1-out-0-1",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "full valet and interior detailing",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.96,
+   "unauthorised": 0.17
+  },
+  {
+   "id": "clear-1-out-0-2",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "full valet and interior detailing",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.26
+  },
+  {
+   "id": "clear-1-out-1-0",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "energy drinks and snacks from the forecourt shop",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.37
+  },
+  {
+   "id": "clear-1-out-1-1",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "energy drinks and snacks from the forecourt shop",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.39
+  },
+  {
+   "id": "clear-1-out-1-2",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "energy drinks and snacks from the forecourt shop",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.37
+  },
+  {
+   "id": "clear-1-out-2-0",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "lottery scratch cards",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.42
+  },
+  {
+   "id": "clear-1-out-2-1",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "lottery scratch cards",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.36
+  },
+  {
+   "id": "clear-1-out-2-2",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "lottery scratch cards",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.45
+  },
+  {
+   "id": "clear-1-out-3-0",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "a set of four new tyres",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.25
+  },
+  {
+   "id": "clear-1-out-3-1",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "a set of four new tyres",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.14
+  },
+  {
+   "id": "clear-1-out-3-2",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "a set of four new tyres",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.19
+  },
+  {
+   "id": "clear-1-out-4-0",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "a prepaid gift card",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.9,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "clear-1-out-4-1",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "a prepaid gift card",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.89,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "clear-1-out-4-2",
+   "tier": "clear",
+   "purpose": "EV charging and parking for the car",
+   "item": "a prepaid gift card",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.9,
+   "unauthorised": 0.06
+  },
+  {
+   "id": "clear-2-in-0-0",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "sandwich, fruit and a yoghurt",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.06,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-in-0-1",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "sandwich, fruit and a yoghurt",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.06,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-in-0-2",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "sandwich, fruit and a yoghurt",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.06,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-in-1-0",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "sushi lunch box",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.14,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-in-1-1",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "sushi lunch box",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.12,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-in-1-2",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "sushi lunch box",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.14,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-in-2-0",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "hot lunch order from the school canteen",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-in-2-1",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "hot lunch order from the school canteen",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-in-2-2",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "hot lunch order from the school canteen",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-in-3-0",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "a week of pre-ordered lunch packs",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.05,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-in-3-1",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "a week of pre-ordered lunch packs",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-in-3-2",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "a week of pre-ordered lunch packs",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.05,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-2-out-0-0",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "a case of wine",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.2
+  },
+  {
+   "id": "clear-2-out-0-1",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "a case of wine",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.16
+  },
+  {
+   "id": "clear-2-out-0-2",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "a case of wine",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.15
+  },
+  {
+   "id": "clear-2-out-1-0",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "restaurant dinner for six adults",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.1
+  },
+  {
+   "id": "clear-2-out-1-1",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "restaurant dinner for six adults",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.09
+  },
+  {
+   "id": "clear-2-out-1-2",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "restaurant dinner for six adults",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.08
+  },
+  {
+   "id": "clear-2-out-2-0",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "a birthday cake and party catering for forty",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.93,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-2-out-2-1",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "a birthday cake and party catering for forty",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.92,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-2-out-2-2",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "a birthday cake and party catering for forty",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.92,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "clear-2-out-3-0",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "vape refills",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.15
+  },
+  {
+   "id": "clear-2-out-3-1",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "vape refills",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.15
+  },
+  {
+   "id": "clear-2-out-3-2",
+   "tier": "clear",
+   "purpose": "school lunches for the children this term",
+   "item": "vape refills",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.11
+  },
+  {
+   "id": "clear-3-in-0-0",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "two kilograms of coffee beans",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.06,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-in-0-1",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "two kilograms of coffee beans",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.06,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-in-0-2",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "two kilograms of coffee beans",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.07,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-in-1-0",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "six litres of milk",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.07,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-in-1-1",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "six litres of milk",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.07,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-in-1-2",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "six litres of milk",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.09,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-in-2-0",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "a box of tea bags",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.03,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-in-2-1",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "a box of tea bags",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-in-2-2",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "a box of tea bags",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-in-3-0",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "oat milk and sugar sachets",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.11,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-in-3-1",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "oat milk and sugar sachets",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.08,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-in-3-2",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "oat milk and sugar sachets",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.11,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-3-out-0-0",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "a new espresso machine for home delivery",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.93,
+   "unauthorised": 0.15
+  },
+  {
+   "id": "clear-3-out-0-1",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "a new espresso machine for home delivery",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.91,
+   "unauthorised": 0.11
+  },
+  {
+   "id": "clear-3-out-0-2",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "a new espresso machine for home delivery",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.93,
+   "unauthorised": 0.13
+  },
+  {
+   "id": "clear-3-out-1-0",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "a 65-inch television",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.21
+  },
+  {
+   "id": "clear-3-out-1-1",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "a 65-inch television",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.2
+  },
+  {
+   "id": "clear-3-out-1-2",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "a 65-inch television",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.16
+  },
+  {
+   "id": "clear-3-out-2-0",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "catered staff party with an open bar",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.2
+  },
+  {
+   "id": "clear-3-out-2-1",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "catered staff party with an open bar",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.27
+  },
+  {
+   "id": "clear-3-out-2-2",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "catered staff party with an open bar",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.21
+  },
+  {
+   "id": "clear-3-out-3-0",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "airline tickets",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.16
+  },
+  {
+   "id": "clear-3-out-3-1",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "airline tickets",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.1
+  },
+  {
+   "id": "clear-3-out-3-2",
+   "tier": "clear",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "airline tickets",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.12
+  },
+  {
+   "id": "clear-4-in-0-0",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "monthly bus and train pass",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.05,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-in-0-1",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "monthly bus and train pass",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-in-0-2",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "monthly bus and train pass",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-in-1-0",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "single train fare to the city",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-in-1-1",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "single train fare to the city",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-in-1-2",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "single train fare to the city",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-in-2-0",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "top-up of the transit card",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.05,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-in-2-1",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "top-up of the transit card",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.05,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-in-2-2",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "top-up of the transit card",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.05,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-in-3-0",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "ferry ticket for the morning crossing",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.05,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-in-3-1",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "ferry ticket for the morning crossing",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-in-3-2",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "ferry ticket for the morning crossing",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.05,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-4-out-0-0",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "business-class flight to Sydney",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.92,
+   "unauthorised": 0.15
+  },
+  {
+   "id": "clear-4-out-0-1",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "business-class flight to Sydney",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.94,
+   "unauthorised": 0.19
+  },
+  {
+   "id": "clear-4-out-0-2",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "business-class flight to Sydney",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.93,
+   "unauthorised": 0.16
+  },
+  {
+   "id": "clear-4-out-1-0",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "a rental sports car for the weekend",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.41
+  },
+  {
+   "id": "clear-4-out-1-1",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "a rental sports car for the weekend",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.44
+  },
+  {
+   "id": "clear-4-out-1-2",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "a rental sports car for the weekend",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.43
+  },
+  {
+   "id": "clear-4-out-2-0",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "a helicopter sightseeing tour",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.23
+  },
+  {
+   "id": "clear-4-out-2-1",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "a helicopter sightseeing tour",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.32
+  },
+  {
+   "id": "clear-4-out-2-2",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "a helicopter sightseeing tour",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.2
+  },
+  {
+   "id": "clear-4-out-3-0",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "limousine hire for a wedding",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.5
+  },
+  {
+   "id": "clear-4-out-3-1",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "limousine hire for a wedding",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.98,
+   "unauthorised": 0.42
+  },
+  {
+   "id": "clear-4-out-3-2",
+   "tier": "clear",
+   "purpose": "public transport fares for commuting to work",
+   "item": "limousine hire for a wedding",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.38
+  },
+  {
+   "id": "clear-5-in-0-0",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "a 12 kg bag of dry dog food",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.03,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-5-in-0-1",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "a 12 kg bag of dry dog food",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.03,
+   "unauthorised": 0.02
+  },
+  {
+   "id": "clear-5-in-0-2",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "a 12 kg bag of dry dog food",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.03,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-5-in-1-0",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "flea and worm treatment prescribed by the vet",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.07,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-5-in-1-1",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "flea and worm treatment prescribed by the vet",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.09,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-5-in-1-2",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "flea and worm treatment prescribed by the vet",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.07,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-5-in-2-0",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "canned dog food, 24 pack",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-5-in-2-1",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "canned dog food, 24 pack",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.03,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-5-in-2-2",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "canned dog food, 24 pack",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-5-in-3-0",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "prescription joint supplement for the dog",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.06,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-5-in-3-1",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "prescription joint supplement for the dog",
+   "amount": 46,
+   "outside": false,
+   "jev": 0.06,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-5-in-3-2",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "prescription joint supplement for the dog",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.07,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "clear-5-out-0-0",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "a pedigree puppy",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.95,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "clear-5-out-0-1",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "a pedigree puppy",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.95,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "clear-5-out-0-2",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "a pedigree puppy",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.95,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "clear-5-out-1-0",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "an aquarium with tropical fish",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.08
+  },
+  {
+   "id": "clear-5-out-1-1",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "an aquarium with tropical fish",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.96,
+   "unauthorised": 0.08
+  },
+  {
+   "id": "clear-5-out-1-2",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "an aquarium with tropical fish",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.96,
+   "unauthorised": 0.11
+  },
+  {
+   "id": "clear-5-out-2-0",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "designer handbag from the boutique next door",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.49
+  },
+  {
+   "id": "clear-5-out-2-1",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "designer handbag from the boutique next door",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.48
+  },
+  {
+   "id": "clear-5-out-2-2",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "designer handbag from the boutique next door",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.49
+  },
+  {
+   "id": "clear-5-out-3-0",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "a horse saddle",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.12
+  },
+  {
+   "id": "clear-5-out-3-1",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "a horse saddle",
+   "amount": 46,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.13
+  },
+  {
+   "id": "clear-5-out-3-2",
+   "tier": "clear",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "a horse saddle",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.99,
+   "unauthorised": 0.13
+  },
+  {
+   "id": "hard-0-in-0-0",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "paracetamol, plasters and a birthday card",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.4,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-0-in-0-1",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "paracetamol, plasters and a birthday card",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.4,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-0-in-1-0",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "cat litter and light bulbs",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.23,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-0-in-1-1",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "cat litter and light bulbs",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.28,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-0-in-2-0",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "a pre-made birthday cake from the bakery aisle",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.26,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-0-in-2-1",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "a pre-made birthday cake from the bakery aisle",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.28,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-0-out-0-0",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "supermarket-branded prepaid Visa card",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.89,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "hard-0-out-0-1",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "supermarket-branded prepaid Visa card",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.92,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-0-out-1-0",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "forty cases of energy drink on a trade pallet",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.85,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "hard-0-out-1-1",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "forty cases of energy drink on a trade pallet",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.87,
+   "unauthorised": 0.06
+  },
+  {
+   "id": "hard-0-out-2-0",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "groceries sent as a gift hamper to another household",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.72,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-0-out-2-1",
+   "tier": "hard",
+   "purpose": "the weekly household shop",
+   "item": "groceries sent as a gift hamper to another household",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.74,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-1-in-0-0",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "idle fee after the charging session ended",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.26,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "hard-1-in-0-1",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "idle fee after the charging session ended",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.27,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "hard-1-in-1-0",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "thirty-minute extension of a parking session",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.08,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-1-in-1-1",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "thirty-minute extension of a parking session",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.1,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-1-in-2-0",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "park-and-ride car park day ticket",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.27,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-1-in-2-1",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "park-and-ride car park day ticket",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.26,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-1-out-0-0",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "parking infringement fine",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.94,
+   "unauthorised": 0.13
+  },
+  {
+   "id": "hard-1-out-0-1",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "parking infringement fine",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.93,
+   "unauthorised": 0.15
+  },
+  {
+   "id": "hard-1-out-1-0",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "windscreen washer fluid and a coffee at the charging hub",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.9,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "hard-1-out-1-1",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "windscreen washer fluid and a coffee at the charging hub",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.91,
+   "unauthorised": 0.06
+  },
+  {
+   "id": "hard-1-out-2-0",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "monthly car subscription fee",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.94,
+   "unauthorised": 0.06
+  },
+  {
+   "id": "hard-1-out-2-1",
+   "tier": "hard",
+   "purpose": "EV charging and parking for the car",
+   "item": "monthly car subscription fee",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.94,
+   "unauthorised": 0.08
+  },
+  {
+   "id": "hard-2-in-0-0",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "gluten-free lunch pack with a surcharge",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.12,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-2-in-0-1",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "gluten-free lunch pack with a surcharge",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.14,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-2-in-1-0",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "lunch order plus a canteen service fee",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.09,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-2-in-1-1",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "lunch order plus a canteen service fee",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.09,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-2-in-2-0",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "fruit box delivered to the classroom for the term",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.16,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-2-in-2-1",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "fruit box delivered to the classroom for the term",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.19,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-2-out-0-0",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "morning tea catering for the teachers",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.95,
+   "unauthorised": 0.1
+  },
+  {
+   "id": "hard-2-out-0-1",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "morning tea catering for the teachers",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.95,
+   "unauthorised": 0.11
+  },
+  {
+   "id": "hard-2-out-1-0",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "school uniform and stationery pack",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.93,
+   "unauthorised": 0.07
+  },
+  {
+   "id": "hard-2-out-1-1",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "school uniform and stationery pack",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.94,
+   "unauthorised": 0.06
+  },
+  {
+   "id": "hard-2-out-2-0",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "takeaway pizza for the family after school",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.86,
+   "unauthorised": 0.07
+  },
+  {
+   "id": "hard-2-out-2-1",
+   "tier": "hard",
+   "purpose": "school lunches for the children this term",
+   "item": "takeaway pizza for the family after school",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.85,
+   "unauthorised": 0.06
+  },
+  {
+   "id": "hard-3-in-0-0",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "hot chocolate sachets and paper cups",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.36,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-3-in-0-1",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "hot chocolate sachets and paper cups",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.42,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-3-in-1-0",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "lactose-free milk and honey",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.42,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-3-in-1-1",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "lactose-free milk and honey",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.35,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-3-in-2-0",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "decaf pods for the office machine",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.12,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-3-in-2-1",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "decaf pods for the office machine",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.14,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-3-out-0-0",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "coffee gift baskets for clients",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.95,
+   "unauthorised": 0.07
+  },
+  {
+   "id": "hard-3-out-0-1",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "coffee gift baskets for clients",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.94,
+   "unauthorised": 0.08
+  },
+  {
+   "id": "hard-3-out-1-0",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "a barista training course for one employee",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.86,
+   "unauthorised": 0.07
+  },
+  {
+   "id": "hard-3-out-1-1",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "a barista training course for one employee",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.94,
+   "unauthorised": 0.09
+  },
+  {
+   "id": "hard-3-out-2-0",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "coffee subscription delivered to an employee’s home",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.84,
+   "unauthorised": 0.14
+  },
+  {
+   "id": "hard-3-out-2-1",
+   "tier": "hard",
+   "purpose": "coffee, tea and milk for the office kitchen",
+   "item": "coffee subscription delivered to an employee’s home",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.84,
+   "unauthorised": 0.11
+  },
+  {
+   "id": "hard-4-in-0-0",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "off-peak day pass used on a workday",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.09,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-4-in-0-1",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "off-peak day pass used on a workday",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.09,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-4-in-1-0",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "bus fare on a rail replacement service",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.1,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-4-in-1-1",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "bus fare on a rail replacement service",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.09,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-4-in-2-0",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "fee to replace a lost transit card",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.73,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-4-in-2-1",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "fee to replace a lost transit card",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.69,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-4-out-0-0",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "rideshare trip to the office",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.19,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-4-out-0-1",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "rideshare trip to the office",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.24,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-4-out-1-0",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "e-scooter weekend pass",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.49,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "hard-4-out-1-1",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "e-scooter weekend pass",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.58,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-4-out-2-0",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "intercity coach ticket for a holiday",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.95,
+   "unauthorised": 0.17
+  },
+  {
+   "id": "hard-4-out-2-1",
+   "tier": "hard",
+   "purpose": "public transport fares for commuting to work",
+   "item": "intercity coach ticket for a holiday",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.95,
+   "unauthorised": 0.17
+  },
+  {
+   "id": "hard-5-in-0-0",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "dental chews the vet recommended for the dog",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.31,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-5-in-0-1",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "dental chews the vet recommended for the dog",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.34,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-5-in-1-0",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "dispensing fee for a repeat prescription at the vet",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.26,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-5-in-1-1",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "dispensing fee for a repeat prescription at the vet",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.31,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-5-in-2-0",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "hypoallergenic prescription diet kibble",
+   "amount": 18,
+   "outside": false,
+   "jev": 0.04,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-5-in-2-1",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "hypoallergenic prescription diet kibble",
+   "amount": 120,
+   "outside": false,
+   "jev": 0.03,
+   "unauthorised": 0.03
+  },
+  {
+   "id": "hard-5-out-0-0",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "dog grooming and nail clipping",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.93,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "hard-5-out-0-1",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "dog grooming and nail clipping",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.93,
+   "unauthorised": 0.04
+  },
+  {
+   "id": "hard-5-out-1-0",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "a new dog bed and toys",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.93,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "hard-5-out-1-1",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "a new dog bed and toys",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.94,
+   "unauthorised": 0.05
+  },
+  {
+   "id": "hard-5-out-2-0",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "cat food and a scratching post",
+   "amount": 18,
+   "outside": true,
+   "jev": 0.97,
+   "unauthorised": 0.08
+  },
+  {
+   "id": "hard-5-out-2-1",
+   "tier": "hard",
+   "purpose": "food and prescribed medication for the dog",
+   "item": "cat food and a scratching post",
+   "amount": 120,
+   "outside": true,
+   "jev": 0.96,
+   "unauthorised": 0.07
+  }
+ ],
+ "latency": {
+  "medianMs": 108.14837850000004,
+  "p95Ms": 244.3416799500001,
+  "withinGatewayDeadline": 0.9829059829059829
+ },
+ "dials": {
+  "separation": 2.574668233307011,
+  "latencyMedianMs": 108.14837850000004,
+  "latencySigma": 0.42422870963898063,
+  "slowShare": 0.017094017094017096,
+  "outage": 0,
+  "slope": 0.4492572724941534
+ }
+}

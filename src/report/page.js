@@ -207,6 +207,54 @@ function breakevenChart(be) {
   return `<div class="scroll"><svg class="chart" viewBox="0 0 ${W} ${H}" style="min-width:400px" role="img" aria-label="Marginal value of micro-settlement by elasticity">${g}</svg></div>`;
 }
 
+// One dot per borderline purchase: where Jev put it, against where I labelled it.
+function dotPlot(examples) {
+  const W = 900;
+  const H = 230;
+  const x = lin(0, 1, 200, 870);
+  const rows = [[false, 70, 's1', 'I labelled it inside'], [true, 150, 's2', 'I labelled it outside']];
+  let g = '';
+  for (const t of [0, 0.25, 0.5, 0.75, 1]) {
+    g += `<line class="${t === 0.5 ? 'zero' : 'grid'}" x1="${x(t)}" x2="${x(t)}" y1="24" y2="${H - 44}"/>`;
+    g += `<text class="tick" x="${x(t)}" y="${H - 26}" text-anchor="middle">${pct(t)}</text>`;
+  }
+  g += `<text class="tick" x="${x(0.5)}" y="${H - 6}" text-anchor="middle">Jev’s probability that the item is outside the mandate</text>`;
+  for (const [outside, cy, cls, label] of rows) {
+    g += `<text class="rowlabel" x="186" y="${cy + 4}" text-anchor="end">${esc(label)}</text>`;
+    const placed = [];
+    for (const e of examples.filter((d) => d.outside === outside).sort((a, b) => a.jev - b.jev)) {
+      const px = x(e.jev);
+      let level = 0;
+      while (placed.some((p) => p.level === level && Math.abs(p.px - px) < 11)) level++;
+      placed.push({ px, level });
+      const py = cy + (level % 2 ? 1 : -1) * Math.ceil(level / 2) * 11;
+      g += `<circle class="dot ${cls}" cx="${px.toFixed(1)}" cy="${py}" r="5" tabindex="0" data-tip="${esc(`${e.item}\nMandate: ${e.purpose}\nJev: ${pct(e.jev)} outside`)}"/>`;
+    }
+  }
+  return `<div class="scroll"><svg class="chart" viewBox="0 0 ${W} ${H}" style="min-width:640px" role="img" aria-label="Jev's probability for each borderline purchase">${g}</svg></div>`;
+}
+
+function measuredBlock(m) {
+  const { hard, clear } = m.byTier;
+  const missed = m.examples.filter((e) => e.jev > 0.5 !== e.outside);
+  const slope = m.quality.plattSlope;
+  return `<h2>Measured on the real model</h2>
+  <p>${m.answered} labelled payments were sent to Jev (${esc(Object.keys(m.versions).join(', '))}) through the same client and the same two questions the pipeline uses. ${clear.n} are clear-cut. ${hard.n} are borderline, where the item sits near the edge of what the mandate describes.</p>
+  <div class="stats">
+    <div class="stat"><b>${hard.auc.toFixed(3)}</b><span>AUC on the ${hard.n} borderline payments</span></div>
+    <div class="stat"><b>${clear.auc.toFixed(3)}</b><span>AUC on the ${clear.n} clear-cut payments</span></div>
+    <div class="stat"><b>${Math.round(m.latency.medianMs)}ms</b><span>Median latency. ${pct(m.latency.withinGatewayDeadline)} answered inside the 400ms deadline</span></div>
+    <div class="stat"><b>${m.answered}/${m.asked}</b><span>Calls answered, with no errors</span></div>
+  </div>
+  <div class="figure"><h3>What Jev said about each borderline purchase</h3>
+    ${`<div class="legend"><span><i class="swatch k-dot s1"></i>I labelled it inside the mandate</span><span><i class="swatch k-dot s2"></i>I labelled it outside</span></div>`}
+    ${dotPlot(m.examples)}
+    <details><summary>Table view</summary><div class="scroll"><table><thead><tr><th>Mandate</th><th>Item</th><th>My label</th><th class="num">Jev: outside</th></tr></thead><tbody>${[...m.examples].sort((a, b) => a.jev - b.jev).map((e) => `<tr><td>${esc(e.purpose)}</td><th scope="row">${esc(e.item)}</th><td>${e.outside ? 'outside' : 'inside'}</td><td class="num">${pct(e.jev)}</td></tr>`).join('')}</tbody></table></div></details>
+  </div>
+  <p>Jev and I disagree on ${missed.length} of the ${m.examples.length} borderline items: ${missed.map((e) => `${esc(e.item)} (${pct(e.jev)})`).join('; ')}. On at least one of those I think Jev has the better argument, which is the nature of a borderline label.</p>
+  <p>${m.quality.calibrationIdentifiable ? (slope > 1 ? `Its probabilities are underconfident on this set: they sit closer to 50% than the outcomes justify, by a factor of about ${slope.toFixed(1)} on the log-odds scale. That is the opposite of the failure I had built a test for, and it matters for the same reason: the gateway uses the number as a number. The guard’s recalibration is what corrects it.` : `Its probabilities are overconfident on this set by a factor of about ${(1 / slope).toFixed(1)} on the log-odds scale. The guard’s recalibration is what corrects it.`) : 'The two groups do not overlap, so calibration cannot be fitted from this set.'}</p>`;
+}
+
 function skillChart({ skill, staticLoss }) {
   const W = 520;
   const H = 250;
@@ -379,7 +427,7 @@ header { display: flex; flex-direction: column; gap: 20px }
 .chart .endlabel, .chart .rowlabel { fill: var(--ink); font-size: 12px }
 .chart .val { fill: var(--ink); font-size: 12px; font-family: var(--mono) }
 .chart .line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round }
-.chart .line.s1, .chart .dot.s1 { stroke: var(--s1) } .chart .dot.s1 { fill: var(--s1) }
+.chart .line.s1 { stroke: var(--s1) } .chart .dot.s1 { fill: var(--s1) }
 .chart .line.s2 { stroke: var(--s2) } .chart .dot.s2 { fill: var(--s2) }
 .chart .line.s3 { stroke: var(--s3) } .chart .dot.s3 { fill: var(--s3) }
 .chart .dot { stroke: var(--surface); stroke-width: 2; cursor: default }
@@ -398,6 +446,7 @@ header { display: flex; flex-direction: column; gap: 20px }
 .legend span { display: inline-flex; align-items: center; gap: 7px }
 .swatch { width: 14px; height: 3px; border-radius: 2px; display: inline-block; background: var(--ink-3) }
 .swatch.s1 { background: var(--s1) } .swatch.s2 { background: var(--s2) } .swatch.s3 { background: var(--s3) }
+.swatch.k-dot { width: 10px; height: 10px; border-radius: 50% }
 .swatch.k-mean { width: 10px; height: 10px; border-radius: 50%; background: var(--ink) }
 .swatch.k-box { width: 18px; height: 8px; border-radius: 4px; background: var(--s1) }
 .swatch.k-whisker { width: 22px; height: 2px; background: var(--s1); opacity: 0.55 }
@@ -492,6 +541,9 @@ footer { border-top: 1px solid var(--rule); padding-top: 20px; font-size: 13.5px
   <p>Three things are never asked of a model: whether a signature is valid, whether a cap or budget is exceeded, and whether the ledger balances. Those are checked.</p>
 </section>
 
+${decision.measured ? `<section><div class="eyebrow">The real Jev</div>${measuredBlock(decision.measured)}` : '<section hidden>'}
+</section>
+
 <section>
   <div class="eyebrow">Valuation</div>
   <h2>Expected value, with the Jevons effect priced in</h2>
@@ -547,14 +599,15 @@ value(bets) = E[ Σₜ intentsₜ × netPerIntent(bets, agentShareₜ, ticket) �
 <section>
   <div class="eyebrow">The model under attack</div>
   <h2>Four ways the decision model fails, and what each guard is worth</h2>
-  <p>A decision model in a payment path is a dependency with its own failure modes. Each pair below holds everything else fixed, breaks the model in one way, and runs it without and then with the one guard that addresses it. The model here is a simulated stand-in whose skill, calibration, latency and behaviour are dials. It is not Jev, and nothing here measures Jev.</p>
+  <p>A decision model in a payment path is a dependency with its own failure modes. Each pair below holds everything else fixed, breaks the model in one way, and runs it without and then with the one guard that addresses it. ${decision.measured ? 'A simulation of millions of payments cannot call Jev for each one, so it replays what was measured: Jev’s skill on the borderline payments, its calibration, its latency and its error rate. Each broken variant then changes one of those.' : 'The model here is a simulated stand-in whose skill, calibration, latency and behaviour are dials. It is not Jev, and nothing here measures Jev.'}</p>
   <div class="figure"><div class="scroll"><table><thead><tr><th>Condition</th><th class="num">Gateway net<br>per 1,000</th><th class="num">Merchant loss<br>per 1,000</th><th class="num">Honest agent<br>payments completed</th><th class="num">Decided by<br>fallback</th></tr></thead>
   <tbody>${groups.map((gName) => `<tr class="grouprow"><th colspan="5">${esc(gName === 'baseline' ? 'Baseline' : gName)}</th></tr>` + decision.experiment.filter((r) => r.group === gName).map((r) => `<tr><th scope="row">${esc(r.label)}</th><td class="num">$${r.net.toFixed(1)}</td><td class="num">$${r.merchantLoss.toFixed(1)}</td><td class="num">${pct(r.completion)}</td><td class="num">${pct(r.fallbackShare)}</td></tr>`).join('')).join('')}</tbody></table></div></div>
-  <p>The guard that matters most is the plainest one. When one call in five returns nothing and there is no fallback, completed agent payments fall from ${pct(exp.jev.completion)} to ${pct(exp.outage_raw.completion)}. With a fallback to the static rule they hold at ${pct(exp.outage_guarded.completion)}. Miscalibration, drift and injection each cost merchants about $${Math.round(Math.max(exp.overconfident_raw.merchantLoss, exp.drift_raw.merchantLoss, exp.inject_raw.merchantLoss) - exp.jev.merchantLoss)} per 1,000 intents, and each guard takes that back.</p>
+  <p>The guard that matters most is the plainest one. When one call in five returns nothing and there is no fallback, completed agent payments fall from ${pct(exp.jev.completion)} to ${pct(exp.outage_raw.completion)}. With a fallback to the static rule they hold at ${pct(exp.outage_guarded.completion)}.</p>
+  <p>${decision.measured ? 'Recalibration comes next, and the measurement is why. Jev\u2019s probabilities are underconfident, so acting on them as stated' : 'Acting on an overconfident model\u2019s probabilities as stated'} completes ${pct(exp.miscal_raw.completion)} of honest agent payments against ${pct(exp.miscal_guarded.completion)} once recalibrated, and merchant losses are $${exp.miscal_raw.merchantLoss.toFixed(0)} against $${exp.miscal_guarded.merchantLoss.toFixed(0)} per 1,000 intents. Planted text moves merchant losses from $${exp.inject_guarded.merchantLoss.toFixed(0)} to $${exp.inject_raw.merchantLoss.toFixed(0)}, and a drifted alias from $${exp.drift_guarded.merchantLoss.toFixed(0)} to $${exp.drift_raw.merchantLoss.toFixed(0)}. Differences of a few dollars are within the noise of the simulation.</p>
   <div class="pair">
     <div class="figure"><h3>How good does it have to be?</h3><p class="muted">Merchant loss per 1,000 purchase intents, by the model’s skill at telling bad payments from good.</p>${skillChart({ skill: decision.skill, staticLoss: exp.static.merchantLoss })}</div>
     <div class="prose" style="display:flex;flex-direction:column;gap:12px">
-      <p>Against the static rule, the decision layer is worth ${money(decision.value.jev.mean)} at the skill I assumed, ${money(decision.value.weak.mean)} if it is weak and ${money(decision.value.strong.mean)} if it is strong. Without a fallback, during an outage, it is worth ${money(decision.value.noFallback.mean)}.</p>
+      <p>Against the static rule, the decision layer is worth ${money(decision.value.jev.mean)} ${decision.measured ? 'at the skill measured' : 'at the skill I assumed'}, ${money(decision.value.weak.mean)} if it is weak and ${money(decision.value.strong.mean)} if it is strong. Without a fallback, during an outage, it is worth ${money(decision.value.noFallback.mean)}.</p>
       <p>Most of that value does not come from catching more fraud. It comes from no longer declining honest agents: the static rule turns away about one in twelve, and a calibrated model at these base rates approves nearly all of them, correctly.</p>
       <p>The model’s skill shows up in merchant losses. Below an AUC of roughly ${auc(decision.skill.find((p) => p.merchantLoss < exp.static.merchantLoss)?.separation ?? 3).toFixed(2)} it lets through more than the static rule did. That threshold is measurable in shadow mode before Jev decides a single live payment.</p>
     </div>
@@ -624,7 +677,7 @@ value(bets) = E[ Σₜ intentsₜ × netPerIntent(bets, agentShareₜ, ticket) �
   <h2>What this is and is not</h2>
   <ul class="plain">
     <li>The inputs are priors, not Windcave figures. Windcave is privately held and I have no inside data. The output is reported per 100M baseline transactions so it scales with real volume and does not pretend to know it.</li>
-    <li>The decision model in every simulation is a stand-in, not Jev. How well Jev judges payments is unknown outside TypeSafe and its early-access customers. The client in <span class="mono">src/decision/jev-client.js</span> matches TypeSafe’s API reference and has not been run against the live API. Running <span class="mono">node src/cli.js measure</span> with a key replaces the stand-in’s priors with the real model’s measured behaviour.</li>
+    <li>${decision.measured ? `Jev was measured on ${decision.measured.answered} synthetic labelled payments, not on a gateway’s real disputes, and the borderline labels are mine. The simulator replays those measurements statistically; it does not call Jev for each simulated payment. Latency was measured from a cloud build environment, not from a gateway’s own network.` : 'The decision model in every simulation is a stand-in, not Jev. Running <span class="mono">node src/cli.js measure</span> with a key replaces its priors with the real model’s measured behaviour.'}</li>
     <li>The guard is handed every outcome immediately. In production, labels arrive weeks later and only for approved payments, which makes calibration harder to measure than it looks here.</li>
     <li>The pipeline is a reference implementation. Mandates are signed with real Ed25519 and the ledger is double-entry with enforced invariants, but it implements none of the live agent-payment protocols and talks to no card network.</li>
     <li>The dispute thresholds and penalties are illustrative. Each scheme’s monitoring programme has its own definitions.</li>

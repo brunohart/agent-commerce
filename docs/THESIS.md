@@ -1,6 +1,6 @@
 # The argument, in one page
 
-*Independent work. Not affiliated with Windcave or TypeSafe AI. Figures are from the model in this repo, per 100M baseline transactions a year in each segment, and rest on the priors in `src/assumptions.js`. The decision model in the simulations is a stand-in; nothing here measures Jev.*
+*Independent work. Not affiliated with Windcave or TypeSafe AI. Figures are from the model in this repo, per 100M baseline transactions a year in each segment, and rest on the priors in `src/assumptions.js`. Jev's behaviour is measured from 234 real API calls on synthetic labelled payments.*
 
 ## The claim
 
@@ -16,7 +16,9 @@ One question has no rule. An agent told to do the weekly shop buys a $50 gift ca
 
 That is what Jev is shaped for. It takes a state and typed questions and returns a probability for each, without generating text. In this design it does one job: it estimates. The gateway's own expected-value rule turns the estimate into approve, challenge or decline, using the ticket, the merchant's margin and the cost of a chargeback, which are the gateway's numbers and nobody else's.
 
-Keeping those apart is what makes the model replaceable, auditable and safe to be wrong. It also makes its value measurable. Against a static rule the decision layer is worth about +$0.9m here, and nearly all of that comes from honest agent payments it no longer declines.
+Keeping those apart is what makes the model replaceable, auditable and safe to be wrong. It also makes its value measurable, so I measured it. On 72 borderline purchases the real Jev scores an AUC of 0.966, answers in about 108 ms, and answered every one of 234 calls. Against a static rule the decision layer is worth about +$0.8m here: it completes more honest agent payments (83% against 78%) and loses merchants less.
+
+The measurement also found something I had not planned for. Jev's probabilities are underconfident, by a factor of about 2.2 on the log-odds scale. Used as stated they complete no more honest payments than the static rule does. Recalibrated against outcomes they do. That is the argument for the guard, made by the model itself.
 
 ## Why this fits Windcave in particular
 
@@ -34,19 +36,19 @@ That matters for two reasons.
 |---|---|---|---:|
 | 1 | Storm-proofing | Derive idempotency from the purchase, not from the client's key. Answer timeouts definitively. Cut retries off when the issuer is struggling. | +$2.3m |
 | 2 | Agent-ready rails | One adapter for the agent checkout protocols, agent credentials, delegated authentication. | +$4.6m |
-| 3 | Mandate layer | Verify what the human authorised. Let Jev judge what rules cannot, behind a guard. Keep the mandate as evidence. | +$7.1m |
-| Hold | Micro-settlement | Aggregate small tickets into one authorisation, with micropayment pricing. | −$1.0m |
+| 3 | Mandate layer | Verify what the human authorised. Let Jev judge what rules cannot, behind a guard. Keep the mandate as evidence. | +$6.9m |
+| Hold | Micro-settlement | Aggregate small tickets into one authorisation, with micropayment pricing. | −$1.8m |
 
 Storm-proofing goes first because it is cheap, it improves the gateway's net on today's human traffic before a single agent arrives, and it did not lose money in any of 4,000 simulated worlds. It also makes step 2 safe. Rails without it turn an issuer brownout into a 14.3% duplicate-charge rate.
 
-Rails and the mandate layer should be planned as one programme. Separately they are worth −$4.4m and −$1.0m. Together they are worth $11.0m more than that sum, because rails bring the volume in and the mandate layer is what makes the volume clean.
+Rails and the mandate layer should be planned as one programme. Separately they are worth −$4.4m and −$1.1m. Together they are worth $12.0m more than that sum, because rails bring the volume in and the mandate layer is what makes the volume clean.
 
-Micro-settlement waits. It pays when unattended volume elasticity passes about 1.04, and my prior mode is 0.6. A pilot with a few charging or parking operators would measure it directly.
+Micro-settlement waits. Within my prior range for unattended volume elasticity it does not break even. A pilot with a few charging or parking operators would measure that elasticity directly, and it is the one number that could change this.
 
 ## How I would bring Jev in
 
-1. **Shadow mode first.** Send it real payments, act on none of its answers, and keep what it said next to what later happened. Two numbers come out: its AUC on this gateway's own disputes, and how often it answers inside the deadline.
-2. **Guard before go-live.** A deadline with a fallback to the existing rule, a pinned model version, recalibration against observed outcomes, and no untrusted text in the state. Without the fallback, a one-in-five outage takes completed agent payments from 84% to 65%.
+1. **Shadow mode first.** I have done the version of this that an outsider can: 234 synthetic payments, scored. The real version sends it live payments, acts on none of its answers, and keeps what it said next to what later happened. Two numbers come out: its AUC on this gateway's own disputes, and how often it answers inside the deadline.
+2. **Guard before go-live.** A deadline with a fallback to the existing rule, a pinned model version, recalibration against observed outcomes, and no untrusted text in the state. Without the fallback, a one-in-five outage takes completed agent payments from 83% to 65%. Without recalibration, Jev's underconfidence takes them to 78%.
 3. **Start where a wrong answer is cheap.** Small unattended tickets, where a challenge is impossible anyway and a wrong approval costs a few dollars.
 
 ## What I would want to know from you
@@ -62,13 +64,13 @@ Build cost is not on the list. Across the range I assumed, it barely moves the d
 
 ## What this is not
 
-It is not a forecast, and it does not know Windcave's volumes, margins or roadmap, or how good Jev is at payments. It is a way of making the decision explicit enough to argue with: every assumption is in one file, every failure mode has a price, and changing either re-runs the whole thing in about a minute.
+It is not a forecast, and it does not know Windcave's volumes, margins or roadmap, or how Jev performs on real disputes as opposed to the payments I wrote. It is a way of making the decision explicit enough to argue with: every assumption is in one file, every failure mode has a price, and changing either re-runs the whole thing in about a minute.
 
 ## Sources and facts to verify
 
 **Windcave.** The description of its business comes from its public site as surfaced in web search (`windcave.com`, `windcave.com/unattended-payments`). I could not load those pages directly from the environment this was built in, so the wording above is deliberately general. Check it against the live pages before relying on it.
 
-**Jev.** Launched in early access by TypeSafe AI in September 2026. The description here (state plus typed questions in, probabilities out, tens to hundreds of milliseconds, the `noul` yes/no type, `jev-latest`, which now resolves to `jev-1.14.0`) comes from launch coverage and third-party tutorials. Latency and cost figures are vendor-reported. The request and response shapes in `src/decision` were checked against `docs.typesafe.ai` on 16 November 2026. The client has not been run against the live API, which needs a key.
+**Jev.** Launched in early access by TypeSafe AI in September 2026. The description here (state plus typed questions in, probabilities out, tens to hundreds of milliseconds, the `noul` yes/no type, `jev-latest`, which now resolves to `jev-1.14.0`) comes from launch coverage and third-party tutorials. Latency and cost figures are vendor-reported. The request and response shapes in `src/decision` were checked against `docs.typesafe.ai` on 16 November 2026, and the client was then run against the live API: 234 calls to `jev-1.14.0`, all answered. The results are in `docs/jev-measured.json`.
 
 - https://typesafe.ai/
 - https://docs.typesafe.ai/introduction
