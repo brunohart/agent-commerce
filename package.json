@@ -1,0 +1,17 @@
+{
+  "name": "agent-commerce",
+  "version": "0.1.0",
+  "description": "A failure-first decision model for agentic commerce at the payment edge. Independent personal project.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test",
+    "sim": "node src/cli.js sim",
+    "value": "node src/cli.js value",
+    "decision": "node src/cli.js decision",
+    "report": "node src/cli.js report",
+    "demo": "node src/cli.js demo"
+  }
+}
