@@ -496,7 +496,7 @@ td.num, th.num { text-align: right; white-space: nowrap; padding-right: 0; paddi
 
 .trio { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px }
 .trio > div { display: flex; flex-direction: column; gap: 10px; min-width: 0 }
-.code { font: 400 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; padding: 12px; margin: 0; overflow-x: auto; white-space: pre }
+.code { font: 400 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; padding: 12px; margin: 0; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere }
 .grouprow th { font: 500 11.5px/1.3 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); padding-top: 16px }
 .formula { font: 400 13.5px/1.7 var(--mono); background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; overflow-x: auto; white-space: pre }
 ul.plain { margin: 0; padding-left: 20px; max-width: 65ch; display: flex; flex-direction: column; gap: 8px }
@@ -525,13 +525,20 @@ footer { border-top: 1px solid var(--rule); padding-top: 20px; font-size: 13.5px
 <section>
   <div class="eyebrow">The decision model</div>
   <h2>Jev estimates. The gateway decides.</h2>
-  <p>Jev is a decision model. It takes a state and a set of typed questions and returns an answer to each with a probability, in a few hundred milliseconds, and it does not generate text. A payment gateway needs exactly that: a number it can act on inside a latency budget.</p>
-  <p>Most of an agent payment can be checked by rule. A signature verifies or it does not; a budget is exceeded or it is not. One question cannot: an agent told to do the weekly shop buys a $50 gift card at the supermarket. The merchant category matches, the cap is respected, and the cardholder will dispute it. That judgement is the model’s job.</p>
+  <p>Jev is TypeSafe’s first System One model: a model built to make fast, structured decisions that software uses directly. You send it a state and a set of typed questions. It evaluates every question in parallel, each in isolation against the same state, and returns typed answers with probabilities. It does not generate text. A payment gateway needs exactly that: a number it can act on inside a latency budget.</p>
+  <p>The typed questions are called primitives. There are four, and this gateway uses one of them.</p>
+  <div class="figure"><div class="scroll"><table><thead><tr><th>Primitive</th><th>Asks</th><th>Returns</th><th>In this gateway</th></tr></thead><tbody>
+    <tr><th scope="row">Noul</th><td>Is this statement true?</td><td class="mono">noul</td><td><strong>Used twice per agent payment.</strong> The value is the probability the answer is yes, which is what an expected-value rule needs.</td></tr>
+    <tr><th scope="row">Choice</th><td>Which option from a list?</td><td class="mono">choice, probabilities, confidence</td><td>Not used. Asking for approve, challenge or decline would put the gateway’s costs inside the model.</td></tr>
+    <tr><th scope="row">Score</th><td>Where on a rubric?</td><td class="mono">score, probabilities, confidence</td><td>Not used. The question is whether, not how much.</td></tr>
+    <tr><th scope="row">Box</th><td>Where in this image?</td><td class="mono">box, confidence</td><td>Not used. There is no image in a payment.</td></tr>
+  </tbody></table></div></div>
+  <p>Most of an agent payment can be checked by rule. A signature verifies or it does not; a budget is exceeded or it is not. One question cannot: an agent told to do the weekly shop buys a prepaid Visa card at the supermarket checkout. The merchant category matches, the cap is respected, and the cardholder will dispute it. That judgement is one Noul. TypeSafe’s own guidance is to use code where code will do, ask one narrow question per judgement, and combine the answers in code. This pipeline is built that way.</p>
   <div class="figure">
     <div class="trio">
-      <div><h3>1. The gateway asks</h3><pre class="code">${esc(JSON.stringify({ model: ex.request.model, state: ex.request.state, questions: Object.fromEntries(Object.entries(ex.request.questions).map(([k, q]) => [k, { type: q.type }])) }, null, 1))}</pre></div>
-      <div><h3>2. Jev estimates</h3><pre class="code">${esc(JSON.stringify({ answers: { unauthorised: { noul: ex.answer.unauthorised }, outside_mandate: { noul: ex.answer.outside_mandate } } }, null, 1))}</pre><p class="muted">Illustrative answer. Question text is in <span class="mono">src/decision/request.js</span>.</p></div>
-      <div><h3>3. Expected value decides</h3><table><tbody>
+      <div><h3>1. The gateway sends a state and two Nouls</h3><pre class="code">${esc(JSON.stringify({ model: ex.request.model, state: ex.request.state, questions: ex.request.questions }, null, 1))}</pre></div>
+      <div><h3>2. Jev answers each one</h3><pre class="code">${esc(JSON.stringify({ model: ex.request.model, answers: { unauthorised: { type: 'noul', noul: ex.answer.unauthorised }, outside_mandate: { type: 'noul', noul: ex.answer.outside_mandate } } }, null, 1))}</pre><p class="muted">${ex.real ? 'Jev’s actual answer to this request.' : 'Illustrative answer.'} A Noul is the probability that the answer is yes.</p></div>
+      <div><h3>3. Code combines them and decides</h3><table><tbody>
         <tr><th scope="row">Approve</th><td class="num">${dollars2(ex.ev.approve)}</td></tr>
         <tr><th scope="row">Challenge the cardholder</th><td class="num">${dollars2(ex.ev.stepUp)}</td></tr>
         <tr><th scope="row">Decline</th><td class="num">${dollars2(ex.ev.decline)}</td></tr>
