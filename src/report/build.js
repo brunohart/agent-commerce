@@ -1,0 +1,158 @@
+// Builds the report: runs every experiment, writes docs/results.json,
+// docs/FAILURE-MODES.md and docs/index.html. No dependencies, no network.
+
+import { writeFileSync, mkdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+import { headline, ablation, brownout, trace, REFERENCE, decisionExperiment, skillSweep, DECISION_VARIANTS } from '../sim/scenarios.js';
+import { buildSurface, buildVariantSurface } from '../value/surface.js';
+import { monteCarlo, sequence, interactions, sensitivity, breakeven, compareVariants } from '../value/model.js';
+import { buildDecisionRequest } from '../decision/request.js';
+import { decide } from '../gateway/risk.js';
+import { BETS, BET_KEYS, CONTROLS, ECONOMICS, BASELINE_TXNS, HORIZON_YEARS } from '../assumptions.js';
+import { FAILURE_MODES } from '../sim/failure-modes.js';
+import { renderPage } from './page.js';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const CORE = ['rails', 'mandate', 'storm'];
+
+export function collect({ log = () => {} } = {}) {
+  log('tracing one payment through two gateways');
+  const tr = trace();
+  log('running headline scenarios');
+  const head = headline();
+  log('removing one control at a time');
+  const abl = ablation();
+  log('sweeping an issuer brownout');
+  const brown = brownout();
+  log('attacking the decision model');
+  const experiment = decisionExperiment();
+  const skill = skillSweep();
+  const variants = buildVariantSurface(CORE, {
+    static: DECISION_VARIANTS.find((v) => v.key === 'static').run,
+    jev: {},
+    weak: { decision: { model: { separation: 1.0 } } },
+    strong: { decision: { model: { separation: 3.0 } } },
+    noFallback: DECISION_VARIANTS.find((v) => v.key === 'outage_raw').run,
+  });
+  const decisionValue = compareVariants(variants, CORE, ['jev', 'weak', 'strong', 'noFallback'], 'static');
+
+  // One worked example for the page: a gift card bought under a grocery mandate.
+  // The request is what the gateway would really send. The answer is illustrative.
+  const exampleRequest = buildDecisionRequest(
+    {
+      intentId: 'example', isAgent: true, amount: 50, category: 'grocery', itemDescription: 'store gift card',
+      mandate: { purpose: 'the weekly household shop', maxPerTxn: 510, maxTotal: 1190 },
+    },
+    { attested: true, mandateVerified: true, spent: 212.4, unattended: false },
+  ).wire;
+  const exampleAnswer = { unauthorised: 0.003, outside_mandate: 0.34 };
+  const pBad = 1 - (1 - exampleAnswer.unauthorised) * (1 - exampleAnswer.outside_mandate);
+  const exampleDecision = decide({
+    amount: 50, pFraud: pBad, fee: 0.225, merchantMargin: ECONOMICS.merchantGrossMargin,
+    chargebackFee: ECONOMICS.chargebackFee, stepUpCompletion: 0.85, stepUpCatch: 0.9,
+  });
+
+  log('simulating the response surface (16 portfolios x 2 segments x 12 conditions)');
+  const surface = buildSurface();
+  log('running the Monte Carlo');
+  const mc = monteCarlo(surface);
+  const ranked = [...mc.portfolios].sort((a, b) => b.mean - a.mean);
+  const best = ranked[0];
+  const sens = sensitivity(surface, best.bets);
+  const micro = breakeven(surface, BET_KEYS, CORE, 'elasticity.unattended');
+
+  // Failure-mode cost, today's gateway against the recommended stack, per 1,000 intents.
+  const modeCost = {};
+  for (const key of Object.keys(FAILURE_MODES)) {
+    const per = (r) => {
+      const m = r.modes[key];
+      return ((m.gateway + m.merchant + m.opportunity) / r.inputs.intents) * 1000;
+    };
+    modeCost[key] = {
+      naive: (per(head.online.naive) + per(head.unattended.naive)) / 2,
+      core: (per(head.online.core) + per(head.unattended.core)) / 2,
+      full: (per(head.online.full) + per(head.unattended.full)) / 2,
+    };
+  }
+
+  const slim = (r) => ({
+    net: r.perIntent.gatewayNet * 1000,
+    completion: r.honestAgentCompletion,
+    disputeRatio: r.disputeRatio,
+    duplicateRate: r.duplicateRate,
+    merchantLossRate: r.merchantLossRate,
+    cliffShare: r.cliffShare,
+  });
+
+  return {
+    meta: {
+      unit: `NZ$m over ${HORIZON_YEARS} years, per ${BASELINE_TXNS / 1e6}M baseline transactions a year in each segment`,
+      reference: REFERENCE,
+      draws: mc.draws,
+    },
+    trace: tr,
+    headline: Object.fromEntries(
+      Object.entries(head).map(([seg, runs]) => [seg, Object.fromEntries(Object.entries(runs).map(([k, r]) => [k, slim(r)]))]),
+    ),
+    ablation: abl,
+    brownout: brown,
+    modeCost,
+    decision: {
+      experiment,
+      skill,
+      value: decisionValue,
+      example: { request: exampleRequest, answer: exampleAnswer, pBad, ...exampleDecision },
+    },
+    value: {
+      baseline: mc.baseline,
+      ranked,
+      best: best.key,
+      sequence: sequence(mc),
+      interactions: interactions(mc),
+      sensitivity: sens,
+      microBreakeven: micro,
+    },
+  };
+}
+
+function failureModesMarkdown(results) {
+  const lines = [
+    '# Failure-mode register',
+    '',
+    'Generated by `npm run report` from `src/sim/failure-modes.js` and the simulator. Do not edit by hand.',
+    '',
+    `Cost is gateway cost + merchant loss + lost sales, per 1,000 purchase intents, averaged over both segments at ${results.meta.reference.agentShare * 100}% agent share.`,
+    '',
+    '| ID | Failure mode | Layer | Trigger | Feeds | Mitigated by | Today | With rails + mandate + storm |',
+    '|---|---|---|---|---|---|---:|---:|',
+  ];
+  for (const [key, m] of Object.entries(FAILURE_MODES)) {
+    const c = results.modeCost[key];
+    const feeds = m.feeds.map((f) => FAILURE_MODES[f].id).join(', ') || '-';
+    const mit = m.mitigatedBy.join(', ') || (m.introducedBy ? `none (introduced by ${m.introducedBy})` : 'none');
+    lines.push(`| ${m.id} | ${m.name} | ${m.layer} | ${m.trigger} | ${feeds} | ${mit} | $${c.naive.toFixed(0)} | $${c.core.toFixed(0)} |`);
+  }
+  lines.push('', 'Figures are at normal issuer conditions, where F09 and F16 cost nothing. The brownout sweep in the report shows what they do under stress.');
+  lines.push('', '## Notes', '');
+  for (const m of Object.values(FAILURE_MODES)) if (m.note) lines.push(`- **${m.id} ${m.name}.** ${m.note}`);
+  lines.push('');
+  return lines.join('\n');
+}
+
+export async function buildReport({ log = () => {}, outDir = join(ROOT, 'docs') } = {}) {
+  const results = collect({ log });
+  mkdirSync(outDir, { recursive: true });
+  const round = (k, v) => (typeof v === 'number' ? Math.round(v * 1e6) / 1e6 : v);
+  writeFileSync(join(outDir, 'results.json'), `${JSON.stringify(results, round, 1)}\n`);
+  writeFileSync(join(outDir, 'FAILURE-MODES.md'), failureModesMarkdown(results));
+  const context = { results, BETS, BET_KEYS, CONTROLS, ECONOMICS, FAILURE_MODES };
+  const fragment = renderPage(context);
+  writeFileSync(
+    join(outDir, 'index.html'),
+    `<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n</head>\n<body>\n${fragment}\n</body>\n</html>\n`,
+  );
+  log(`wrote docs/index.html, docs/results.json, docs/FAILURE-MODES.md`);
+  log(`recommended: ${results.value.best}`);
+  return results;
+}
