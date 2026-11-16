@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>Jev at the Payment Edge</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column, 65ch of text, figures breaking out to the full 940px. */
+:root {
+  --bg: #f5f7f9; --surface: #ffffff; --ink: #0f1720; --ink-2: #485564; --ink-3: #6b7786;
+  --rule: #d9dfe6; --wash: #e9eff6; --accent: #1b4f93;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --crit: #d03b3b; --good: #0ca30c;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d1116; --surface: #161b22; --ink: #edf0f4; --ink-2: #b4bdc8; --ink-3: #8a95a3;
+  --rule: #2a323d; --wash: #1a2533; --accent: #86b6ef;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --crit: #e66767; --good: #0ca30c; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d1116; --surface: #161b22; --ink: #edf0f4; --ink-2: #b4bdc8; --ink-3: #8a95a3;
+  --rule: #2a323d; --wash: #1a2533; --accent: #86b6ef;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --crit: #e66767; --good: #0ca30c; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--body); margin: 0 }
+.wrap { max-width: 972px; margin: 0 auto; padding-block: 40px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 56px }
+section { display: flex; flex-direction: column; gap: 18px; min-width: 0 }
+p, .prose { max-width: 65ch; margin: 0 }
+h1 { font: 600 clamp(32px, 6vw, 52px)/1.05 var(--display); letter-spacing: -0.01em; margin: 0; max-width: 18ch; text-wrap: balance }
+h2 { font: 600 26px/1.15 var(--display); margin: 0; text-wrap: balance }
+h3 { font: 600 15px/1.3 var(--body); margin: 0 }
+.eyebrow { font: 500 12px/1.4 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3) }
+.lead { font-size: 19px; line-height: 1.5; color: var(--ink) }
+.muted { color: var(--ink-2); font-size: 14px }
+.mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums }
+a { color: var(--accent) }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+header { display: flex; flex-direction: column; gap: 20px }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule) }
+.stat { padding: 16px 16px 16px 0; display: flex; flex-direction: column; gap: 4px }
+.stat b { font: 500 30px/1.1 var(--mono); font-variant-numeric: tabular-nums }
+.stat span { font-size: 13px; line-height: 1.4; color: var(--ink-2) }
+
+.figure { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
+.figure > h3 + p { margin-top: -6px }
+.scroll { overflow-x: auto }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px }
+.chart { width: 100%; height: auto; display: block; font-family: var(--body) }
+.chart .grid { stroke: var(--rule); stroke-width: 1 }
+.chart .zero { stroke: var(--ink-3); stroke-width: 1 }
+.chart .base { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 3 3 }
+.chart .tick { fill: var(--ink-3); font-size: 11px; font-family: var(--mono) }
+.chart .colhead { fill: var(--ink-2); font-size: 11.5px; font-weight: 500 }
+.chart .endlabel, .chart .rowlabel { fill: var(--ink); font-size: 12px }
+.chart .val { fill: var(--ink); font-size: 12px; font-family: var(--mono) }
+.chart .line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round }
+.chart .line.s1, .chart .dot.s1 { stroke: var(--s1) } .chart .dot.s1 { fill: var(--s1) }
+.chart .line.s2 { stroke: var(--s2) } .chart .dot.s2 { fill: var(--s2) }
+.chart .line.s3 { stroke: var(--s3) } .chart .dot.s3 { fill: var(--s3) }
+.chart .dot { stroke: var(--surface); stroke-width: 2; cursor: default }
+.chart .threshold { stroke: var(--crit); stroke-width: 1.5; stroke-dasharray: 5 4 }
+.chart .threshold-label { fill: var(--ink-2) }
+.chart .rowbg { fill: transparent }
+.chart .row:hover .rowbg, .chart .row:focus .rowbg { fill: var(--wash) }
+.chart .row.best .rowbg { fill: var(--wash) }
+.chart .row { outline: none }
+.chart .on { fill: var(--ink) } .chart .off { fill: var(--rule) }
+.chart .whisker { stroke: var(--s1); stroke-width: 2; opacity: 0.55 }
+.chart .box { fill: var(--s1) }
+.chart .mean { fill: var(--ink); stroke: var(--surface); stroke-width: 2 }
+.chart .plain { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5 }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--ink-2) }
+.legend span { display: inline-flex; align-items: center; gap: 7px }
+.swatch { width: 14px; height: 3px; border-radius: 2px; display: inline-block; background: var(--ink-3) }
+.swatch.s1 { background: var(--s1) } .swatch.s2 { background: var(--s2) } .swatch.s3 { background: var(--s3) }
+.swatch.k-mean { width: 10px; height: 10px; border-radius: 50%; background: var(--ink) }
+.swatch.k-box { width: 18px; height: 8px; border-radius: 4px; background: var(--s1) }
+.swatch.k-whisker { width: 22px; height: 2px; background: var(--s1); opacity: 0.55 }
+.swatch.k-plain { width: 9px; height: 9px; border-radius: 0; background: var(--surface); border: 1.5px solid var(--ink); transform: rotate(45deg) }
+.swatch.k-thresh { width: 22px; height: 0; background: none; border-top: 2px dashed var(--crit) }
+.swatch.k-base { width: 0; height: 14px; background: none; border-left: 1px dashed var(--ink) }
+
+table { border-collapse: collapse; width: 100%; font-size: 14px }
+th, td { text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top }
+thead th { font: 500 11.5px/1.3 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); vertical-align: bottom }
+tbody th { font-weight: 500 }
+td.num, th.num { text-align: right; white-space: nowrap; padding-right: 0; padding-left: 12px }
+.sub { display: block; font-weight: 400; font-size: 12.5px; color: var(--ink-3) }
+.barcell { min-width: 220px; display: flex; align-items: center; gap: 10px }
+.barcell .num { width: 44px; text-align: right; flex: none }
+.track { flex: 1; min-width: 0; display: flex }
+.bar { height: 14px; background: var(--s1); border-radius: 0 4px 4px 0; display: block }
+.bar:hover, .bar:focus { filter: brightness(1.12) }
+
+.pipeline { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden }
+.stage { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin: 0 -1px -1px 0; padding: 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0 }
+.stage-n { font: 500 11px var(--mono); color: var(--ink-3) }
+.stage-name { font: 600 16px/1.2 var(--display) }
+.stage-q { font-size: 13px; line-height: 1.4; color: var(--ink-2); min-height: 2.8em }
+.modes { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; line-height: 1.35 }
+.modes li { padding: 4px 6px; border-left: 2px solid var(--s2); background: var(--bg); cursor: default }
+.modes .mono { color: var(--ink-3); font-size: 11px }
+.cascade { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font: 500 12.5px var(--mono) }
+.cascade span { padding: 4px 8px; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface) }
+.cascade i { font-style: normal; color: var(--ink-3) }
+
+.receipts { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px }
+.receipt { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; font: 400 13px/1.5 var(--mono); display: flex; flex-direction: column; gap: 2px; min-width: 0 }
+.receipt-head { font: 600 14px var(--body); padding-bottom: 8px; border-bottom: 1px dashed var(--rule); margin-bottom: 8px }
+.receipt-line, .receipt-total { display: flex; justify-content: space-between; gap: 12px }
+.receipt-sub { color: var(--ink-3); font-size: 12px; padding-left: 12px; overflow-wrap: anywhere }
+.receipt-total { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--rule); font-weight: 500 }
+.bad { color: var(--crit) } .good { color: var(--good) }
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; counter-reset: s }
+.steps li { border-top: 2px solid var(--ink); padding-top: 10px; display: flex; flex-direction: column; gap: 4px; min-width: 0 }
+.steps li.hold { border-top-color: var(--rule); color: var(--ink-2) }
+.steps .k { font: 500 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3) }
+.steps .n { font: 600 18px/1.2 var(--display) }
+.steps .v { font: 500 15px var(--mono) }
+.steps p { font-size: 13.5px; line-height: 1.45; color: var(--ink-2) }
+
+.trio { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px }
+.trio > div { display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.code { font: 400 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; padding: 12px; margin: 0; overflow-x: auto; white-space: pre }
+.grouprow th { font: 500 11.5px/1.3 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); padding-top: 16px }
+.formula { font: 400 13.5px/1.7 var(--mono); background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; overflow-x: auto; white-space: pre }
+ul.plain { margin: 0; padding-left: 20px; max-width: 65ch; display: flex; flex-direction: column; gap: 8px }
+details summary { cursor: pointer; font-size: 14px; color: var(--accent) }
+footer { border-top: 1px solid var(--rule); padding-top: 20px; font-size: 13.5px; color: var(--ink-2); display: flex; flex-direction: column; gap: 6px }
+#tip { position: fixed; z-index: 20; pointer-events: none; background: var(--ink); color: var(--bg); font: 400 12.5px/1.45 var(--body); padding: 8px 10px; border-radius: 4px; max-width: 280px; white-space: pre-line }
+#tip b { font-weight: 600; display: block }
+@media (prefers-reduced-motion: no-preference) { .bar { transition: filter .12s } }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Independent project · not affiliated with Windcave or TypeSafe AI · illustrative priors, not company data</div>
+  <h1>What agentic commerce is worth to a gateway, after everything that breaks</h1>
+  <p class="lead">When software starts buying on people’s behalf, a payment gateway gets more transactions, smaller ones, and a set of failures it has never had to price. This project puts Jev, TypeSafe AI’s decision model, at the one point in a payment where a rule cannot decide, for a gateway shaped like Windcave’s (online checkout plus a large unattended estate). Then it breaks the whole thing on purpose and works out what to build and in what order.</p>
+  <p>The answer the model gives: build <strong>storm-proofing, then agent-ready rails, then mandate layer</strong>. Agent-ready rails on their own lose money in 85% of simulated worlds, because they bring in the volume and its failure modes together. Micro-settlement is a real option and the model says when to exercise it.</p>
+  <div class="stats">
+    <div class="stat"><b>+$13.9m</b><span>Expected value of agent-ready rails + mandate layer + storm-proofing against doing nothing</span></div>
+    <div class="stat"><b><1%</b><span>Share of worlds where that portfolio loses money</span></div>
+    <div class="stat"><b>78%</b><span>Share of worlds where it is the best of all 16 options</span></div>
+    <div class="stat"><b>85%</b><span>Share of worlds where rails alone lose money</span></div>
+  </div>
+  <p class="muted">NZ$m over 5 years, per 100M baseline transactions a year in each segment. 4,000 simulated worlds. Every input is a stated prior in one file, built to be replaced with real figures.</p>
+</header>
+
+<section>
+  <div class="eyebrow">The decision model</div>
+  <h2>Jev estimates. The gateway decides.</h2>
+  <p>Jev is a decision model. It takes a state and a set of typed questions and returns an answer to each with a probability, in a few hundred milliseconds, and it does not generate text. A payment gateway needs exactly that: a number it can act on inside a latency budget.</p>
+  <p>Most of an agent payment can be checked by rule. A signature verifies or it does not; a budget is exceeded or it is not. One question cannot: an agent told to do the weekly shop buys a $50 gift card at the supermarket. The merchant category matches, the cap is respected, and the cardholder will dispute it. That judgement is the model’s job.</p>
+  <div class="figure">
+    <div class="trio">
+      <div><h3>1. The gateway asks</h3><pre class="code">{
+ &quot;model&quot;: &quot;jev-1.13&quot;,
+ &quot;state&quot;: {
+  &quot;payment&quot;: {
+   &quot;amount&quot;: 50,
+   &quot;currency&quot;: &quot;NZD&quot;,
+   &quot;merchant_category&quot;: &quot;grocery&quot;,
+   &quot;unattended&quot;: false
+  },
+  &quot;agent&quot;: {
+   &quot;identity_verified&quot;: true,
+   &quot;mandate_verified&quot;: true
+  },
+  &quot;mandate&quot;: {
+   &quot;purpose&quot;: &quot;the weekly household shop&quot;,
+   &quot;max_per_payment&quot;: 510,
+   &quot;budget_remaining&quot;: 977.6
+  },
+  &quot;item&quot;: {
+   &quot;description&quot;: &quot;store gift card&quot;
+  }
+ },
+ &quot;questions&quot;: {
+  &quot;unauthorised&quot;: {
+   &quot;type&quot;: &quot;noul&quot;
+  },
+  &quot;outside_mandate&quot;: {
+   &quot;type&quot;: &quot;noul&quot;
+  }
+ }
+}</pre></div>
+      <div><h3>2. Jev estimates</h3><pre class="code">{
+ &quot;answers&quot;: {
+  &quot;unauthorised&quot;: {
+   &quot;noul&quot;: 0.003
+  },
+  &quot;outside_mandate&quot;: {
+   &quot;noul&quot;: 0.34
+  }
+ }
+}</pre><p class="muted">Illustrative answer. Question text is in <span class="mono">src/decision/request.js</span>.</p></div>
+      <div><h3>3. Expected value decides</h3><table><tbody>
+        <tr><th scope="row">Approve</th><td class="num">−⁠$12.21</td></tr>
+        <tr><th scope="row">Challenge the cardholder</th><td class="num">+$6.29</td></tr>
+        <tr><th scope="row">Decline</th><td class="num">$0.00</td></tr>
+        </tbody></table><p class="muted">Chosen: <strong>challenge</strong>. The probability is the model’s. The ticket, the margin and the chargeback cost are the gateway’s.</p></div>
+    </div>
+  </div>
+  <p>Three things are never asked of a model: whether a signature is valid, whether a cap or budget is exceeded, and whether the ledger balances. Those are checked.</p>
+</section>
+
+<section>
+  <div class="eyebrow">Valuation</div>
+  <h2>Expected value, with the Jevons effect priced in</h2>
+  <p>Expected value asks what a bet is worth on average across the worlds you think are possible. Applied to agentic commerce it usually prices today’s transactions with a different payer. That misses the main effect. When the cost of using something falls, more of it gets used. An agent removes most of the effort of a purchase, so purchases multiply and shrink.</p>
+  <div class="formula">count   = baseline × frictionRatio ^ −elasticity        more transactions
+ticket  = baseline × (count multiplier) ^ −fragmentation  smaller ones
+
+value(bets) = E[ Σₜ intentsₜ × netPerIntent(bets, agentShareₜ, ticket) × retentionₜ / (1+r)ᵗ ] − build − run</div>
+  <p><span class="mono">netPerIntent</span> is measured, not assumed. A simulator runs a working payment pipeline against agents, humans and attackers, with 21 failure modes injected, and reports what each combination of controls earns after every failure is paid for. The same expected-value rule that turns Jev’s probability into an action is used here at a five-year timescale.</p>
+</section>
+
+<section>
+  <div class="eyebrow">The system</div>
+  <h2>Nine stages, 21 ways to lose money</h2>
+  <p>Each stage answers one question about a payment. Under each are the failure modes that live there. Hover or focus one for its trigger and effect.</p>
+  <ol class="pipeline"><li class="stage"><div class="stage-n">01</div><div class="stage-name">Protocol</div><div class="stage-q">Does the gateway speak this agent’s dialect?</div>
+      <ul class="modes"><li tabindex="0" data-tip="F01 Protocol fragmentation
+Agent speaks a checkout dialect the gateway does not implement.
+Payment never starts. Invisible in gateway metrics: no request, no decline."><span class="mono">F01</span> Protocol fragmentation</li></ul></li><li class="stage"><div class="stage-n">02</div><div class="stage-name">Attestation</div><div class="stage-q">Is this really the cardholder’s agent?</div>
+      <ul class="modes"><li tabindex="0" data-tip="F02 Agent impersonation
+Forged mandate: a valid signature from a key that is not the principal’s.
+Fraudulent purchase, near-certain chargeback."><span class="mono">F02</span> Agent impersonation</li></ul></li><li class="stage"><div class="stage-n">03</div><div class="stage-name">Idempotency</div><div class="stage-q">Have we seen this purchase before?</div>
+      <ul class="modes"><li tabindex="0" data-tip="F10 Duplicate charge after timeout
+First attempt succeeded silently, retry succeeds too.
+Cardholder charged twice. Refund work, or a chargeback."><span class="mono">F10</span> Duplicate charge after timeout</li><li tabindex="0" data-tip="F11 Agent double-fire
+Agent loop replays a tool call: same purchase, fresh idempotency key.
+Two payments for one intent, with no error anywhere to notice."><span class="mono">F11</span> Agent double-fire</li></ul></li><li class="stage"><div class="stage-n">04</div><div class="stage-name">Mandate</div><div class="stage-q">Did the human authorise this?</div>
+      <ul class="modes"><li tabindex="0" data-tip="F05 Mandate drift
+Agent buys outside what was delegated (prompt injection, misread instruction).
+Human disputes a purchase the agent really made."><span class="mono">F05</span> Mandate drift</li><li tabindex="0" data-tip="F06 Overspend
+Purchase over the per-transaction cap, or after the budget is used up.
+Dispute, or a refund request the merchant has to absorb."><span class="mono">F06</span> Overspend</li><li tabindex="0" data-tip="F07 Stale mandate
+Agent acts on a mandate that has expired.
+Unverified: some become disputes. Verified: an honest sale is refused."><span class="mono">F07</span> Stale mandate</li></ul></li><li class="stage"><div class="stage-n">05</div><div class="stage-name">Decision</div><div class="stage-q">How likely is it the cardholder stands behind this?</div>
+      <ul class="modes"><li tabindex="0" data-tip="F03 False decline of agent traffic
+Static bot rule at the gateway, or an issuer that cannot recognise the agent.
+Honest sale lost. Agent may retry, adding issuer load."><span class="mono">F03</span> False decline of agent traffic</li><li tabindex="0" data-tip="F17 Miscalibrated confidence
+The model’s probabilities do not match outcomes on this traffic.
+Expected value is computed from a wrong number. Fraud is approved at &quot;1%&quot;."><span class="mono">F17</span> Miscalibrated confidence</li><li tabindex="0" data-tip="F18 No usable answer in time
+Slow response, vendor outage, rate limit, or a malformed body.
+Without a fallback the payment cannot be decided and is lost."><span class="mono">F18</span> No usable answer in time</li><li tabindex="0" data-tip="F19 Version drift under a moving alias
+The alias the gateway calls now points at a different model.
+Thresholds tuned on one model are applied to another, silently."><span class="mono">F19</span> Version drift under a moving alias</li><li tabindex="0" data-tip="F20 State injection
+Text written by the agent or merchant reaches the model as part of the state.
+The model is talked into a low estimate on exactly the payments that matter."><span class="mono">F20</span> State injection</li><li tabindex="0" data-tip="F21 Selective labels
+Only approved payments ever produce an outcome, and only weeks later.
+Calibration is measured on a biased, stale sample."><span class="mono">F21</span> Selective labels</li></ul></li><li class="stage"><div class="stage-n">06</div><div class="stage-name">Authentication</div><div class="stage-q">Can anyone answer a challenge?</div>
+      <ul class="modes"><li tabindex="0" data-tip="F04 Step-up with no human present
+Issuer challenges a payment that has nobody there to answer it.
+Challenge times out, sale abandoned."><span class="mono">F04</span> Step-up with no human present</li></ul></li><li class="stage"><div class="stage-n">07</div><div class="stage-name">Issuer</div><div class="stage-q">Did the card get charged?</div>
+      <ul class="modes"><li tabindex="0" data-tip="F08 Ambiguous issuer response
+Response lost in transit. The card may or may not have been charged.
+Caller does not know the outcome. Everything downstream depends on what it does next."><span class="mono">F08</span> Ambiguous issuer response</li><li tabindex="0" data-tip="F09 Retry storm
+Agents retry immediately and repeatedly; issuer latency rises with load.
+Positive feedback: timeouts cause retries cause timeouts."><span class="mono">F09</span> Retry storm</li></ul></li><li class="stage"><div class="stage-n">08</div><div class="stage-name">Settlement</div><div class="stage-q">Does the money add up, at this ticket size?</div>
+      <ul class="modes"><li tabindex="0" data-tip="F12 Micro-ticket burden
+Fixed acceptance cost exceeds what a small ticket can carry.
+Merchant never offers the price point. The Jevons volume does not arrive."><span class="mono">F12</span> Micro-ticket burden</li><li tabindex="0" data-tip="F13 Aggregated settlement failure
+Batch of micro-tickets is declined when it finally settles.
+Goods already delivered. Merchant carries the batch."><span class="mono">F13</span> Aggregated settlement failure</li><li tabindex="0" data-tip="F14 Service before authorisation
+Unattended device is offline; it delivers, stores, and forwards.
+If the deferred authorisation fails, the service was free."><span class="mono">F14</span> Service before authorisation</li></ul></li><li class="stage"><div class="stage-n">09</div><div class="stage-name">Dispute</div><div class="stage-q">Who pays when the human says no?</div>
+      <ul class="modes"><li tabindex="0" data-tip="F15 Friendly fraud
+&quot;I never told my agent to buy that&quot;, about a purchase that was in scope.
+Chargeback the merchant loses unless it can show the mandate."><span class="mono">F15</span> Friendly fraud</li><li tabindex="0" data-tip="F16 Dispute-ratio cliff
+Disputes / transactions crosses a scheme monitoring threshold.
+Per-dispute penalties, then suspension. A step function, not a slope."><span class="mono">F16</span> Dispute-ratio cliff</li></ul></li></ol>
+  <p>Most of the cost comes from failures feeding each other. The expensive chain runs through four stages:</p>
+  <div class="cascade"><span>F08 lost response</span><i>→</i><span>F09 agent retries at machine speed</span><i>→</i><span>F08 more timeouts</span><i>→</i><span>F10 duplicate charge</span><i>→</i><span>dispute</span><i>→</i><span>F16 scheme threshold</span></div>
+</section>
+
+<section>
+  <div class="eyebrow">One payment</div>
+  <h2>The same agent, the same lost response, two gateways</h2>
+  <p>An agent pays $23.40 for an EV charging session. The issuer charges the card and the response is lost. The agent does what client code does and retries with a fresh idempotency key. This is the pipeline’s real output from <span class="mono">npm run demo</span>.</p>
+  <div class="receipts"><div class="receipt"><div class="receipt-head">Today’s gateway</div>
+    <div class="receipt-line"><span>attempt 1 · key-a</span><span>unknown</span></div><div class="receipt-sub">issuer_timeout</div><div class="receipt-line"><span>attempt 2 · key-b</span><span>approved</span></div><div class="receipt-sub">approved</div>
+    <div class="receipt-total"><span>card charged</span><span class="bad">2× ⚠</span></div></div><div class="receipt"><div class="receipt-head">With storm-proofing</div>
+    <div class="receipt-line"><span>attempt 1 · key-a</span><span>approved</span></div><div class="receipt-sub">resolved_by_inquiry</div>
+    <div class="receipt-total"><span>card charged</span><span class="good">1× ✓</span></div></div></div>
+</section>
+
+<section>
+  <div class="eyebrow">At volume</div>
+  <h2>What agent traffic does to the gateway as it stands</h2>
+  <p>30% of purchase intents come from agents, at tickets 0.6× today’s size. Gateway net is fee revenue minus processing, dispute handling and scheme penalties, per 1,000 purchase intents.</p>
+  <div class="figure"><h3>Online checkout</h3>
+    <div class="scroll"><table><thead><tr><th>Configuration</th><th>Gateway net per 1,000 intents</th><th class="num">Honest agent<br>payments completed</th><th class="num">Dispute<br>ratio</th><th class="num">Duplicate<br>charges</th></tr></thead>
+    <tbody><tr><th scope="row">Humans only (today)</th>
+          <td><div class="barcell"><div class="track"><span class="bar" style="width:100.0%" tabindex="0" data-tip="Humans only (today)
+Gateway net $295 per 1,000 purchase intents"></span></div><span class="num">$295</span></div></td>
+          <td class="num">–</td>
+          <td class="num">0.24%</td>
+          <td class="num">0.14%</td></tr><tr><th scope="row">Agents arrive, nothing changes</th>
+          <td><div class="barcell"><div class="track"><span class="bar" style="width:74.3%" tabindex="0" data-tip="Agents arrive, nothing changes
+Gateway net $219 per 1,000 purchase intents"></span></div><span class="num">$219</span></div></td>
+          <td class="num">26%</td>
+          <td class="num">0.47%</td>
+          <td class="num">0.30%</td></tr><tr><th scope="row">Rails only</th>
+          <td><div class="barcell"><div class="track"><span class="bar" style="width:72.7%" tabindex="0" data-tip="Rails only
+Gateway net $214 per 1,000 purchase intents"></span></div><span class="num">$214</span></div></td>
+          <td class="num">82%</td>
+          <td class="num">0.83%</td>
+          <td class="num">0.62%</td></tr><tr><th scope="row">Rails + mandate + storm</th>
+          <td><div class="barcell"><div class="track"><span class="bar" style="width:87.8%" tabindex="0" data-tip="Rails + mandate + storm
+Gateway net $259 per 1,000 purchase intents"></span></div><span class="num">$259</span></div></td>
+          <td class="num">84%</td>
+          <td class="num">0.32%</td>
+          <td class="num">0.00%</td></tr><tr><th scope="row">All four bets</th>
+          <td><div class="barcell"><div class="track"><span class="bar" style="width:88.2%" tabindex="0" data-tip="All four bets
+Gateway net $260 per 1,000 purchase intents"></span></div><span class="num">$260</span></div></td>
+          <td class="num">84%</td>
+          <td class="num">0.29%</td>
+          <td class="num">0.00%</td></tr></tbody></table></div></div><div class="figure"><h3>Unattended: EV charging, parking, vending</h3>
+    <div class="scroll"><table><thead><tr><th>Configuration</th><th>Gateway net per 1,000 intents</th><th class="num">Honest agent<br>payments completed</th><th class="num">Dispute<br>ratio</th><th class="num">Duplicate<br>charges</th></tr></thead>
+    <tbody><tr><th scope="row">Humans only (today)</th>
+          <td><div class="barcell"><div class="track"><span class="bar" style="width:97.2%" tabindex="0" data-tip="Humans only (today)
+Gateway net $89 per 1,000 purchase intents"></span></div><span class="num">$89</span></div></td>
+          <td class="num">–</td>
+          <td class="num">0.17%</td>
+          <td class="num">0.15%</td></tr><tr><th scope="row">Agents arrive, nothing changes</th>
+          <td><div class="barcell"><div class="track"><span class="bar" style="width:68.0%" tabindex="0" data-tip="Agents arrive, nothing changes
+Gateway net $63 per 1,000 purchase intents"></span></div><span class="num">$63</span></div></td>
+          <td class="num">25%</td>
+          <td class="num">0.29%</td>
+          <td class="num">0.27%</td></tr><tr><th scope="row">Rails only</th>
+          <td><div class="barcell"><div class="track"><span class="bar" style="width:71.0%" tabindex="0" data-tip="Rails only
+Gateway net $65 per 1,000 purchase intents"></span></div><span class="num">$65</span></div></td>
+          <td class="num">82%</td>
+          <td class="num">0.40%</td>
+          <td class="num">0.55%</td></tr><tr><th scope="row">Rails + mandate + storm</th>
+          <td><div class="barcell"><div class="track"><span class="bar" style="width:89.8%" tabindex="0" data-tip="Rails + mandate + storm
+Gateway net $83 per 1,000 purchase intents"></span></div><span class="num">$83</span></div></td>
+          <td class="num">84%</td>
+          <td class="num">0.13%</td>
+          <td class="num">0.00%</td></tr><tr><th scope="row">All four bets</th>
+          <td><div class="barcell"><div class="track"><span class="bar" style="width:100.0%" tabindex="0" data-tip="All four bets
+Gateway net $92 per 1,000 purchase intents"></span></div><span class="num">$92</span></div></td>
+          <td class="num">88%</td>
+          <td class="num">0.15%</td>
+          <td class="num">0.00%</td></tr></tbody></table></div></div>
+  <p>Rails alone complete far more agent payments. They also roughly double the dispute ratio and the duplicate rate, because every agent that now gets through brings its retry behaviour and its mandate problems with it.</p>
+</section>
+
+<section>
+  <div class="eyebrow">Under stress</div>
+  <h2>A brownout turns the retry loop into a cliff</h2>
+  <p>Raise the issuer’s base timeout rate and watch what the three configurations do. Agents retry immediately and several times, which adds load, which causes more timeouts. Rails alone fare worst, because they let far more agent traffic reach the issuer. The dashed line is where scheme monitoring starts charging per dispute.</p>
+  <div class="figure">
+    <div class="legend"><span><i class="swatch s1"></i>Today’s gateway</span><span><i class="swatch s2"></i>Rails only</span><span><i class="swatch s3"></i>Rails + mandate + storm</span><span><i class="swatch k-thresh"></i>⚠ Scheme monitoring threshold, 0.9% (illustrative)</span></div>
+    <div class="pair">
+      <div><h3>Duplicate charges, share of payments</h3><div class="scroll"><svg id="c-dup" class="chart" viewBox="0 0 520 280" style="min-width:440px" role="img" aria-label="Issuer base timeout rate"><line class="grid" x1="46" x2="356" y1="240" y2="240"/><text class="tick" x="38" y="244" text-anchor="end">0%</text><line class="grid" x1="46" x2="356" y1="183.5" y2="183.5"/><text class="tick" x="38" y="187.5" text-anchor="end">5%</text><line class="grid" x1="46" x2="356" y1="127" y2="127"/><text class="tick" x="38" y="131" text-anchor="end">10%</text><line class="grid" x1="46" x2="356" y1="70.49999999999997" y2="70.49999999999997"/><text class="tick" x="38" y="74.49999999999997" text-anchor="end">15%</text><line class="grid" x1="46" x2="356" y1="14" y2="14"/><text class="tick" x="38" y="18" text-anchor="end">20%</text><text class="tick" x="97.66666666666667" y="256" text-anchor="middle">1%</text><text class="tick" x="149.33333333333334" y="256" text-anchor="middle">2%</text><text class="tick" x="252.66666666666669" y="256" text-anchor="middle">4%</text><text class="tick" x="356" y="256" text-anchor="middle">6%</text><text class="tick" x="201" y="276" text-anchor="middle">Issuer base timeout rate</text><polyline class="line s1" points="66.7,238.5 87.3,237.4 123.5,234.6 175.2,230.3 252.7,220.6 356.0,192.0"/><circle class="dot s1" cx="66.7" cy="238.5" r="4" tabindex="0" data-tip="Today’s gateway
+0.13% at 0.4% base timeout rate"/><circle class="dot s1" cx="87.3" cy="237.4" r="4" tabindex="0" data-tip="Today’s gateway
+0.23% at 0.8% base timeout rate"/><circle class="dot s1" cx="123.5" cy="234.6" r="4" tabindex="0" data-tip="Today’s gateway
+0.48% at 1.5% base timeout rate"/><circle class="dot s1" cx="175.2" cy="230.3" r="4" tabindex="0" data-tip="Today’s gateway
+0.86% at 2.5% base timeout rate"/><circle class="dot s1" cx="252.7" cy="220.6" r="4" tabindex="0" data-tip="Today’s gateway
+1.72% at 4.0% base timeout rate"/><circle class="dot s1" cx="356.0" cy="192.0" r="4" tabindex="0" data-tip="Today’s gateway
+4.25% at 6.0% base timeout rate"/><polyline class="line s2" points="66.7,234.9 87.3,232.6 123.5,227.3 175.2,216.6 252.7,78.1 356.0,48.4"/><circle class="dot s2" cx="66.7" cy="234.9" r="4" tabindex="0" data-tip="Rails only
+0.45% at 0.4% base timeout rate"/><circle class="dot s2" cx="87.3" cy="232.6" r="4" tabindex="0" data-tip="Rails only
+0.65% at 0.8% base timeout rate"/><circle class="dot s2" cx="123.5" cy="227.3" r="4" tabindex="0" data-tip="Rails only
+1.12% at 1.5% base timeout rate"/><circle class="dot s2" cx="175.2" cy="216.6" r="4" tabindex="0" data-tip="Rails only
+2.07% at 2.5% base timeout rate"/><circle class="dot s2" cx="252.7" cy="78.1" r="4" tabindex="0" data-tip="Rails only
+14.33% at 4.0% base timeout rate"/><circle class="dot s2" cx="356.0" cy="48.4" r="4" tabindex="0" data-tip="Rails only
+16.95% at 6.0% base timeout rate"/><polyline class="line s3" points="66.7,240.0 87.3,240.0 123.5,240.0 175.2,240.0 252.7,240.0 356.0,240.0"/><circle class="dot s3" cx="66.7" cy="240.0" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.00% at 0.4% base timeout rate"/><circle class="dot s3" cx="87.3" cy="240.0" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.00% at 0.8% base timeout rate"/><circle class="dot s3" cx="123.5" cy="240.0" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.00% at 1.5% base timeout rate"/><circle class="dot s3" cx="175.2" cy="240.0" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.00% at 2.5% base timeout rate"/><circle class="dot s3" cx="252.7" cy="240.0" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.00% at 4.0% base timeout rate"/><circle class="dot s3" cx="356.0" cy="240.0" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.00% at 6.0% base timeout rate"/><text class="endlabel" x="366" y="52.42577100853279">Rails only</text><text class="endlabel" x="366" y="195.99070640378275">Today’s gateway</text><text class="endlabel" x="366" y="244">Rails + mandate + storm</text></svg></div></div>
+      <div><h3>Dispute ratio</h3><div class="scroll"><svg id="c-disp" class="chart" viewBox="0 0 520 280" style="min-width:440px" role="img" aria-label="Issuer base timeout rate"><line class="grid" x1="46" x2="356" y1="240" y2="240"/><text class="tick" x="38" y="244" text-anchor="end">0.0%</text><line class="grid" x1="46" x2="356" y1="183.5" y2="183.5"/><text class="tick" x="38" y="187.5" text-anchor="end">2.5%</text><line class="grid" x1="46" x2="356" y1="127" y2="127"/><text class="tick" x="38" y="131" text-anchor="end">5.0%</text><line class="grid" x1="46" x2="356" y1="70.49999999999997" y2="70.49999999999997"/><text class="tick" x="38" y="74.49999999999997" text-anchor="end">7.5%</text><line class="grid" x1="46" x2="356" y1="14" y2="14"/><text class="tick" x="38" y="18" text-anchor="end">10.0%</text><text class="tick" x="97.66666666666667" y="256" text-anchor="middle">1%</text><text class="tick" x="149.33333333333334" y="256" text-anchor="middle">2%</text><text class="tick" x="252.66666666666669" y="256" text-anchor="middle">4%</text><text class="tick" x="356" y="256" text-anchor="middle">6%</text><text class="tick" x="201" y="276" text-anchor="middle">Issuer base timeout rate</text><line class="threshold" x1="46" x2="356" y1="219.66" y2="219.66"/><polyline class="line s1" points="66.7,232.4 87.3,230.9 123.5,227.3 175.2,222.7 252.7,212.9 356.0,187.0"/><circle class="dot s1" cx="66.7" cy="232.4" r="4" tabindex="0" data-tip="Today’s gateway
+0.34% at 0.4% base timeout rate"/><circle class="dot s1" cx="87.3" cy="230.9" r="4" tabindex="0" data-tip="Today’s gateway
+0.40% at 0.8% base timeout rate"/><circle class="dot s1" cx="123.5" cy="227.3" r="4" tabindex="0" data-tip="Today’s gateway
+0.56% at 1.5% base timeout rate"/><circle class="dot s1" cx="175.2" cy="222.7" r="4" tabindex="0" data-tip="Today’s gateway
+0.77% at 2.5% base timeout rate"/><circle class="dot s1" cx="252.7" cy="212.9" r="4" tabindex="0" data-tip="Today’s gateway
+1.20% at 4.0% base timeout rate"/><circle class="dot s1" cx="356.0" cy="187.0" r="4" tabindex="0" data-tip="Today’s gateway
+2.34% at 6.0% base timeout rate"/><polyline class="line s2" points="66.7,221.2 87.3,219.4 123.5,213.2 175.2,202.6 252.7,63.5 356.0,36.4"/><circle class="dot s2" cx="66.7" cy="221.2" r="4" tabindex="0" data-tip="Rails only
+0.83% at 0.4% base timeout rate"/><circle class="dot s2" cx="87.3" cy="219.4" r="4" tabindex="0" data-tip="Rails only
+0.91% at 0.8% base timeout rate"/><circle class="dot s2" cx="123.5" cy="213.2" r="4" tabindex="0" data-tip="Rails only
+1.19% at 1.5% base timeout rate"/><circle class="dot s2" cx="175.2" cy="202.6" r="4" tabindex="0" data-tip="Rails only
+1.66% at 2.5% base timeout rate"/><circle class="dot s2" cx="252.7" cy="63.5" r="4" tabindex="0" data-tip="Rails only
+7.81% at 4.0% base timeout rate"/><circle class="dot s2" cx="356.0" cy="36.4" r="4" tabindex="0" data-tip="Rails only
+9.01% at 6.0% base timeout rate"/><polyline class="line s3" points="66.7,233.6 87.3,233.0 123.5,233.7 175.2,233.3 252.7,233.5 356.0,233.6"/><circle class="dot s3" cx="66.7" cy="233.6" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.28% at 0.4% base timeout rate"/><circle class="dot s3" cx="87.3" cy="233.0" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.31% at 0.8% base timeout rate"/><circle class="dot s3" cx="123.5" cy="233.7" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.28% at 1.5% base timeout rate"/><circle class="dot s3" cx="175.2" cy="233.3" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.30% at 2.5% base timeout rate"/><circle class="dot s3" cx="252.7" cy="233.5" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.29% at 4.0% base timeout rate"/><circle class="dot s3" cx="356.0" cy="233.6" r="4" tabindex="0" data-tip="Rails + mandate + storm
+0.28% at 6.0% base timeout rate"/><text class="endlabel" x="366" y="40.36811044853613">Rails only</text><text class="endlabel" x="366" y="191.03714346462755">Today’s gateway</text><text class="endlabel" x="366" y="237.63355991930484">Rails + mandate + storm</text></svg></div></div>
+    </div>
+    <details><summary>Table view</summary><div class="scroll"><table><thead><tr><th>Base timeout</th><th class="num">Today’s gateway<br>duplicates</th><th class="num">disputes</th><th class="num">Rails only<br>duplicates</th><th class="num">disputes</th><th class="num">Rails + mandate + storm<br>duplicates</th><th class="num">disputes</th></tr></thead>
+    <tbody><tr><td class="mono">0.4%</td><td class="num">0.13%</td><td class="num">0.34%</td><td class="num">0.45%</td><td class="num">0.83%</td><td class="num">0.00%</td><td class="num">0.28%</td></tr><tr><td class="mono">0.8%</td><td class="num">0.23%</td><td class="num">0.40%</td><td class="num">0.65%</td><td class="num">0.91%</td><td class="num">0.00%</td><td class="num">0.31%</td></tr><tr><td class="mono">1.5%</td><td class="num">0.48%</td><td class="num">0.56%</td><td class="num">1.12%</td><td class="num">1.19%</td><td class="num">0.00%</td><td class="num">0.28%</td></tr><tr><td class="mono">2.5%</td><td class="num">0.86%</td><td class="num">0.77%</td><td class="num">2.07%</td><td class="num">1.66%</td><td class="num">0.00%</td><td class="num">0.30%</td></tr><tr><td class="mono">4.0%</td><td class="num">1.72%</td><td class="num">1.20%</td><td class="num">14.33%</td><td class="num">7.81%</td><td class="num">0.00%</td><td class="num">0.29%</td></tr><tr><td class="mono">6.0%</td><td class="num">4.25%</td><td class="num">2.34%</td><td class="num">16.95%</td><td class="num">9.01%</td><td class="num">0.00%</td><td class="num">0.28%</td></tr></tbody></table></div></details>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">The model under attack</div>
+  <h2>Four ways the decision model fails, and what each guard is worth</h2>
+  <p>A decision model in a payment path is a dependency with its own failure modes. Each pair below holds everything else fixed, breaks the model in one way, and runs it without and then with the one guard that addresses it. The model here is a simulated stand-in whose skill, calibration, latency and behaviour are dials. It is not Jev, and nothing here measures Jev.</p>
+  <div class="figure"><div class="scroll"><table><thead><tr><th>Condition</th><th class="num">Gateway net<br>per 1,000</th><th class="num">Merchant loss<br>per 1,000</th><th class="num">Honest agent<br>payments completed</th><th class="num">Decided by<br>fallback</th></tr></thead>
+  <tbody><tr class="grouprow"><th colspan="5">Baseline</th></tr><tr><th scope="row">Static rule (no decision model)</th><td class="num">$168.9</td><td class="num">$102.7</td><td class="num">78%</td><td class="num">0%</td></tr><tr><th scope="row">Jev as assumed, guarded</th><td class="num">$171.5</td><td class="num">$103.8</td><td class="num">84%</td><td class="num">4%</td></tr><tr class="grouprow"><th colspan="5">F17 Miscalibration</th></tr><tr><th scope="row">Overconfident, believed as stated</th><td class="num">$171.3</td><td class="num">$110.2</td><td class="num">84%</td><td class="num">4%</td></tr><tr><th scope="row">Overconfident, recalibrated</th><td class="num">$171.5</td><td class="num">$100.7</td><td class="num">84%</td><td class="num">4%</td></tr><tr class="grouprow"><th colspan="5">F18 No answer in time</th></tr><tr><th scope="row">One call in five fails, no fallback</th><td class="num">$164.1</td><td class="num">$103.0</td><td class="num">65%</td><td class="num">0%</td></tr><tr><th scope="row">One call in five fails, fallback to static rule</th><td class="num">$170.7</td><td class="num">$107.9</td><td class="num">83%</td><td class="num">23%</td></tr><tr class="grouprow"><th colspan="5">F19 Version drift</th></tr><tr><th scope="row">Alias moves to a weaker model</th><td class="num">$170.9</td><td class="num">$110.4</td><td class="num">84%</td><td class="num">4%</td></tr><tr><th scope="row">Version pinned</th><td class="num">$171.5</td><td class="num">$103.8</td><td class="num">84%</td><td class="num">4%</td></tr><tr class="grouprow"><th colspan="5">F20 State injection</th></tr><tr><th scope="row">Planted text reaches the model</th><td class="num">$171.4</td><td class="num">$109.2</td><td class="num">84%</td><td class="num">4%</td></tr><tr><th scope="row">Untrusted text kept out of the state</th><td class="num">$171.5</td><td class="num">$103.8</td><td class="num">84%</td><td class="num">4%</td></tr></tbody></table></div></div>
+  <p>The guard that matters most is the plainest one. When one call in five returns nothing and there is no fallback, completed agent payments fall from 84% to 65%. With a fallback to the static rule they hold at 83%. Miscalibration, drift and injection each cost merchants about $7 per 1,000 intents, and each guard takes that back.</p>
+  <div class="pair">
+    <div class="figure"><h3>How good does it have to be?</h3><p class="muted">Merchant loss per 1,000 purchase intents, by the model’s skill at telling bad payments from good.</p><div class="scroll"><svg class="chart" viewBox="0 0 520 250" style="min-width:440px" role="img" aria-label="Merchant loss by decision model skill"><line class="grid" x1="50" x2="370" y1="198" y2="198"/><text class="tick" x="42" y="202" text-anchor="end">$80</text><line class="grid" x1="50" x2="370" y1="152.5" y2="152.5"/><text class="tick" x="42" y="156.5" text-anchor="end">$90</text><line class="grid" x1="50" x2="370" y1="107" y2="107"/><text class="tick" x="42" y="111" text-anchor="end">$100</text><line class="grid" x1="50" x2="370" y1="61.5" y2="61.5"/><text class="tick" x="42" y="65.5" text-anchor="end">$110</text><line class="grid" x1="50" x2="370" y1="16" y2="16"/><text class="tick" x="42" y="20" text-anchor="end">$120</text><text class="tick" x="50" y="214" text-anchor="middle">0.66</text><text class="tick" x="103.33333333333334" y="214" text-anchor="middle">0.76</text><text class="tick" x="156.66666666666666" y="214" text-anchor="middle">0.84</text><text class="tick" x="210.00000000000003" y="214" text-anchor="middle">0.90</text><text class="tick" x="263.33333333333337" y="214" text-anchor="middle">0.94</text><text class="tick" x="316.6666666666667" y="214" text-anchor="middle">0.97</text><text class="tick" x="370" y="214" text-anchor="middle">0.98</text><text class="tick" x="210" y="244" text-anchor="middle">Decision model skill (AUC)</text><line class="base" x1="50" x2="370" y1="94.74166015625005" y2="94.74166015625005"/><text class="endlabel" x="380" y="98.74166015625005">Static rule</text><polyline class="line s1" points="50.0,36.3 103.3,41.0 156.7,48.0 210.0,77.3 263.3,89.9 316.7,106.2 370.0,130.5"/><circle class="dot s1" cx="50.0" cy="36.3" r="4" tabindex="0" data-tip="AUC 0.66
+Merchant loss $116 per 1,000 intents
+Gateway net $171"/><circle class="dot s1" cx="103.3" cy="41.0" r="4" tabindex="0" data-tip="AUC 0.76
+Merchant loss $115 per 1,000 intents
+Gateway net $171"/><circle class="dot s1" cx="156.7" cy="48.0" r="4" tabindex="0" data-tip="AUC 0.84
+Merchant loss $113 per 1,000 intents
+Gateway net $171"/><circle class="dot s1" cx="210.0" cy="77.3" r="4" tabindex="0" data-tip="AUC 0.90
+Merchant loss $107 per 1,000 intents
+Gateway net $171"/><circle class="dot s1" cx="263.3" cy="89.9" r="4" tabindex="0" data-tip="AUC 0.94
+Merchant loss $104 per 1,000 intents
+Gateway net $172"/><circle class="dot s1" cx="316.7" cy="106.2" r="4" tabindex="0" data-tip="AUC 0.97
+Merchant loss $100 per 1,000 intents
+Gateway net $172"/><circle class="dot s1" cx="370.0" cy="130.5" r="4" tabindex="0" data-tip="AUC 0.98
+Merchant loss $95 per 1,000 intents
+Gateway net $172"/><text class="endlabel" x="380" y="134.48830859374993">With the decision model</text></svg></div></div>
+    <div class="prose" style="display:flex;flex-direction:column;gap:12px">
+      <p>Against the static rule, the decision layer is worth +$0.9m at the skill I assumed, +$0.6m if it is weak and +$1.2m if it is strong. Without a fallback, during an outage, it is worth −⁠$2.5m.</p>
+      <p>Most of that value does not come from catching more fraud. It comes from no longer declining honest agents: the static rule turns away about one in twelve, and a calibrated model at these base rates approves nearly all of them, correctly.</p>
+      <p>The model’s skill shows up in merchant losses. Below an AUC of roughly 0.97 it lets through more than the static rule did. That threshold is measurable in shadow mode before Jev decides a single live payment.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">The decision</div>
+  <h2>All sixteen combinations of four bets</h2>
+  <p>Each row is one portfolio, valued against doing nothing in the same simulated world. The diamond is plain expected value with the Jevons term switched off. Where the dot and the diamond sit far apart, a conventional business case would get the answer wrong.</p>
+  <div class="figure">
+    <div class="legend"><span><i class="swatch k-mean"></i>Expected value (mean)</span><span><i class="swatch k-box"></i>Middle half of worlds</span><span><i class="swatch k-whisker"></i>5th to 95th percentile</span><span><i class="swatch k-plain"></i>Plain EV, no Jevons term</span></div>
+    <div class="scroll"><svg class="chart" viewBox="0 0 900 534" style="min-width:720px" role="img" aria-label="Value of all sixteen combinations of bets"><text class="colhead" x="24" y="26" text-anchor="middle">Rails</text><text class="colhead" x="74" y="26" text-anchor="middle">Mandate</text><text class="colhead" x="124" y="26" text-anchor="middle">Storm</text><text class="colhead" x="174" y="26" text-anchor="middle">Micro</text><text class="colhead" x="476" y="26" text-anchor="middle">Value against doing nothing (NZ$m)</text><text class="colhead" x="772" y="26" text-anchor="end">P(loss)</text><text class="colhead" x="862" y="26" text-anchor="end">P(best)</text><line class="grid" x1="289.3333333333333" x2="289.3333333333333" y1="38" y2="500"/><text class="tick" x="289.3333333333333" y="518" text-anchor="middle">−10</text><line class="zero" x1="396" x2="396" y1="38" y2="500"/><text class="tick" x="396" y="518" text-anchor="middle">0</text><line class="grid" x1="502.6666666666667" x2="502.6666666666667" y1="38" y2="500"/><text class="tick" x="502.6666666666667" y="518" text-anchor="middle">+10</text><line class="grid" x1="609.3333333333333" x2="609.3333333333333" y1="38" y2="500"/><text class="tick" x="609.3333333333333" y="518" text-anchor="middle">+20</text><line class="grid" x1="716" x2="716" y1="38" y2="500"/><text class="tick" x="716" y="518" text-anchor="middle">+30</text><g class="row best" tabindex="0" data-tip="Agent-ready rails + Mandate layer + Storm-proofing
+Value +$13.9m (5th–95th: +$2.7m to +$29.3m)
+Plain EV +$10.4m
+Loses money in &lt;1% of worlds, best choice in 78%"><rect class="rowbg" x="0" y="46" width="900" height="28"/><circle class="on" cx="24" cy="60" r="6"/><circle class="on" cx="74" cy="60" r="6"/><circle class="on" cx="124" cy="60" r="6"/><circle class="off" cx="174" cy="60" r="3"/><line class="whisker" x1="425.3096345659462" x2="708.7061749542605" y1="60" y2="60"/><rect class="box" x="479.81549846527946" y="56" width="115.52390378795258" height="8" rx="4"/><path class="plain" d="M506.8984641903377 54 L511.8984641903377 60 L506.8984641903377 66 L501.8984641903377 60 Z"/><circle class="mean" cx="544.2632126504582" cy="60" r="5"/><text class="val" x="772" y="64" text-anchor="end"><1%</text><text class="val" x="862" y="64" text-anchor="end">78%</text></g><g class="row" tabindex="0" data-tip="Agent-ready rails + Mandate layer + Storm-proofing + Micro-settlement
+Value +$12.9m (5th–95th: +$0.6m to +$29.5m)
+Plain EV +$7.1m
+Loses money in 4% of worlds, best choice in 18%"><rect class="rowbg" x="0" y="74" width="900" height="28"/><circle class="on" cx="24" cy="88" r="6"/><circle class="on" cx="74" cy="88" r="6"/><circle class="on" cx="124" cy="88" r="6"/><circle class="on" cx="174" cy="88" r="6"/><line class="whisker" x1="402.43179977169484" x2="710.5861983326324" y1="88" y2="88"/><rect class="box" x="463.6624458428709" y="84" width="124.38975675811827" height="8" rx="4"/><path class="plain" d="M471.69039261845705 82 L476.69039261845705 88 L471.69039261845705 94 L466.69039261845705 88 Z"/><circle class="mean" cx="533.1416811342218" cy="88" r="5"/><text class="val" x="772" y="92" text-anchor="end">4%</text><text class="val" x="862" y="92" text-anchor="end">18%</text></g><g class="row" tabindex="0" data-tip="Agent-ready rails + Storm-proofing
+Value +$6.8m (5th–95th: +$0.1m to +$16.2m)
+Plain EV +$5.5m
+Loses money in 5% of worlds, best choice in 1%"><rect class="rowbg" x="0" y="102" width="900" height="28"/><circle class="on" cx="24" cy="116" r="6"/><circle class="off" cx="74" cy="116" r="3"/><circle class="on" cx="124" cy="116" r="6"/><circle class="off" cx="174" cy="116" r="3"/><line class="whisker" x1="396.7478338574349" x2="569.252817975274" y1="116" y2="116"/><rect class="box" x="430.78209489162316" y="112" width="67.94293165880941" height="8" rx="4"/><path class="plain" d="M455.04954787340154 110 L460.04954787340154 116 L455.04954787340154 122 L450.04954787340154 116 Z"/><circle class="mean" cx="469.02113788812017" cy="116" r="5"/><text class="val" x="772" y="120" text-anchor="end">5%</text><text class="val" x="862" y="120" text-anchor="end">1%</text></g><g class="row" tabindex="0" data-tip="Agent-ready rails + Mandate layer
+Value +$5.7m (5th–95th: −⁠$2.7m to +$17.1m)
+Plain EV +$4.2m
+Loses money in 18% of worlds, best choice in 0%"><rect class="rowbg" x="0" y="130" width="900" height="28"/><circle class="on" cx="24" cy="144" r="6"/><circle class="on" cx="74" cy="144" r="6"/><circle class="off" cx="124" cy="144" r="3"/><circle class="off" cx="174" cy="144" r="3"/><line class="whisker" x1="367.49919003885384" x2="578.4270775622393" y1="144" y2="144"/><rect class="box" x="409.0907264273095" y="140" width="85.56866120756877" height="8" rx="4"/><path class="plain" d="M441.22053001305073 138 L446.22053001305073 144 L441.22053001305073 150 L436.22053001305073 144 Z"/><circle class="mean" cx="456.5247547281272" cy="144" r="5"/><text class="val" x="772" y="148" text-anchor="end">18%</text><text class="val" x="862" y="148" text-anchor="end">0%</text></g><g class="row" tabindex="0" data-tip="Agent-ready rails + Mandate layer + Micro-settlement
+Value +$4.5m (5th–95th: −⁠$4.7m to +$16.7m)
+Plain EV +$1.7m
+Loses money in 27% of worlds, best choice in 0%"><rect class="rowbg" x="0" y="158" width="900" height="28"/><circle class="on" cx="24" cy="172" r="6"/><circle class="on" cx="74" cy="172" r="6"/><circle class="off" cx="124" cy="172" r="3"/><circle class="on" cx="174" cy="172" r="6"/><line class="whisker" x1="345.3447082825007" x2="574.3085780345715" y1="172" y2="172"/><rect class="box" x="392.3404581722971" y="168" width="91.56347255310192" height="8" rx="4"/><path class="plain" d="M414.30451147246714 166 L419.30451147246714 172 L414.30451147246714 178 L409.30451147246714 172 Z"/><circle class="mean" cx="443.4729325199789" cy="172" r="5"/><text class="val" x="772" y="176" text-anchor="end">27%</text><text class="val" x="862" y="176" text-anchor="end">0%</text></g><g class="row" tabindex="0" data-tip="Agent-ready rails + Storm-proofing + Micro-settlement
+Value +$3.9m (5th–95th: −⁠$3.5m to +$14.2m)
+Plain EV +$1.8m
+Loses money in 25% of worlds, best choice in 0%"><rect class="rowbg" x="0" y="186" width="900" height="28"/><circle class="on" cx="24" cy="200" r="6"/><circle class="off" cx="74" cy="200" r="3"/><circle class="on" cx="124" cy="200" r="6"/><circle class="on" cx="174" cy="200" r="6"/><line class="whisker" x1="359.1592845777927" x2="547.2101473586656" y1="200" y2="200"/><rect class="box" x="395.9882000392937" y="196" width="74.01840533829125" height="8" rx="4"/><path class="plain" d="M415.66237987428156 194 L420.66237987428156 200 L415.66237987428156 206 L410.66237987428156 200 Z"/><circle class="mean" cx="437.2359116044035" cy="200" r="5"/><text class="val" x="772" y="204" text-anchor="end">25%</text><text class="val" x="862" y="204" text-anchor="end">0%</text></g><g class="row" tabindex="0" data-tip="Storm-proofing
+Value +$2.3m (5th–95th: +$1.5m to +$3.7m)
+Plain EV +$1.5m
+Loses money in 0% of worlds, best choice in 3%"><rect class="rowbg" x="0" y="214" width="900" height="28"/><circle class="off" cx="24" cy="228" r="3"/><circle class="off" cx="74" cy="228" r="3"/><circle class="on" cx="124" cy="228" r="6"/><circle class="off" cx="174" cy="228" r="3"/><line class="whisker" x1="411.6318733727353" x2="434.9932610201004" y1="228" y2="228"/><rect class="box" x="415.6725401939036" y="224" width="7.8734007359071825" height="8" rx="4"/><path class="plain" d="M412.23369971005263 222 L417.23369971005263 228 L412.23369971005263 234 L407.23369971005263 228 Z"/><circle class="mean" cx="420.44655930674764" cy="228" r="5"/><text class="val" x="772" y="232" text-anchor="end">0%</text><text class="val" x="862" y="232" text-anchor="end">3%</text></g><g class="row" tabindex="0" data-tip="Mandate layer + Storm-proofing
+Value +$0.8m (5th–95th: −⁠$1.5m to +$4.5m)
+Plain EV −⁠$0.3m
+Loses money in 39% of worlds, best choice in 0%"><rect class="rowbg" x="0" y="242" width="900" height="28"/><circle class="off" cx="24" cy="256" r="3"/><circle class="on" cx="74" cy="256" r="6"/><circle class="on" cx="124" cy="256" r="6"/><circle class="off" cx="174" cy="256" r="3"/><line class="whisker" x1="380.2480755432049" x2="443.58800915506765" y1="256" y2="256"/><rect class="box" x="391.06542618193646" y="252" width="23.455557744646853" height="8" rx="4"/><path class="plain" d="M392.86429467989205 250 L397.86429467989205 256 L392.86429467989205 262 L387.86429467989205 256 Z"/><circle class="mean" cx="404.9377167951111" cy="256" r="5"/><text class="val" x="772" y="260" text-anchor="end">39%</text><text class="val" x="862" y="260" text-anchor="end">0%</text></g><g class="row" tabindex="0" data-tip="Do nothing
+The reference every other row is measured against."><rect class="rowbg" x="0" y="270" width="900" height="28"/><circle class="off" cx="24" cy="284" r="3"/><circle class="off" cx="74" cy="284" r="3"/><circle class="off" cx="124" cy="284" r="3"/><circle class="off" cx="174" cy="284" r="3"/><text class="tick" x="404" y="288">do nothing</text></g><g class="row" tabindex="0" data-tip="Storm-proofing + Micro-settlement
+Value −⁠$0.5m (5th–95th: −⁠$2.2m to +$1.8m)
+Plain EV −⁠$1.8m
+Loses money in 74% of worlds, best choice in 0%"><rect class="rowbg" x="0" y="298" width="900" height="28"/><circle class="off" cx="24" cy="312" r="3"/><circle class="off" cx="74" cy="312" r="3"/><circle class="on" cx="124" cy="312" r="6"/><circle class="on" cx="174" cy="312" r="6"/><line class="whisker" x1="373.0062718861329" x2="414.93633336903787" y1="312" y2="312"/><rect class="box" x="381.39080366583255" y="308" width="15.328030316343074" height="8" rx="4"/><path class="plain" d="M376.85546976938895 306 L381.85546976938895 312 L376.85546976938895 318 L371.85546976938895 312 Z"/><circle class="mean" cx="390.36107340189267" cy="312" r="5"/><text class="val" x="772" y="316" text-anchor="end">74%</text><text class="val" x="862" y="316" text-anchor="end">0%</text></g><g class="row" tabindex="0" data-tip="Mandate layer
+Value −⁠$1.0m (5th–95th: −⁠$3.1m to +$2.2m)
+Plain EV −⁠$1.5m
+Loses money in 78% of worlds, best choice in 0%"><rect class="rowbg" x="0" y="326" width="900" height="28"/><circle class="off" cx="24" cy="340" r="3"/><circle class="on" cx="74" cy="340" r="6"/><circle class="off" cx="124" cy="340" r="3"/><circle class="off" cx="174" cy="340" r="3"/><line class="whisker" x1="362.7564234925481" x2="419.79210943475243" y1="340" y2="340"/><rect class="box" x="372.43487920861344" y="336" width="21.493320949312192" height="8" rx="4"/><path class="plain" d="M379.69860843897527 334 L384.69860843897527 340 L379.69860843897527 346 L374.69860843897527 340 Z"/><circle class="mean" cx="385.1181877064093" cy="340" r="5"/><text class="val" x="772" y="344" text-anchor="end">78%</text><text class="val" x="862" y="344" text-anchor="end">0%</text></g><g class="row" tabindex="0" data-tip="Mandate layer + Storm-proofing + Micro-settlement
+Value −⁠$1.8m (5th–95th: −⁠$4.7m to +$2.8m)
+Plain EV −⁠$3.5m
+Loses money in 82% of worlds, best choice in 0%"><rect class="rowbg" x="0" y="354" width="900" height="28"/><circle class="off" cx="24" cy="368" r="3"/><circle class="on" cx="74" cy="368" r="6"/><circle class="on" cx="124" cy="368" r="6"/><circle class="on" cx="174" cy="368" r="6"/><line class="whisker" x1="345.49991775918414" x2="425.7101826591487" y1="368" y2="368"/><rect class="box" x="359.47741313132235" y="364" width="29.34425275481442" height="8" rx="4"/><path class="plain" d="M358.61954485002866 362 L363.61954485002866 368 L358.61954485002866 374 L353.61954485002866 368 Z"/><circle class="mean" cx="376.632218151605" cy="368" r="5"/><text class="val" x="772" y="372" text-anchor="end">82%</text><text class="val" x="862" y="372" text-anchor="end">0%</text></g><g class="row" tabindex="0" data-tip="Micro-settlement
+Value −⁠$3.0m (5th–95th: −⁠$4.2m to −⁠$1.6m)
+Plain EV −⁠$3.2m
+Loses money in &gt;99% of worlds, best choice in 0%"><rect class="rowbg" x="0" y="382" width="900" height="28"/><circle class="off" cx="24" cy="396" r="3"/><circle class="off" cx="74" cy="396" r="3"/><circle class="off" cx="124" cy="396" r="3"/><circle class="on" cx="174" cy="396" r="6"/><line class="whisker" x1="350.7296661670573" x2="378.85411503626926" y1="396" y2="396"/><rect class="box" x="358.3457107875041" y="392" width="11.188104435661387" height="8" rx="4"/><path class="plain" d="M362.02305911338453 390 L367.02305911338453 396 L362.02305911338453 402 L357.02305911338453 396 Z"/><circle class="mean" cx="364.19005087798894" cy="396" r="5"/><text class="val" x="772" y="400" text-anchor="end">>99%</text><text class="val" x="862" y="400" text-anchor="end">0%</text></g><g class="row" tabindex="0" data-tip="Mandate layer + Micro-settlement
+Value −⁠$4.0m (5th–95th: −⁠$6.5m to −⁠$0.4m)
+Plain EV −⁠$4.5m
+Loses money in 96% of worlds, best choice in 0%"><rect class="rowbg" x="0" y="410" width="900" height="28"/><circle class="off" cx="24" cy="424" r="3"/><circle class="on" cx="74" cy="424" r="6"/><circle class="off" cx="124" cy="424" r="3"/><circle class="on" cx="174" cy="424" r="6"/><line class="whisker" x1="326.34036799408074" x2="391.7300916295617" y1="424" y2="424"/><rect class="box" x="339.19413306046215" y="420" width="25.407534591576677" height="8" rx="4"/><path class="plain" d="M348.38943763669033 418 L353.38943763669033 424 L348.38943763669033 430 L343.38943763669033 424 Z"/><circle class="mean" cx="353.6101811868926" cy="424" r="5"/><text class="val" x="772" y="428" text-anchor="end">96%</text><text class="val" x="862" y="428" text-anchor="end">0%</text></g><g class="row" tabindex="0" data-tip="Agent-ready rails
+Value −⁠$4.4m (5th–95th: −⁠$12.4m to +$2.3m)
+Plain EV −⁠$1.0m
+Loses money in 85% of worlds, best choice in 0%"><rect class="rowbg" x="0" y="438" width="900" height="28"/><circle class="on" cx="24" cy="452" r="6"/><circle class="off" cx="74" cy="452" r="3"/><circle class="off" cx="124" cy="452" r="3"/><circle class="off" cx="174" cy="452" r="3"/><line class="whisker" x1="263.37926425424246" x2="420.88153592534684" y1="452" y2="452"/><rect class="box" x="322.30071485278734" y="448" width="58.460575226731066" height="8" rx="4"/><path class="plain" d="M385.7555679205128 446 L390.7555679205128 452 L385.7555679205128 458 L380.7555679205128 452 Z"/><circle class="mean" cx="349.57161519789355" cy="452" r="5"/><text class="val" x="772" y="456" text-anchor="end">85%</text><text class="val" x="862" y="456" text-anchor="end">0%</text></g><g class="row" tabindex="0" data-tip="Agent-ready rails + Micro-settlement
+Value −⁠$5.4m (5th–95th: −⁠$13.2m to +$1.6m)
+Plain EV −⁠$3.1m
+Loses money in 90% of worlds, best choice in 0%"><rect class="rowbg" x="0" y="466" width="900" height="28"/><circle class="on" cx="24" cy="480" r="6"/><circle class="off" cx="74" cy="480" r="3"/><circle class="off" cx="124" cy="480" r="3"/><circle class="on" cx="174" cy="480" r="6"/><line class="whisker" x1="255.1572281949918" x2="413.4290758770858" y1="480" y2="480"/><rect class="box" x="311.3524580814008" y="476" width="58.711728801404945" height="8" rx="4"/><path class="plain" d="M363.41077000412497 474 L368.41077000412497 480 L363.41077000412497 486 L358.41077000412497 480 Z"/><circle class="mean" cx="338.86890842152883" cy="480" r="5"/><text class="val" x="772" y="484" text-anchor="end">90%</text><text class="val" x="862" y="484" text-anchor="end">0%</text></g></svg></div>
+    <details><summary>Table view</summary><div class="scroll"><table><thead><tr><th>Portfolio</th><th class="num">Value</th><th class="num">5th</th><th class="num">95th</th><th class="num">Plain EV</th><th class="num">P(loss)</th><th class="num">P(best)</th></tr></thead>
+    <tbody><tr><th scope="row">Rails + Mandate + Storm</th><td class="num">+$13.9m</td><td class="num">+$2.7m</td><td class="num">+$29.3m</td><td class="num">+$10.4m</td><td class="num"><1%</td><td class="num">78%</td></tr><tr><th scope="row">Rails + Mandate + Storm + Micro</th><td class="num">+$12.9m</td><td class="num">+$0.6m</td><td class="num">+$29.5m</td><td class="num">+$7.1m</td><td class="num">4%</td><td class="num">18%</td></tr><tr><th scope="row">Rails + Storm</th><td class="num">+$6.8m</td><td class="num">+$0.1m</td><td class="num">+$16.2m</td><td class="num">+$5.5m</td><td class="num">5%</td><td class="num">1%</td></tr><tr><th scope="row">Rails + Mandate</th><td class="num">+$5.7m</td><td class="num">−⁠$2.7m</td><td class="num">+$17.1m</td><td class="num">+$4.2m</td><td class="num">18%</td><td class="num">0%</td></tr><tr><th scope="row">Rails + Mandate + Micro</th><td class="num">+$4.5m</td><td class="num">−⁠$4.7m</td><td class="num">+$16.7m</td><td class="num">+$1.7m</td><td class="num">27%</td><td class="num">0%</td></tr><tr><th scope="row">Rails + Storm + Micro</th><td class="num">+$3.9m</td><td class="num">−⁠$3.5m</td><td class="num">+$14.2m</td><td class="num">+$1.8m</td><td class="num">25%</td><td class="num">0%</td></tr><tr><th scope="row">Storm</th><td class="num">+$2.3m</td><td class="num">+$1.5m</td><td class="num">+$3.7m</td><td class="num">+$1.5m</td><td class="num">0%</td><td class="num">3%</td></tr><tr><th scope="row">Mandate + Storm</th><td class="num">+$0.8m</td><td class="num">−⁠$1.5m</td><td class="num">+$4.5m</td><td class="num">−⁠$0.3m</td><td class="num">39%</td><td class="num">0%</td></tr><tr><th scope="row">Do nothing</th><td class="num">+$0.0m</td><td class="num">+$0.0m</td><td class="num">+$0.0m</td><td class="num">+$0.0m</td><td class="num">0%</td><td class="num">0%</td></tr><tr><th scope="row">Storm + Micro</th><td class="num">−⁠$0.5m</td><td class="num">−⁠$2.2m</td><td class="num">+$1.8m</td><td class="num">−⁠$1.8m</td><td class="num">74%</td><td class="num">0%</td></tr><tr><th scope="row">Mandate</th><td class="num">−⁠$1.0m</td><td class="num">−⁠$3.1m</td><td class="num">+$2.2m</td><td class="num">−⁠$1.5m</td><td class="num">78%</td><td class="num">0%</td></tr><tr><th scope="row">Mandate + Storm + Micro</th><td class="num">−⁠$1.8m</td><td class="num">−⁠$4.7m</td><td class="num">+$2.8m</td><td class="num">−⁠$3.5m</td><td class="num">82%</td><td class="num">0%</td></tr><tr><th scope="row">Micro</th><td class="num">−⁠$3.0m</td><td class="num">−⁠$4.2m</td><td class="num">−⁠$1.6m</td><td class="num">−⁠$3.2m</td><td class="num">>99%</td><td class="num">0%</td></tr><tr><th scope="row">Mandate + Micro</th><td class="num">−⁠$4.0m</td><td class="num">−⁠$6.5m</td><td class="num">−⁠$0.4m</td><td class="num">−⁠$4.5m</td><td class="num">96%</td><td class="num">0%</td></tr><tr><th scope="row">Rails</th><td class="num">−⁠$4.4m</td><td class="num">−⁠$12.4m</td><td class="num">+$2.3m</td><td class="num">−⁠$1.0m</td><td class="num">85%</td><td class="num">0%</td></tr><tr><th scope="row">Rails + Micro</th><td class="num">−⁠$5.4m</td><td class="num">−⁠$13.2m</td><td class="num">+$1.6m</td><td class="num">−⁠$3.1m</td><td class="num">90%</td><td class="num">0%</td></tr></tbody></table></div></details>
+  </div>
+  <p>Rails alone: plain EV says −⁠$1.0m; with the Jevons term it is −⁠$4.4m. The extra volume Jevons predicts arrives with its failure modes attached, and without the other two bets those cost more than the volume earns. Rails and the mandate layer together are worth +$11.0m more than the sum of each alone.</p>
+</section>
+
+<section>
+  <div class="eyebrow">Sequencing</div>
+  <h2>Build order</h2>
+  <p>At each step, add the bet with the largest marginal value given what already exists. The order matters because the bets are complements: what one is worth depends on which others are in place.</p>
+  <ol class="steps"><li class=""><span class="k">Step 1</span><span class="n">Storm-proofing</span><span class="v">+$2.3m marginal</span><p>Keep it up: agents retry at machine speed, so ambiguity must be removed.</p><p>Portfolio so far loses money in 0% of worlds.</p></li><li class=""><span class="k">Step 2</span><span class="n">Agent-ready rails</span><span class="v">+$4.6m marginal</span><p>Get the volume: protocols, agent credentials, delegated authentication.</p><p>Portfolio so far loses money in 5% of worlds.</p></li><li class=""><span class="k">Step 3</span><span class="n">Mandate layer</span><span class="v">+$7.1m marginal</span><p>Keep it clean: verify what the human authorised, let Jev judge what rules cannot, keep the proof.</p><p>Portfolio so far loses money in <1% of worlds.</p></li><li class="hold"><span class="k">Hold as an option</span><span class="n">Micro-settlement</span><span class="v">−⁠$1.0m marginal</span><p>Unlock the Jevons volume: make a $2 purchase economic for the merchant.</p><p>Portfolio so far loses money in 4% of worlds.</p></li></ol>
+</section>
+
+<section>
+  <div class="eyebrow">What would change my mind</div>
+  <h2>The priors the decision is most sensitive to</h2>
+  <p>Each bar moves one prior from its 10th to its 90th percentile and holds the rest at their medians. The dashed line is the value with every prior at its median. The long bars are what is worth finding out before spending the money.</p>
+  <div class="figure">
+    <div class="legend"><span><i class="swatch k-box"></i>Value of agent-ready rails + mandate layer + storm-proofing against doing nothing (NZ$m)</span><span><i class="swatch k-base"></i>All priors at median</span></div>
+    <div class="scroll"><svg class="chart" viewBox="0 0 900 306" style="min-width:680px" role="img" aria-label="Sensitivity of the decision to each prior"><line class="grid" x1="330" x2="330" y1="12" y2="272"/><text class="tick" x="330" y="290" text-anchor="middle">+6</text><line class="grid" x1="388.75" x2="388.75" y1="12" y2="272"/><text class="tick" x="388.75" y="290" text-anchor="middle">+8</text><line class="grid" x1="447.5" x2="447.5" y1="12" y2="272"/><text class="tick" x="447.5" y="290" text-anchor="middle">+10</text><line class="grid" x1="506.25" x2="506.25" y1="12" y2="272"/><text class="tick" x="506.25" y="290" text-anchor="middle">+12</text><line class="grid" x1="565" x2="565" y1="12" y2="272"/><text class="tick" x="565" y="290" text-anchor="middle">+14</text><line class="grid" x1="623.75" x2="623.75" y1="12" y2="272"/><text class="tick" x="623.75" y="290" text-anchor="middle">+16</text><line class="grid" x1="682.5" x2="682.5" y1="12" y2="272"/><text class="tick" x="682.5" y="290" text-anchor="middle">+18</text><line class="grid" x1="741.25" x2="741.25" y1="12" y2="272"/><text class="tick" x="741.25" y="290" text-anchor="middle">+20</text><line class="grid" x1="800" x2="800" y1="12" y2="272"/><text class="tick" x="800" y="290" text-anchor="middle">+22</text><g class="row" tabindex="0" data-tip="Agent share of online purchases
+At 8%: +$6.3m
+At 26%: +$21.5m"><rect class="rowbg" x="0" y="12" width="900" height="32"/><text class="rowlabel" x="274" y="32" text-anchor="end">Agent share of online purchases</text><rect class="box" x="337.7730360269437" y="22" width="448.37987879702644" height="12" rx="4"/><text class="tick" x="331.7730360269437" y="32" text-anchor="end">8%</text><text class="tick" x="792.1529148239701" y="32">26%</text></g><g class="row" tabindex="0" data-tip="Agent share of unattended purchases
+At 8%: +$9.2m
+At 29%: +$17.5m"><rect class="rowbg" x="0" y="44" width="900" height="32"/><text class="rowlabel" x="274" y="64" text-anchor="end">Agent share of unattended purchases</text><rect class="box" x="423.7789783794417" y="54" width="242.8443635081279" height="12" rx="4"/><text class="tick" x="417.7789783794417" y="64" text-anchor="end">8%</text><text class="tick" x="672.6233418875696" y="64">29%</text></g><g class="row" tabindex="0" data-tip="Year adoption reaches halfway
+At yr 2.0: +$16.3m
+At yr 3.4: +$8.6m"><rect class="rowbg" x="0" y="76" width="900" height="32"/><text class="rowlabel" x="274" y="96" text-anchor="end">Year adoption reaches halfway</text><rect class="box" x="405.15894169293745" y="86" width="226.05715834103762" height="12" rx="4"/><text class="tick" x="399.15894169293745" y="96" text-anchor="end">yr 3.4</text><text class="tick" x="637.2161000339751" y="96">yr 2.0</text></g><g class="row" tabindex="0" data-tip="Volume lost if not agent-ready
+At 0.24: +$9.1m
+At 0.91: +$16.5m"><rect class="rowbg" x="0" y="108" width="900" height="32"/><text class="rowlabel" x="274" y="128" text-anchor="end">Volume lost if not agent-ready</text><rect class="box" x="422.1170274994763" y="118" width="216.60763267588527" height="12" rx="4"/><text class="tick" x="416.1170274994763" y="128" text-anchor="end">0.24</text><text class="tick" x="644.7246601753616" y="128">0.91</text></g><g class="row" tabindex="0" data-tip="Volume elasticity (online)
+At 0.23: +$11.7m
+At 0.62: +$14.1m"><rect class="rowbg" x="0" y="140" width="900" height="32"/><text class="rowlabel" x="274" y="160" text-anchor="end">Volume elasticity (online)</text><rect class="box" x="496.76874520250817" y="150" width="70.85839786364966" height="12" rx="4"/><text class="tick" x="490.76874520250817" y="160" text-anchor="end">0.23</text><text class="tick" x="573.6271430661578" y="160">0.62</text></g><g class="row" tabindex="0" data-tip="Friction left once an agent buys (online)
+At 0.25×: +$13.8m
+At 0.56×: +$11.7m"><rect class="rowbg" x="0" y="172" width="900" height="32"/><text class="rowlabel" x="274" y="192" text-anchor="end">Friction left once an agent buys (online)</text><rect class="box" x="498.74073749514014" y="182" width="59.857412599364125" height="12" rx="4"/><text class="tick" x="492.74073749514014" y="192" text-anchor="end">0.56×</text><text class="tick" x="564.5981500945043" y="192">0.25×</text></g><g class="row" tabindex="0" data-tip="Discount rate
+At 9%: +$13.4m
+At 12%: +$11.4m"><rect class="rowbg" x="0" y="204" width="900" height="32"/><text class="rowlabel" x="274" y="224" text-anchor="end">Discount rate</text><rect class="box" x="489.45402592297023" y="214" width="59.110773808098656" height="12" rx="4"/><text class="tick" x="483.45402592297023" y="224" text-anchor="end">12%</text><text class="tick" x="554.5647997310689" y="224">9%</text></g><g class="row" tabindex="0" data-tip="Build cost: Agent-ready rails
+At $2.0m: +$13.3m
+At $3.7m: +$11.6m"><rect class="rowbg" x="0" y="236" width="900" height="32"/><text class="rowlabel" x="274" y="256" text-anchor="end">Build cost: Agent-ready rails</text><rect class="box" x="493.94852240338616" y="246" width="49.28187271431773" height="12" rx="4"/><text class="tick" x="487.94852240338616" y="256" text-anchor="end">$3.7m</text><text class="tick" x="549.2303951177039" y="256">$2.0m</text></g><line class="base" x1="522.0737377167534" x2="522.0737377167534" y1="8" y2="272"/></svg></div>
+  </div>
+  <div class="pair">
+    <div class="figure"><h3>When micro-settlement becomes worth building</h3><p class="muted">Marginal value of adding it to the recommended three (NZ$m), by unattended volume elasticity.</p><div class="scroll"><svg class="chart" viewBox="0 0 470 230" style="min-width:400px" role="img" aria-label="Marginal value of micro-settlement by elasticity"><line class="grid" x1="46" x2="446" y1="190" y2="190"/><text class="tick" x="38" y="194" text-anchor="end">−3</text><line class="grid" x1="46" x2="446" y1="146.5" y2="146.5"/><text class="tick" x="38" y="150.5" text-anchor="end">−2</text><line class="grid" x1="46" x2="446" y1="103" y2="103"/><text class="tick" x="38" y="107" text-anchor="end">−1</text><line class="zero" x1="46" x2="446" y1="59.5" y2="59.5"/><text class="tick" x="38" y="63.5" text-anchor="end">0</text><line class="grid" x1="46" x2="446" y1="16" y2="16"/><text class="tick" x="38" y="20" text-anchor="end">+1</text><text class="tick" x="46" y="206" text-anchor="middle">0.20</text><text class="tick" x="146" y="206" text-anchor="middle">0.45</text><text class="tick" x="245.99999999999997" y="206" text-anchor="middle">0.70</text><text class="tick" x="346" y="206" text-anchor="middle">0.95</text><text class="tick" x="446" y="206" text-anchor="middle">1.20</text><text class="tick" x="246" y="226" text-anchor="middle">Unattended volume elasticity</text><polyline class="line s1" points="46.0,169.9 52.7,167.3 59.3,164.8 66.0,162.2 72.7,159.6 79.3,157.0 86.0,154.4 92.7,151.7 99.3,149.1 106.0,146.5 112.7,144.0 119.3,141.5 126.0,139.0 132.7,136.6 139.3,134.2 146.0,131.8 152.7,129.5 159.3,127.1 166.0,124.8 172.7,122.5 179.3,120.2 186.0,118.0 192.7,115.8 199.3,113.7 206.0,111.6 212.7,110.0 219.3,108.5 226.0,106.9 232.7,105.3 239.3,103.8 246.0,102.3 252.7,100.6 259.3,99.0 266.0,97.3 272.7,95.5 279.3,93.7 286.0,91.8 292.7,89.9 299.3,87.9 306.0,85.9 312.7,83.8 319.3,81.6 326.0,79.4 332.7,77.1 339.3,74.8 346.0,72.3 352.7,69.9 359.3,67.7 366.0,65.5 372.7,63.2 379.3,60.8 386.0,58.2 392.7,55.4 399.3,52.5 406.0,49.5 412.7,46.5 419.3,43.4 426.0,40.0 432.7,36.6 439.3,33.2 446.0,29.7"/><line class="base" x1="206" x2="206" y1="16" y2="190"/><text class="tick" x="212" y="26">prior mode 0.6</text><circle class="dot s1" cx="382.6401647740217" cy="59.5" r="5" tabindex="0" data-tip="Break-even
+Micro-settlement pays above an elasticity of 1.04"/><text class="endlabel" x="374.6401647740217" y="49.5" text-anchor="end">break-even 1.04</text></svg></div></div>
+    <div class="prose" style="display:flex;flex-direction:column;gap:12px">
+      <p>Adding micro-settlement changes the expected value by −⁠$1.0m, and it is the best choice in 18% of worlds. It is the only bet whose value is mostly the Jevons term: plain EV puts it at −⁠$3.3m.</p>
+      <p>It breaks even when unattended volume elasticity passes <strong>1.04</strong>; the prior mode is 0.6. That is a measurable trigger: run micro-pricing with a handful of charging or parking operators and watch whether session counts respond.</p>
+      <p>The first version of this model priced aggregation by splitting the fixed fee across the batch. It lost money in every world. The engineering is the easy half of that bet; the pricing is the hard half.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Ablation</div>
+  <h2>Which controls are load-bearing</h2>
+  <p>Start from all nine controls and remove one. The figures are what its absence costs per 1,000 purchase intents, to the gateway and to its merchants. A control that costs nothing to remove is not earning its place at these conditions.</p>
+  <p>The retry budget is the clearest case. With intent-derived idempotency in place it adds almost nothing, here or in a brownout. I would ship idempotency first and treat the budget as defence in depth.</p>
+  <div class="figure"><div class="scroll"><table><thead><tr><th>Control removed</th><th class="num">Online<br>gateway</th><th class="num">Online<br>merchants</th><th class="num">Unattended<br>gateway</th><th class="num">Unattended<br>merchants</th></tr></thead><tbody><tr><th scope="row">Verify the signed mandate (scope, cap, budget, expiry) before auth<span class="sub">Mandate layer</span></th>
+      <td class="num">$1</td><td class="num">$822</td>
+      <td class="num">$2</td><td class="num">$108</td></tr><tr><th scope="row">Derive the idempotency key from the intent, not from the client<span class="sub">Storm-proofing</span></th>
+      <td class="num">$8</td><td class="num">$103</td>
+      <td class="num">$7</td><td class="num">$33</td></tr><tr><th scope="row">Verify agent identity and accept network-issued agent credentials<span class="sub">Agent-ready rails</span></th>
+      <td class="num">$7</td><td class="num">$73</td>
+      <td class="num">$2</td><td class="num">$19</td></tr><tr><th scope="row">Persist the mandate as dispute evidence<span class="sub">Mandate layer</span></th>
+      <td class="num">$0</td><td class="num">$48</td>
+      <td class="num">$0</td><td class="num">$5</td></tr><tr><th scope="row">Retry budget and circuit breaker, plus a definitive status answer on timeout<span class="sub">Storm-proofing</span></th>
+      <td class="num">$1</td><td class="num">$27</td>
+      <td class="num">$2</td><td class="num">$21</td></tr><tr><th scope="row">Speak the agent checkout protocols (one adapter, many dialects)<span class="sub">Agent-ready rails</span></th>
+      <td class="num">$26</td><td class="num">−⁠$27</td>
+      <td class="num">$14</td><td class="num">$33</td></tr><tr><th scope="row">Guard the decision model: deadline and fallback, pinned version, recalibration, clean state<span class="sub">Mandate layer</span></th>
+      <td class="num">$2</td><td class="num">$16</td>
+      <td class="num">$1</td><td class="num">$8</td></tr><tr><th scope="row">Jev estimates each payment; expected value picks approve, challenge or decline<span class="sub">Mandate layer</span></th>
+      <td class="num">$4</td><td class="num">$6</td>
+      <td class="num">$3</td><td class="num">$11</td></tr><tr><th scope="row">Delegated authentication, so no-human-present does not mean step-up<span class="sub">Agent-ready rails</span></th>
+      <td class="num">$13</td><td class="num">−⁠$14</td>
+      <td class="num">$3</td><td class="num">$21</td></tr><tr><th scope="row">Aggregate micro-tickets into one scheme-facing authorisation<span class="sub">Micro-settlement</span></th>
+      <td class="num">$1</td><td class="num">$11</td>
+      <td class="num">$9</td><td class="num">−⁠$1</td></tr></tbody></table></div></div>
+</section>
+
+<section>
+  <div class="eyebrow">Register</div>
+  <h2>Every failure mode, priced</h2>
+  <p>Cost is gateway cost plus merchant loss plus lost sales, per 1,000 purchase intents, averaged over both segments. Two entries have no mitigation in this model and one exists only because a control was added. Those are listed on purpose. The figures are at normal issuer conditions, where the retry storm and the dispute-ratio cliff cost nothing. The brownout section shows what they do under stress.</p>
+  <div class="figure"><div class="scroll"><table><thead><tr><th>ID</th><th>Failure mode</th><th>Trigger</th><th>Addressed by</th><th class="num">Today</th><th class="num">Recommended</th></tr></thead><tbody><tr><td class="mono">F01</td><th scope="row">Protocol fragmentation<span class="sub">Protocol</span></th>
+      <td>Agent speaks a checkout dialect the gateway does not implement.</td>
+      <td>Rails</td>
+      <td class="num">$1781</td><td class="num">$199</td></tr><tr><td class="mono">F02</td><th scope="row">Agent impersonation<span class="sub">Identity</span></th>
+      <td>Forged mandate: a valid signature from a key that is not the principal’s.</td>
+      <td>Rails, Mandate</td>
+      <td class="num">$5</td><td class="num">$0</td></tr><tr><td class="mono">F03</td><th scope="row">False decline of agent traffic<span class="sub">Risk</span></th>
+      <td>Static bot rule at the gateway, or an issuer that cannot recognise the agent.</td>
+      <td>Mandate, Rails</td>
+      <td class="num">$175</td><td class="num">$67</td></tr><tr><td class="mono">F04</td><th scope="row">Step-up with no human present<span class="sub">Authentication</span></th>
+      <td>Issuer challenges a payment that has nobody there to answer it.</td>
+      <td>Rails</td>
+      <td class="num">$679</td><td class="num">$250</td></tr><tr><td class="mono">F05</td><th scope="row">Mandate drift<span class="sub">Intent</span></th>
+      <td>Agent buys outside what was delegated (prompt injection, misread instruction).</td>
+      <td>Mandate</td>
+      <td class="num">$25</td><td class="num">$48</td></tr><tr><td class="mono">F06</td><th scope="row">Overspend<span class="sub">Intent</span></th>
+      <td>Purchase over the per-transaction cap, or after the budget is used up.</td>
+      <td>Mandate</td>
+      <td class="num">$141</td><td class="num">$0</td></tr><tr><td class="mono">F07</td><th scope="row">Stale mandate<span class="sub">Intent</span></th>
+      <td>Agent acts on a mandate that has expired.</td>
+      <td>Mandate</td>
+      <td class="num">$6</td><td class="num">$58</td></tr><tr><td class="mono">F08</td><th scope="row">Ambiguous issuer response<span class="sub">Execution</span></th>
+      <td>Response lost in transit. The card may or may not have been charged.</td>
+      <td>Storm</td>
+      <td class="num">$41</td><td class="num">$3</td></tr><tr><td class="mono">F09</td><th scope="row">Retry storm<span class="sub">Execution</span></th>
+      <td>Agents retry immediately and repeatedly; issuer latency rises with load.</td>
+      <td>Storm</td>
+      <td class="num">$0</td><td class="num">$0</td></tr><tr><td class="mono">F10</td><th scope="row">Duplicate charge after timeout<span class="sub">Execution</span></th>
+      <td>First attempt succeeded silently, retry succeeds too.</td>
+      <td>Storm</td>
+      <td class="num">$58</td><td class="num">$0</td></tr><tr><td class="mono">F11</td><th scope="row">Agent double-fire<span class="sub">Execution</span></th>
+      <td>Agent loop replays a tool call: same purchase, fresh idempotency key.</td>
+      <td>Storm</td>
+      <td class="num">$17</td><td class="num">$0</td></tr><tr><td class="mono">F12</td><th scope="row">Micro-ticket burden<span class="sub">Economics</span></th>
+      <td>Fixed acceptance cost exceeds what a small ticket can carry.</td>
+      <td>Micro</td>
+      <td class="num">$26</td><td class="num">$27</td></tr><tr><td class="mono">F13</td><th scope="row">Aggregated settlement failure<span class="sub">Settlement</span></th>
+      <td>Batch of micro-tickets is declined when it finally settles.</td>
+      <td>None. Introduced by Micro</td>
+      <td class="num">$0</td><td class="num">$0</td></tr><tr><td class="mono">F14</td><th scope="row">Service before authorisation<span class="sub">Device</span></th>
+      <td>Unattended device is offline; it delivers, stores, and forwards.</td>
+      <td>None</td>
+      <td class="num">$28</td><td class="num">$12</td></tr><tr><td class="mono">F15</td><th scope="row">Friendly fraud<span class="sub">Dispute</span></th>
+      <td>&quot;I never told my agent to buy that&quot;, about a purchase that was in scope.</td>
+      <td>Mandate</td>
+      <td class="num">$14</td><td class="num">$13</td></tr><tr><td class="mono">F17</td><th scope="row">Miscalibrated confidence<span class="sub">Decision model</span></th>
+      <td>The model’s probabilities do not match outcomes on this traffic.</td>
+      <td>Mandate</td>
+      <td class="num">$0</td><td class="num">$0</td></tr><tr><td class="mono">F18</td><th scope="row">No usable answer in time<span class="sub">Decision model</span></th>
+      <td>Slow response, vendor outage, rate limit, or a malformed body.</td>
+      <td>Mandate</td>
+      <td class="num">$0</td><td class="num">$0</td></tr><tr><td class="mono">F19</td><th scope="row">Version drift under a moving alias<span class="sub">Decision model</span></th>
+      <td>The alias the gateway calls now points at a different model.</td>
+      <td>Mandate</td>
+      <td class="num">$0</td><td class="num">$0</td></tr><tr><td class="mono">F20</td><th scope="row">State injection<span class="sub">Decision model</span></th>
+      <td>Text written by the agent or merchant reaches the model as part of the state.</td>
+      <td>Mandate</td>
+      <td class="num">$0</td><td class="num">$0</td></tr><tr><td class="mono">F21</td><th scope="row">Selective labels<span class="sub">Decision model</span></th>
+      <td>Only approved payments ever produce an outcome, and only weeks later.</td>
+      <td>None</td>
+      <td class="num">$0</td><td class="num">$0</td></tr><tr><td class="mono">F16</td><th scope="row">Dispute-ratio cliff<span class="sub">Scheme</span></th>
+      <td>Disputes / transactions crosses a scheme monitoring threshold.</td>
+      <td>None</td>
+      <td class="num">$0</td><td class="num">$0</td></tr></tbody></table></div></div>
+</section>
+
+<section>
+  <div class="eyebrow">Limits</div>
+  <h2>What this is and is not</h2>
+  <ul class="plain">
+    <li>The inputs are priors, not Windcave figures. Windcave is privately held and I have no inside data. The output is reported per 100M baseline transactions so it scales with real volume and does not pretend to know it.</li>
+    <li>The decision model in every simulation is a stand-in, not Jev. How well Jev judges payments is unknown outside TypeSafe and its early-access customers. The client in <span class="mono">src/decision/jev-client.js</span> follows public quickstart material and has not been run against the live API.</li>
+    <li>The guard is handed every outcome immediately. In production, labels arrive weeks later and only for approved payments, which makes calibration harder to measure than it looks here.</li>
+    <li>The pipeline is a reference implementation. Mandates are signed with real Ed25519 and the ledger is double-entry with enforced invariants, but it implements none of the live agent-payment protocols and talks to no card network.</li>
+    <li>The dispute thresholds and penalties are illustrative. Each scheme’s monitoring programme has its own definitions.</li>
+    <li>Regulatory liability for agent-initiated payments is unsettled, and the model holds it fixed.</li>
+    <li>The ranking is stable across seeds. The dollar figures move with the priors, which is what the sensitivity chart is for.</li>
+  </ul>
+</section>
+
+<footer>
+  <div>Run it: <span class="mono">git clone</span>, then <span class="mono">npm test</span> and <span class="mono">npm run demo</span>. Node 20 or later, no dependencies. Jev is a product of TypeSafe AI; this page is not affiliated with them.</div>
+  <div>Source, tests, decision records and the full register: <a href="https://github.com/brunohart/agent-commerce">github.com/brunohart/agent-commerce</a></div>
+</footer>
+</div>
+<div id="tip" hidden></div>
+<script>
+(function () {
+  var tip = document.getElementById('tip');
+  function show(el, x, y) {
+    var parts = el.getAttribute('data-tip').split('\n');
+    tip.textContent = '';
+    var b = document.createElement('b');
+    b.textContent = parts[0];
+    tip.appendChild(b);
+    tip.appendChild(document.createTextNode(parts.slice(1).join('\n')));
+    tip.hidden = false;
+    var w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, x + 14)) + 'px';
+    tip.style.top = (y + h + 24 > window.innerHeight ? y - h - 12 : y + 16) + 'px';
+  }
+  document.addEventListener('pointermove', function (e) {
+    var el = e.target.closest && e.target.closest('[data-tip]');
+    if (el) show(el, e.clientX, e.clientY); else tip.hidden = true;
+  });
+  document.addEventListener('focusin', function (e) {
+    var el = e.target.closest && e.target.closest('[data-tip]');
+    if (!el) return;
+    var r = el.getBoundingClientRect();
+    show(el, r.left + r.width / 2, r.bottom);
+  });
+  document.addEventListener('focusout', function () { tip.hidden = true; });
+})();
+</script>
+</body>
+</html>
