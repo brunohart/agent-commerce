@@ -12,6 +12,7 @@
     "value": "node src/cli.js value",
     "decision": "node src/cli.js decision",
     "report": "node src/cli.js report",
-    "demo": "node src/cli.js demo"
+    "demo": "node src/cli.js demo",
+    "jev:smoke": "node scripts/jev-smoke.js"
   }
 }

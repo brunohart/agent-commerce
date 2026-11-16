@@ -71,9 +71,10 @@ node src/cli.js trace      # one payment, two gateways, 1 second
 node src/cli.js decision   # the decision model under attack, about 15 seconds
 npm run demo               # everything above plus the full ranking
 npm run report             # regenerates docs/index.html, docs/results.json, docs/FAILURE-MODES.md
+TYPESAFE_API_KEY=... npm run jev:smoke   # one live call to Jev; needs a key and network
 ```
 
-The simulator and the tests use [`src/decision/simulated.js`](src/decision/simulated.js), a stand-in with dials for skill, calibration, latency, outage, drift and injection. [`src/decision/jev-client.js`](src/decision/jev-client.js) is the real HTTP client with the same interface; it reads `TYPESAFE_API_KEY` from the environment. It follows public quickstart material and has not been run against the live API.
+The simulator and the tests use [`src/decision/simulated.js`](src/decision/simulated.js), a stand-in with dials for skill, calibration, latency, outage, drift and injection. [`src/decision/jev-client.js`](src/decision/jev-client.js) is the real HTTP client with the same interface; it reads `TYPESAFE_API_KEY` (and optionally `TYPESAFE_BASE_URL`) from the environment. Its request and answer shapes are checked against [TypeSafe's API reference](https://docs.typesafe.ai/api), and a test holds the wire format to it. `npm run jev:smoke` lists the models your key can use and sends one real payment to the pinned model.
 
 ## How it fits together
 
@@ -151,7 +152,7 @@ Micro-settlement is a hold. It pays once unattended volume elasticity passes abo
 ## Limits
 
 - The decision model in every simulation is a stand-in, not Jev. How well Jev judges payments is unknown outside TypeSafe and its early-access customers. Its skill is a prior here, and the report shows how the answer moves with it.
-- The Jev client follows public quickstart material (endpoint, bearer auth, state plus typed questions, the yes/no `noul` type). I could not reach the primary API reference from the build environment, so field names are provisional.
+- The Jev client's request and answer shapes are checked against TypeSafe's API reference (16 November 2026). Until `npm run jev:smoke` has passed with a real key, treat it as unproven against the live model.
 - The other inputs are priors too. Windcave is privately held and I have no inside data.
 - The pipeline is a reference implementation. It implements none of the live agent-payment protocols and talks to no card network.
 - Dispute thresholds and penalties are illustrative. Each scheme's monitoring programme has its own definitions.

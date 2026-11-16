@@ -13,23 +13,31 @@
 //   Rules stay rules.    Signatures, caps, budgets and the ledger are never asked
 //                        of a model. They are checked, not estimated.
 //
-// Request shape follows TypeSafe's public quickstart material as of late 2026
-// (state + typed questions; "noul" is their yes/no type that returns a probability).
-// I could not reach the primary API reference from the environment this was built
-// in, so treat field names as provisional and check them against docs.typesafe.ai.
+// Request shape checked against TypeSafe's API reference (docs.typesafe.ai/api) on
+// 16 November 2026: each question is { type, instructions, criteria? }. "noul" is
+// their yes/no type; its optional criteria say what counts as true and as false, and
+// its answer is { type: "noul", noul: <probability of true> }. Model names are full
+// version IDs (GET /v1/models lists them); jev-latest is the moving alias.
 
-export const PINNED_MODEL = 'jev-1.13';
+export const PINNED_MODEL = 'jev-1.13.0';
 export const MOVING_ALIAS = 'jev-latest';
 
 export const QUESTIONS = {
   unauthorised: {
     type: 'noul',
-    question: 'Is this payment being made without the cardholder having authorised this agent to make it?',
+    instructions: 'This payment is being made without the cardholder having authorised this agent to make it.',
+    criteria: {
+      true: 'Nothing in the state shows the cardholder authorised this agent for this payment.',
+      false: 'The agent is verified and holds a verified mandate that covers a payment like this one.',
+    },
   },
   outside_mandate: {
     type: 'noul',
-    question:
-      'Does the item being bought fall outside what the mandate describes, even if the merchant category matches?',
+    instructions: 'The item being bought falls outside what the mandate describes, even if the merchant category matches.',
+    criteria: {
+      true: 'The item is not something the mandate purpose covers, such as a gift card on a grocery mandate.',
+      false: 'The item is a plausible part of what the mandate purpose describes.',
+    },
   },
 };
 
@@ -78,7 +86,9 @@ export function parseAnswers(body) {
   if (!answers || typeof answers !== 'object') return null;
   const p = {};
   for (const name of Object.keys(QUESTIONS)) {
-    const v = answers[name]?.noul;
+    const a = answers[name];
+    if (a?.type !== 'noul') return null;
+    const v = a.noul;
     if (typeof v !== 'number' || !(v >= 0 && v <= 1)) return null;
     p[name] = v;
   }

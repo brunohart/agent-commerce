@@ -2,21 +2,41 @@
 // against src/decision/simulated.js. This is the piece you would swap in for a
 // shadow-mode pilot: same interface, real model.
 //
-// It has NOT been run against the live API. I had no key and no route to
-// api.typesafe.ai from the build environment. The endpoint, auth and request shape
-// follow public quickstart material; the response is parsed defensively for that
-// reason. The key is read from the environment and never logged.
+// Endpoint, auth, request and answer shapes are checked against TypeSafe's API
+// reference (docs.typesafe.ai/api, 16 Nov 2026). To prove it against the live model,
+// run `npm run jev:smoke` with TYPESAFE_API_KEY set (scripts/jev-smoke.js). The key
+// is read from the environment and never logged.
+//
+// TYPESAFE_BASE_URL points it at a compatible gateway or test server instead; the
+// default is TypeSafe's own API.
 
 import { parseAnswers } from './request.js';
 
-const ENDPOINT = 'https://api.typesafe.ai/v1/systemone';
+const BASE_URL = process.env.TYPESAFE_BASE_URL || 'https://api.typesafe.ai';
 
 export class JevClient {
-  constructor({ apiKey = process.env.TYPESAFE_API_KEY, endpoint = ENDPOINT, fetchImpl = globalThis.fetch } = {}) {
+  constructor({
+    apiKey = process.env.TYPESAFE_API_KEY,
+    baseUrl = BASE_URL,
+    endpoint = `${baseUrl.replace(/\/+$/, '')}/v1/systemone`,
+    fetchImpl = globalThis.fetch,
+  } = {}) {
     if (!apiKey) throw new Error('TYPESAFE_API_KEY is not set');
     this.apiKey = apiKey;
+    this.baseUrl = baseUrl.replace(/\/+$/, '');
     this.endpoint = endpoint;
     this.fetch = fetchImpl;
+  }
+
+  /** Model names this key can use (GET /v1/models). For setup, not the payment path. */
+  async listModels() {
+    const res = await this.fetch(`${this.baseUrl}/v1/models`, {
+      headers: { authorization: `Bearer ${this.apiKey}` },
+    });
+    if (!res.ok) throw new Error(`GET /v1/models failed: http_${res.status}`);
+    const body = await res.json();
+    const list = Array.isArray(body) ? body : body?.data ?? body?.models ?? [];
+    return list.map((m) => (typeof m === 'string' ? m : m?.id ?? m?.name)).filter(Boolean);
   }
 
   /**
