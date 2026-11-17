@@ -42,7 +42,7 @@ It contains the model's stated probability and the calibrated one. A gateway tha
 
 Receipts are appended to a Merkle tree. A leaf is `SHA-256("leaf:" + SHA-256(canonical receipt))`. An interior node is `SHA-256("node:" + left + ":" + right)`. A node with no sibling is carried up unchanged.
 
-The gateway publishes the root at a fixed interval to a party it does not control. An inclusion proof is the list of sibling hashes from a leaf to the root: about 30 hashes for a billion receipts.
+The gateway publishes the root at a fixed interval to a party it does not control. An inclusion proof is the list of sibling hashes from a leaf to the root: about 20 hashes for a million receipts.
 
 ## Verification
 

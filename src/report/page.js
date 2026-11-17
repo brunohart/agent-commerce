@@ -301,9 +301,8 @@ const STAGES = [
 ];
 
 export function renderPage({ results, BETS, BET_KEYS, CONTROLS, FAILURE_MODES }) {
-  const { value, headline, brownout, ablation, modeCost, trace, meta, decision, thesis } = results;
-  const usd = (v) => (v >= 1e9 ? `US$${(v / 1e9).toFixed(1)}bn` : `US$${(v / 1e6).toFixed(0)}m`);
-  const claimMax = Math.max(...thesis.guarantee.map((g) => g.claimsBps));
+  const { value, headline, brownout, ablation, modeCost, trace, meta, decision, receipts } = results;
+  const claimMax = Math.max(...receipts.guarantee.map((g) => g.claimsBps));
   const exp = Object.fromEntries(decision.experiment.map((r) => [r.key, r]));
   const ex = decision.example;
   const groups = [...new Set(decision.experiment.map((r) => r.group))];
@@ -517,7 +516,7 @@ footer { border-top: 1px solid var(--rule); padding-top: 20px; font-size: 13.5px
   <p class="mantra">Making human-to-human transactions more valuable, more personable and more secure.</p>
   <p>An agent may carry the payment, but there is still a person who asked for something at one end and a person who provided it at the other. Everything here exists to keep their agreement intact while software stands between them.</p>
   <ul class="steps">
-    <li><span class="n">More valuable</span><p>More of the payments people actually meant go through: ${pct(exp.jev.completion)} of honest agent payments complete, against ${pct(exp.static.completion)} under today’s static rule. Merchant losses from agent disputes fall from ${thesis.guarantee[0].claimsBps.toFixed(0)} basis points of agent volume to ${thesis.claims.today.toFixed(0)}.</p></li>
+    <li><span class="n">More valuable</span><p>More of the payments people actually meant go through: ${pct(exp.jev.completion)} of honest agent payments complete, against ${pct(exp.static.completion)} under today’s static rule. Merchant losses from agent disputes fall from ${receipts.guarantee[0].claimsBps.toFixed(0)} basis points of agent volume to ${receipts.claims.today.toFixed(0)}.</p></li>
     <li><span class="n">More personable</span><p>The mandate is the person’s instruction in their own words. The one question put to the model is whether this purchase is what they meant, and every decision comes with its reasons.</p></li>
     <li><span class="n">More secure</span><p>The mandate is signed. What can be checked is checked by rule and never guessed. Every decision leaves a signed receipt that cannot be altered or written afterwards.</p></li>
   </ul>
@@ -691,25 +690,13 @@ value(bets) = E[ Σₜ intentsₜ × netPerIntent(bets, agentShareₜ, ticket) �
 
 <section>
   <div class="eyebrow">Beyond one gateway</div>
-  <h2>What it would take to be worth a billion</h2>
-  <p>Everything above values the stack on one gateway’s own traffic. That is a feature, and a feature is not worth a billion. It becomes worth more than the product it started in only if other people’s payments run through it. The part that can travel is the conformance receipt: a signed record, issued at authorisation, of the mandate, the pinned model, what it was asked, what it said and what the gateway did. It is committed to an append-only log, so it cannot be written after a dispute arrives.</p>
-  <p>Today no card network rule says who is liable when an agent buys the wrong thing. Disputes are won or lost on proving what the customer authorised the agent to do. A receipt is that proof. Whether it is worth anything to anyone else depends on whether the rules come to recognise it.</p>
-  <div class="figure"><h3>Agent-dispute claims, basis points of agent volume</h3><p class="muted">Merchant losses from disputes about authorisation or scope. A guarantee is only a business where this number is small.</p>
-    <div class="scroll"><table><tbody>${thesis.guarantee.map((g) => `<tr><th scope="row">${esc(g.label)}</th><td><div class="barcell"><div class="track"><span class="bar" style="width:${Math.max(0.6, (g.claimsBps / claimMax) * 100).toFixed(1)}%" tabindex="0" data-tip="${esc(`${g.label}\n${g.claimsBps.toFixed(0)} basis points of agent volume`)}"></span></div><span class="num">${g.claimsBps.toFixed(0)}</span></div></td></tr>`).join('')}</tbody></table></div>
+  <h2>The conformance receipt</h2>
+  <p>Everything above is worth what it is worth on one gateway’s own traffic. The part that can travel is the receipt: a signed record, issued at authorisation, of the mandate, the pinned model, what it was asked, what it said and what the gateway did. It is committed to an append-only log, so it cannot be altered or written after a dispute arrives. It carries hashes and not payment details, so it reveals nothing until the gateway chooses to reveal the state.</p>
+  <p>Today no card network rule says who is liable when an agent buys the wrong thing. Disputes are won or lost on proving what the customer authorised the agent to do. A receipt is that proof, made at the time.</p>
+  <div class="figure"><h3>Agent-dispute claims, basis points of agent volume</h3><p class="muted">Merchant losses from disputes about authorisation or scope.</p>
+    <div class="scroll"><table><tbody>${receipts.guarantee.map((g) => `<tr><th scope="row">${esc(g.label)}</th><td><div class="barcell"><div class="track"><span class="bar" style="width:${Math.max(0.6, (g.claimsBps / claimMax) * 100).toFixed(1)}%" tabindex="0" data-tip="${esc(`${g.label}\n${g.claimsBps.toFixed(0)} basis points of agent volume`)}"></span></div><span class="num">${g.claimsBps.toFixed(0)}</span></div></td></tr>`).join('')}</tbody></table></div>
   </div>
-  <p>The stack turns a loss rate nobody would insure, ${thesis.guarantee[0].claimsBps.toFixed(0)} basis points, into ${thesis.claims.today.toFixed(0)}. If rules recognise receipts it falls to ${thesis.claims.recognised.toFixed(0)}, and a guarantee priced at 40 basis points becomes a business. Under today’s rules it does not.</p>
-  <p>Two engines then scale with other people’s volume: a fee per receipt, and a fee for carrying agent-dispute losses on receipted payments. Both depend on one number nobody knows, which is the share of the world’s agent payments that carry this receipt. Across ${(20000).toLocaleString('en-NZ')} simulated worlds:</p>
-  <div class="stats">
-    <div class="stat"><b>${usd(thesis.all.p50)}</b><span>Median value, all worlds</span></div>
-    <div class="stat"><b>${pct(thesis.all.pOver1bn)}</b><span>Worlds in which it is worth a billion or more</span></div>
-    <div class="stat"><b>${pct(thesis.recognised.pOver1bn)}</b><span>If rules recognise receipts (median ${usd(thesis.recognised.p50)})</span></div>
-    <div class="stat"><b>${prob(thesis.today.pOver1bn)}</b><span>If rules stay as they are (median ${usd(thesis.today.p50)})</span></div>
-  </div>
-  <div class="figure"><h3>Share of global agent volume the receipt must carry to be worth US$1bn</h3><p class="muted">Every other input at its prior mode. Above 100% means it cannot be done at that market size.</p>
-    <div class="scroll"><table><thead><tr><th>Agent-executed volume, year five</th><th class="num">If rules recognise receipts</th><th class="num">Receipts a year</th><th class="num">If rules stay as they are</th></tr></thead>
-    <tbody>${thesis.required.recognised.map((r, i) => `<tr><th scope="row">US$${r.gmvTrillion}tn</th><td class="num">${pct(r.share, 1)}</td><td class="num">${r.receiptsBn.toFixed(1)}bn</td><td class="num">${thesis.required.today[i].reachable ? pct(thesis.required.today[i].share, 1) : 'not reachable'}</td></tr>`).join('')}</tbody></table></div>
-  </div>
-  <p>A billion is the tail and not the base case. It needs about ${thesis.required.recognised[0].receiptsBn.toFixed(1)} billion receipted agent payments a year in a world where the rules recognise them. That is a standard, not a product, and the work that moves the odds is done with schemes and issuers more than in code. The open specification is in <span class="mono">docs/RECEIPT-SPEC.md</span>.</p>
+  <p>The stack turns a loss rate of ${receipts.guarantee[0].claimsBps.toFixed(0)} basis points into ${receipts.claims.today.toFixed(0)}. If the rules come to recognise receipts as evidence, it falls to ${receipts.claims.recognised.toFixed(0)}. Whether a receipt is worth anything to anyone but the gateway that issued it depends on that recognition, which is why the format is published as an open specification in <span class="mono">docs/RECEIPT-SPEC.md</span> and not kept proprietary.</p>
 </section>
 
 <section>

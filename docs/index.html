@@ -755,29 +755,17 @@ At $3.7m: +$11.3m"><rect class="rowbg" x="0" y="236" width="900" height="32"/><t
 
 <section>
   <div class="eyebrow">Beyond one gateway</div>
-  <h2>What it would take to be worth a billion</h2>
-  <p>Everything above values the stack on one gateway’s own traffic. That is a feature, and a feature is not worth a billion. It becomes worth more than the product it started in only if other people’s payments run through it. The part that can travel is the conformance receipt: a signed record, issued at authorisation, of the mandate, the pinned model, what it was asked, what it said and what the gateway did. It is committed to an append-only log, so it cannot be written after a dispute arrives.</p>
-  <p>Today no card network rule says who is liable when an agent buys the wrong thing. Disputes are won or lost on proving what the customer authorised the agent to do. A receipt is that proof. Whether it is worth anything to anyone else depends on whether the rules come to recognise it.</p>
-  <div class="figure"><h3>Agent-dispute claims, basis points of agent volume</h3><p class="muted">Merchant losses from disputes about authorisation or scope. A guarantee is only a business where this number is small.</p>
+  <h2>The conformance receipt</h2>
+  <p>Everything above is worth what it is worth on one gateway’s own traffic. The part that can travel is the receipt: a signed record, issued at authorisation, of the mandate, the pinned model, what it was asked, what it said and what the gateway did. It is committed to an append-only log, so it cannot be altered or written after a dispute arrives. It carries hashes and not payment details, so it reveals nothing until the gateway chooses to reveal the state.</p>
+  <p>Today no card network rule says who is liable when an agent buys the wrong thing. Disputes are won or lost on proving what the customer authorised the agent to do. A receipt is that proof, made at the time.</p>
+  <div class="figure"><h3>Agent-dispute claims, basis points of agent volume</h3><p class="muted">Merchant losses from disputes about authorisation or scope.</p>
     <div class="scroll"><table><tbody><tr><th scope="row">Today’s gateway</th><td><div class="barcell"><div class="track"><span class="bar" style="width:99.5%" tabindex="0" data-tip="Today’s gateway
 478 basis points of agent volume"></span></div><span class="num">478</span></div></td></tr><tr><th scope="row">Rails only</th><td><div class="barcell"><div class="track"><span class="bar" style="width:100.0%" tabindex="0" data-tip="Rails only
 480 basis points of agent volume"></span></div><span class="num">480</span></div></td></tr><tr><th scope="row">Full stack, today’s rules</th><td><div class="barcell"><div class="track"><span class="bar" style="width:8.0%" tabindex="0" data-tip="Full stack, today’s rules
 38 basis points of agent volume"></span></div><span class="num">38</span></div></td></tr><tr><th scope="row">Full stack, receipts recognised</th><td><div class="barcell"><div class="track"><span class="bar" style="width:2.5%" tabindex="0" data-tip="Full stack, receipts recognised
 12 basis points of agent volume"></span></div><span class="num">12</span></div></td></tr></tbody></table></div>
   </div>
-  <p>The stack turns a loss rate nobody would insure, 478 basis points, into 38. If rules recognise receipts it falls to 12, and a guarantee priced at 40 basis points becomes a business. Under today’s rules it does not.</p>
-  <p>Two engines then scale with other people’s volume: a fee per receipt, and a fee for carrying agent-dispute losses on receipted payments. Both depend on one number nobody knows, which is the share of the world’s agent payments that carry this receipt. Across 20,000 simulated worlds:</p>
-  <div class="stats">
-    <div class="stat"><b>US$34m</b><span>Median value, all worlds</span></div>
-    <div class="stat"><b>5%</b><span>Worlds in which it is worth a billion or more</span></div>
-    <div class="stat"><b>12%</b><span>If rules recognise receipts (median US$181m)</span></div>
-    <div class="stat"><b><1%</b><span>If rules stay as they are (median US$12m)</span></div>
-  </div>
-  <div class="figure"><h3>Share of global agent volume the receipt must carry to be worth US$1bn</h3><p class="muted">Every other input at its prior mode. Above 100% means it cannot be done at that market size.</p>
-    <div class="scroll"><table><thead><tr><th>Agent-executed volume, year five</th><th class="num">If rules recognise receipts</th><th class="num">Receipts a year</th><th class="num">If rules stay as they are</th></tr></thead>
-    <tbody><tr><th scope="row">US$0.3tn</th><td class="num">43.6%</td><td class="num">1.6bn</td><td class="num">not reachable</td></tr><tr><th scope="row">US$0.5tn</th><td class="num">26.1%</td><td class="num">1.6bn</td><td class="num">not reachable</td></tr><tr><th scope="row">US$1tn</th><td class="num">13.1%</td><td class="num">1.6bn</td><td class="num">83.3%</td></tr><tr><th scope="row">US$2tn</th><td class="num">6.5%</td><td class="num">1.6bn</td><td class="num">41.7%</td></tr><tr><th scope="row">US$3tn</th><td class="num">4.4%</td><td class="num">1.6bn</td><td class="num">27.8%</td></tr></tbody></table></div>
-  </div>
-  <p>A billion is the tail and not the base case. It needs about 1.6 billion receipted agent payments a year in a world where the rules recognise them. That is a standard, not a product, and the work that moves the odds is done with schemes and issuers more than in code. The open specification is in <span class="mono">docs/RECEIPT-SPEC.md</span>.</p>
+  <p>The stack turns a loss rate of 478 basis points into 38. If the rules come to recognise receipts as evidence, it falls to 12. Whether a receipt is worth anything to anyone but the gateway that issued it depends on that recognition, which is why the format is published as an open specification in <span class="mono">docs/RECEIPT-SPEC.md</span> and not kept proprietary.</p>
 </section>
 
 <section>

@@ -2,7 +2,6 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createGatewayKey, issueReceipt, verifyReceipt, receiptLeaf, stable } from '../src/receipt/receipt.js';
 import { ReceiptLog, verifyInclusion } from '../src/receipt/log.js';
-import { evaluateThesis, thesisMonteCarlo, requiredShare, THESIS_PRIORS } from '../src/value/thesis.js';
 import { Gateway } from '../src/gateway/pipeline.js';
 import { GuardedDecider } from '../src/decision/guard.js';
 import { PINNED_MODEL } from '../src/decision/request.js';
@@ -124,41 +123,4 @@ test('sim: when the rules recognise receipts, the stack’s agent-dispute claims
     return claims;
   };
   assert.ok(run({ evidenceRecognised: true }) < run({}) * 0.8);
-});
-
-// --- The thesis model --------------------------------------------------------------
-const world = {
-  gmv: 1e12, ticket: 80, share: 0.02, receiptFee: 0.01, receiptMargin: 0.8, attach: 0.3,
-  feeBps: 40, claimsBps: 12, opexShare: 0.25, multiple: 12,
-};
-
-test('thesis: value scales with share, and a loss-making guarantee is not sold', () => {
-  const a = evaluateThesis(world);
-  assert.ok(Math.abs(evaluateThesis({ ...world, share: 0.04 }).value / a.value - 2) < 1e-9);
-  const bad = evaluateThesis({ ...world, claimsBps: 500 });
-  assert.ok(bad.guaranteeProfit < 0);
-  assert.equal(bad.profit, bad.receiptProfit, 'the guarantee contributes nothing, not a loss');
-});
-
-test('thesis: the required share is the share at which value equals the target', () => {
-  const claims = { today: 38, recognised: 12 };
-  const mode = (k) => THESIS_PRIORS[k][1];
-  for (const row of requiredShare(claims)) {
-    const v = evaluateThesis({
-      gmv: row.gmvTrillion * 1e12, share: row.share, ticket: mode('averageTicket'), receiptFee: mode('receiptFee'),
-      receiptMargin: mode('receiptMargin'), attach: mode('guaranteeAttach'), feeBps: mode('guaranteeFeeBps'),
-      claimsBps: 12, opexShare: mode('guaranteeOpexShare'), multiple: mode('profitMultiple'),
-    }).value;
-    if (row.reachable) assert.ok(Math.abs(v / 1e9 - 1) < 1e-6);
-  }
-});
-
-test('thesis: reproducible, and the billion lives in the world where rules recognise receipts', () => {
-  const claims = { today: 38, recognised: 12 };
-  const a = thesisMonteCarlo(claims, { draws: 4000, seed: 5 });
-  const b = thesisMonteCarlo(claims, { draws: 4000, seed: 5 });
-  assert.equal(a.all.mean, b.all.mean);
-  assert.ok(a.recognised.p50 > a.today.p50 * 3);
-  assert.ok(a.recognised.pOver1bn > a.today.pOver1bn);
-  assert.ok(a.all.pOver1bn < 0.5, 'a billion is the tail, not the base case');
 });

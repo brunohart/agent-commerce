@@ -181,27 +181,19 @@ What the stack does to merchant losses from disputes about authorisation or scop
 
 A loss rate of 478 basis points cannot be insured. One of 12 can.
 
-**Is it worth a billion?** In about one world in twenty. Two engines scale with other people's payments: a fee per receipt, and a fee for carrying agent-dispute losses on receipted payments. Across 20,000 simulated worlds, in US dollars:
-
-| | Median value | Worth US$100m or more | Worth US$1bn or more |
-|---|---:|---:|---:|
-| All worlds | US$34m | 31% | 4.8% |
-| Rules come to recognise receipts | US$181m | 67% | 11.8% |
-| Rules stay as they are | US$12m | 7% | 0.0% |
-
-A billion needs about 1.6 billion receipted agent payments a year, in a world where the rules recognise them. That is a standard and not a product. [`docs/THESIS.md`](docs/THESIS.md) says what moves the odds and what would kill it.
+Whether a receipt is worth anything to anyone but the gateway that issued it depends on whether the rules come to recognise it. That is why the format is an open specification and not a proprietary one. [`docs/THESIS.md`](docs/THESIS.md) says what recognition would take and what would stop it.
 
 ## Run it
 
 Node 20 or later. No dependencies, nothing to install. Everything except `measure` runs offline.
 
 ```bash
-npm test                   # 75 tests, about 3 seconds
+npm test                   # 72 tests, about 3 seconds
 node src/cli.js trace      # one payment, two gateways, 1 second
 node src/cli.js decision   # the decision layer under attack
 node src/cli.js measure    # run the real Jev on 234 labelled payments (needs TYPESAFE_API_KEY)
 node src/cli.js receipt    # issue a conformance receipt, verify it, tamper with it, prove inclusion
-node src/cli.js thesis     # what it would take to be worth a billion
+node src/cli.js claims     # agent-dispute losses with and without the stack
 npm run demo               # trace, scenarios, decision layer and the full ranking
 npm run report             # regenerates docs/index.html, docs/results.json, docs/FAILURE-MODES.md
 ```
@@ -219,8 +211,8 @@ src/gateway/    src/decision/    src/sim/           src/value/
 the pipeline    Jev              fault injection    what it is worth
 ────────────    ─────────────    ──────────────     ──────────────────
 mandate.js      request.js       simulate.js        surface.js
-idempotency.js  jev-client.js    failure-modes.js   model.js    one gateway
-risk.js         guard.js         scenarios.js       thesis.js   beyond it
+idempotency.js  jev-client.js    failure-modes.js   model.js
+risk.js         guard.js         scenarios.js
 ledger.js       calibration.js
 pipeline.js     cases.js, measure.js     src/receipt/
                 simulated.js             receipt.js, log.js
@@ -276,7 +268,6 @@ Micro-settlement is a hold. Within my prior range for unattended volume elastici
 | The state and the two Nouls Jev is sent | [`src/decision/request.js`](src/decision/request.js) |
 | What Jev actually answered | [`docs/jev-measured.json`](docs/jev-measured.json), [`src/decision/cases.js`](src/decision/cases.js) |
 | The receipt format and how to verify one | [`docs/RECEIPT-SPEC.md`](docs/RECEIPT-SPEC.md), [`src/receipt/`](src/receipt/), [`test/receipt.test.js`](test/receipt.test.js) |
-| The billion-dollar arithmetic and its priors | [`src/value/thesis.js`](src/value/thesis.js) |
 | What stands between the model and the money | [`src/decision/guard.js`](src/decision/guard.js), [`test/decision.test.js`](test/decision.test.js) |
 | Whether the pipeline is real | [`src/gateway/pipeline.js`](src/gateway/pipeline.js), [`test/gateway.test.js`](test/gateway.test.js) |
 | How failures are injected and priced | [`src/sim/simulate.js`](src/sim/simulate.js) |
@@ -290,7 +281,7 @@ Micro-settlement is a hold. Within my prior range for unattended volume elastici
 - Only one of the two Nouls could be scored. Every test payment was authorised, so `unauthorised` has no positive cases here.
 - Only the Noul primitive is used. Choice, Score and Box are untested here, as are images in the state.
 - Latency was measured from a cloud build environment, not from a gateway's own network.
-- The billion-dollar figure is a probability under priors I chose for market size, share, price and the chance that rules recognise receipts. A different person would choose different ones. The receipt has no standing with any card network.
+- The receipt has no standing with any card network, regulator or standards body.
 - The description of network rules comes from merchant-facing commentary, not the rulebooks.
 - The other inputs are priors. Windcave is privately held and I have no inside data.
 - The pipeline is a reference implementation. It implements none of the live agent-payment protocols and talks to no card network.

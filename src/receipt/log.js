@@ -3,7 +3,7 @@
 // The gateway publishes one 64-character root per period (to a scheme, a regulator,
 // a public page). After that it cannot add, remove or alter a receipt from that
 // period without the root changing. An inclusion proof for one receipt is a handful
-// of hashes: log2(n) of them, about 30 for a billion receipts.
+// of hashes: log2(n) of them, about 20 for a million receipts.
 
 import { sha256 } from './receipt.js';
 

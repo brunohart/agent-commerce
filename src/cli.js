@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-// node src/cli.js <trace|sim|ablation|decision|measure|receipt|value|thesis|report|demo>
+// node src/cli.js <trace|sim|ablation|decision|measure|receipt|claims|value|report|demo>
 
 import { headline, trace, ablation, decisionExperiment, skillSweep, guarantee } from './sim/scenarios.js';
-import { thesisMonteCarlo, requiredShare } from './value/thesis.js';
 import { buildSurface } from './value/surface.js';
 import { monteCarlo, sequence, sensitivity, breakeven } from './value/model.js';
 import { BETS, BET_KEYS, CONTROLS } from './assumptions.js';
@@ -128,21 +127,10 @@ async function cmdReceipt() {
   console.log(`  a receipt written after the fact:          inclusion ${verifyInclusion(receiptLeaf({ ...receipt, action: 'approve' }), proof, root)}`);
 }
 
-function cmdThesis() {
-  rule('What it would take to be worth a billion (US$)');
-  const usd = (v) => (v >= 1e9 ? `$${(v / 1e9).toFixed(1)}bn` : `$${(v / 1e6).toFixed(0)}m`);
-  const g = guarantee();
-  console.log('  Agent-dispute claims, basis points of agent volume:');
-  for (const r of g) console.log(`    ${pad(r.label, 36)} ${lpad(r.claimsBps.toFixed(0), 5)} bps`);
-  const claims = { today: g.find((x) => x.key === 'core').claimsBps, recognised: g.find((x) => x.key === 'recognised').claimsBps };
-  const mc = thesisMonteCarlo(claims);
-  console.log(`\n  ${mc.draws.toLocaleString('en-NZ')} worlds. Value of the receipt network and the dispute guarantee:`);
-  console.log(`    ${pad('', 26)}${lpad('median', 9)}${lpad('p90', 9)}${lpad('P(>$100m)', 11)}${lpad('P(>$1bn)', 10)}`);
-  for (const [label, s] of [['all worlds', mc.all], ['rules recognise receipts', mc.recognised], ['rules stay as they are', mc.today]]) {
-    console.log(`    ${pad(label, 26)}${lpad(usd(s.p50), 9)}${lpad(usd(s.p90), 9)}${lpad(pct(s.pOver100m), 11)}${lpad(pct(s.pOver1bn), 10)}`);
-  }
-  console.log('\n  Share of global agent volume the receipt must carry for $1bn, if rules recognise it:');
-  for (const r of requiredShare(claims)) console.log(`    $${r.gmvTrillion}tn market: ${pct(r.share, 1)}  (${r.receiptsBn.toFixed(1)}bn receipts a year)`);
+function cmdClaims() {
+  rule('Agent-dispute claims, basis points of agent volume');
+  console.log('  Merchant losses from disputes about authorisation or scope.\n');
+  for (const r of guarantee()) console.log(`    ${pad(r.label, 36)} ${lpad(r.claimsBps.toFixed(0), 5)} bps`);
 }
 
 async function cmdMeasure() {
@@ -204,7 +192,7 @@ const commands = {
   decision: cmdDecision,
   measure: cmdMeasure,
   receipt: cmdReceipt,
-  thesis: cmdThesis,
+  claims: cmdClaims,
   report: cmdReport,
   demo: () => {
     cmdTrace();
