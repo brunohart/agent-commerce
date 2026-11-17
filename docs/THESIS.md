@@ -2,6 +2,12 @@
 
 *Independent work. Not affiliated with Windcave or TypeSafe AI. Jev's behaviour is measured from 234 real API calls on synthetic labelled payments. Every other number is a stated prior in `src/assumptions.js` or `src/value/thesis.js`. Market figures are in US dollars because their sources are; the gateway model is in NZ dollars.*
 
+## What this is for
+
+Making human-to-human transactions more valuable, more personable and more secure.
+
+An agent may carry the payment, but there is still a person who asked for something at one end and a person who provided it at the other. When software stands between them, three things are at risk: that the purchase is not what the first person meant, that the second person is not paid for what they provided, and that neither can show afterwards what was agreed. The rest of this document is about closing those three gaps, and about what closing them is worth.
+
 ## The claim
 
 There is a gap in the rules of card payments, and it is open right now. When an agent buys something its human did not mean it to buy, no card network rule says who pays. The party that can produce proof, made at the time of the payment, of what the human authorised and that the purchase was checked against it, wins those disputes today and is positioned to define the evidence standard when the rules are written.

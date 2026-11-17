@@ -404,6 +404,7 @@ h1 { font: 600 clamp(32px, 6vw, 52px)/1.05 var(--display); letter-spacing: -0.01
 h2 { font: 600 26px/1.15 var(--display); margin: 0; text-wrap: balance }
 h3 { font: 600 15px/1.3 var(--body); margin: 0 }
 .eyebrow { font: 500 12px/1.4 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3) }
+.mantra { font: 600 22px/1.3 var(--display); color: var(--accent); max-width: 30ch; text-wrap: balance }
 .lead { font-size: 19px; line-height: 1.5; color: var(--ink) }
 .muted { color: var(--ink-2); font-size: 14px }
 .mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums }
@@ -513,6 +514,13 @@ footer { border-top: 1px solid var(--rule); padding-top: 20px; font-size: 13.5px
 <header>
   <div class="eyebrow">Independent project · not affiliated with Windcave or TypeSafe AI · illustrative priors, not company data</div>
   <h1>What agentic commerce is worth to a gateway, after everything that breaks</h1>
+  <p class="mantra">Making human-to-human transactions more valuable, more personable and more secure.</p>
+  <p>An agent may carry the payment, but there is still a person who asked for something at one end and a person who provided it at the other. Everything here exists to keep their agreement intact while software stands between them.</p>
+  <ul class="steps">
+    <li><span class="n">More valuable</span><p>More of the payments people actually meant go through: ${pct(exp.jev.completion)} of honest agent payments complete, against ${pct(exp.static.completion)} under today’s static rule. Merchant losses from agent disputes fall from ${thesis.guarantee[0].claimsBps.toFixed(0)} basis points of agent volume to ${thesis.claims.today.toFixed(0)}.</p></li>
+    <li><span class="n">More personable</span><p>The mandate is the person’s instruction in their own words. The one question put to the model is whether this purchase is what they meant, and every decision comes with its reasons.</p></li>
+    <li><span class="n">More secure</span><p>The mandate is signed. What can be checked is checked by rule and never guessed. Every decision leaves a signed receipt that cannot be altered or written afterwards.</p></li>
+  </ul>
   <p class="lead">When software starts buying on people’s behalf, a payment gateway gets more transactions, smaller ones, and a set of failures it has never had to price. This project puts Jev, TypeSafe AI’s decision model, at the one point in a payment where a rule cannot decide, for a gateway shaped like Windcave’s (online checkout plus a large unattended estate). Then it breaks the whole thing on purpose and works out what to build and in what order.</p>
   <p>The answer the model gives: build <strong>${esc(order.map((s) => BETS[s.bet].label.toLowerCase()).join(', then '))}</strong>. Agent-ready rails on their own lose money in ${pct(railsOnly.pLoss)} of simulated worlds, because they bring in the volume and its failure modes together. Micro-settlement is a real option and the model says when to exercise it.</p>
   <div class="stats">

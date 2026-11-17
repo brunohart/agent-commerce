@@ -1,7 +1,7 @@
 {
   "name": "agent-commerce",
   "version": "0.1.0",
-  "description": "A failure-first decision model for agentic commerce at the payment edge. Independent personal project.",
+  "description": "Making human-to-human transactions more valuable, more personable and more secure. A System One decision layer and conformance receipt for agent payments. Independent personal project.",
   "type": "module",
   "private": true,
   "license": "MIT",

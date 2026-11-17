@@ -1,5 +1,13 @@
 # agent-commerce
 
+**Making human-to-human transactions more valuable, more personable and more secure.**
+
+An agent may carry the payment, but there is still a person who asked for something at one end and a person who provided it at the other. Everything in this repo exists to keep their agreement intact while software stands between them.
+
+- **More valuable.** More of the payments people actually meant go through. With the full stack, 83% of honest agent payments complete, against 78% under today's static rule, and merchant losses from agent disputes fall from 478 basis points of agent volume to 38.
+- **More personable.** The mandate is the person's instruction in their own words: "the weekly household shop". The one question put to the model is whether this purchase is what they meant. Every decision comes with its reasons, so a decline can be explained to the person it affected.
+- **More secure.** The person's mandate is signed. What can be checked is checked by rule and never guessed. Every decision leaves a signed receipt that cannot be altered or written afterwards.
+
 A System One model in the payment path, and the receipt it makes possible: Jev's Noul primitive as the decision layer of an agent-payment gateway, measured on the real model, attacked on purpose, and priced.
 
 When software starts buying on people's behalf, a gateway gets more transactions, smaller ones, and a set of failures it has never had to price. Most of an agent payment can be checked by rule. One part cannot: whether the purchase is what the human actually meant. This repo gives that one judgement to [Jev](https://typesafe.ai/), TypeSafe AI's System One model, inside a working payment pipeline, and then works out what a gateway shaped like Windcave's (online checkout plus a large unattended estate) should build, and in what order.
