@@ -193,6 +193,12 @@ export const BEHAVIOUR = {
   friendlyFraudRate: 0.004, // "I never told my agent to buy that"
   friendlyFraudWinWithEvidence: 0.75,
   friendlyFraudWinWithout: 0.2,
+  // The rules regime. Today no network rule allocates liability when an agent buys
+  // the wrong thing. `evidenceRecognised` is the world in which rules come to accept
+  // a conformance receipt as compelling evidence that the purchase was in scope.
+  evidenceRecognised: false,
+  recognisedFriendlyWin: 0.92,
+  recognisedDriftWin: 0.7,
 };
 
 // ---------------------------------------------------------------------------

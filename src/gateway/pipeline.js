@@ -15,6 +15,8 @@ import { attest, checkScope } from './mandate.js';
 import { IdempotencyStore, intentKey, fingerprint } from './idempotency.js';
 import { decide } from './risk.js';
 import { Ledger } from './ledger.js';
+import { issueReceipt, receiptLeaf } from '../receipt/receipt.js';
+import { ReceiptLog } from '../receipt/log.js';
 
 export const CORE_DIALECTS = ['core'];
 export const ADAPTER_DIALECTS = ['core', 'common'];
@@ -32,7 +34,7 @@ export class Gateway {
    * @param {import('../decision/guard.js').GuardedDecider} [deps.decider]
    * @param {boolean} [deps.unattended]
    */
-  constructor({ controls, registry, world, economics, behaviour, now, decider = null, unattended = false }) {
+  constructor({ controls, registry, world, economics, behaviour, now, decider = null, unattended = false, receiptKey = null }) {
     this.controls = controls;
     this.registry = registry;
     this.world = world;
@@ -42,6 +44,12 @@ export class Gateway {
     this.decider = decider;
     this.unattended = unattended;
     this.lastDecision = null;
+    // With a signing key, every model-backed decision leaves a conformance receipt
+    // in an append-only log. The bulk simulator runs without one for speed and
+    // accounts for receipts through the mandateEvidence control.
+    this.receiptKey = receiptKey;
+    this.receiptLog = new ReceiptLog();
+    this.receipts = new Map(); // payment id -> { receipt, index }
     this.dialects = new Set(controls.protocolAdapter ? ADAPTER_DIALECTS : CORE_DIALECTS);
     this.idem = new IdempotencyStore();
     this.ledger = new Ledger();
@@ -170,6 +178,15 @@ export class Gateway {
           stepUpCompletion: this.world.expectedChallengeCompletion(req, c.delegatedSca),
           stepUpCatch: 0.9,
         });
+        if (this.receiptKey && c.mandateEvidence && req.mandate) {
+          const paymentId = `${req.intentId}#${req.attempt}`;
+          const receipt = issueReceipt({
+            key: this.receiptKey, paymentId, issuedAt: this.now(), mandate: req.mandate,
+            wire: this.decider.request(req, { attested, mandateVerified, spent, unattended: this.unattended }).wire,
+            answer: j, decision: d,
+          });
+          this.receipts.set(paymentId, { receipt, index: this.receiptLog.append(receiptLeaf(receipt)) });
+        }
         if (d.action === 'decline') return finish(out('declined', 'risk_decline', 'risk', { ev: d.ev, pBad }));
         if (d.action === 'step_up') {
           if (!this.world.challenge(req, c.delegatedSca)) {
