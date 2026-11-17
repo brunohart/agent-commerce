@@ -580,6 +580,184 @@
    "full": 0
   }
  },
+ "thesis": {
+  "guarantee": [
+   {
+    "key": "naive",
+    "label": "Today’s gateway",
+    "claimsBps": 477.644718
+   },
+   {
+    "key": "railsOnly",
+    "label": "Rails only",
+    "claimsBps": 480.115516
+   },
+   {
+    "key": "core",
+    "label": "Full stack, today’s rules",
+    "claimsBps": 38.176388
+   },
+   {
+    "key": "recognised",
+    "label": "Full stack, receipts recognised",
+    "claimsBps": 12.073038
+   }
+  ],
+  "claims": {
+   "today": 38.176388,
+   "recognised": 12.073038
+  },
+  "all": {
+   "n": 20000,
+   "mean": 199811139.24789,
+   "p10": 2904507.879132,
+   "p50": 34232888.383222,
+   "p90": 494285244.325844,
+   "p99": 2584986757.554618,
+   "pOver100m": 0.3121,
+   "pOver1bn": 0.04825
+  },
+  "recognised": {
+   "n": 8157,
+   "mean": 444666295.953766,
+   "p10": 30242703.59393,
+   "p50": 181169420.574455,
+   "p90": 1141163134.474331,
+   "p99": 3694613814.591474,
+   "pOver100m": 0.665931,
+   "pOver1bn": 0.118058
+  },
+  "today": {
+   "n": 11843,
+   "mean": 31164384.772687,
+   "p10": 1880272.06124,
+   "p50": 11801665.42889,
+   "p90": 75722722.567524,
+   "p99": 286376572.721189,
+   "pOver100m": 0.068395,
+   "pOver1bn": 0.000169
+  },
+  "receiptShareOfProfit": 0.626933,
+  "required": {
+   "recognised": [
+    {
+     "gmvTrillion": 0.3,
+     "share": 0.435519,
+     "receiptsBn": 1.633196,
+     "reachable": true
+    },
+    {
+     "gmvTrillion": 0.5,
+     "share": 0.261311,
+     "receiptsBn": 1.633196,
+     "reachable": true
+    },
+    {
+     "gmvTrillion": 1,
+     "share": 0.130656,
+     "receiptsBn": 1.633196,
+     "reachable": true
+    },
+    {
+     "gmvTrillion": 2,
+     "share": 0.065328,
+     "receiptsBn": 1.633196,
+     "reachable": true
+    },
+    {
+     "gmvTrillion": 3,
+     "share": 0.043552,
+     "receiptsBn": 1.633196,
+     "reachable": true
+    }
+   ],
+   "today": [
+    {
+     "gmvTrillion": 0.3,
+     "share": 2.777778,
+     "receiptsBn": 10.416667,
+     "reachable": false
+    },
+    {
+     "gmvTrillion": 0.5,
+     "share": 1.666667,
+     "receiptsBn": 10.416667,
+     "reachable": false
+    },
+    {
+     "gmvTrillion": 1,
+     "share": 0.833333,
+     "receiptsBn": 10.416667,
+     "reachable": true
+    },
+    {
+     "gmvTrillion": 2,
+     "share": 0.416667,
+     "receiptsBn": 10.416667,
+     "reachable": true
+    },
+    {
+     "gmvTrillion": 3,
+     "share": 0.277778,
+     "receiptsBn": 10.416667,
+     "reachable": true
+    }
+   ]
+  },
+  "priors": {
+   "agentGmvTrillion": [
+    0.3,
+    1,
+    3
+   ],
+   "averageTicket": [
+    40,
+    80,
+    150
+   ],
+   "shareLog10": [
+    -3.5,
+    -2.3,
+    -1
+   ],
+   "receiptFee": [
+    0.003,
+    0.01,
+    0.03
+   ],
+   "receiptMargin": [
+    0.6,
+    0.8,
+    0.9
+   ],
+   "guaranteeAttach": [
+    0.1,
+    0.3,
+    0.6
+   ],
+   "guaranteeFeeBps": [
+    20,
+    40,
+    70
+   ],
+   "claimsMultiplier": [
+    0.6,
+    1,
+    1.8
+   ],
+   "guaranteeOpexShare": [
+    0.15,
+    0.25,
+    0.4
+   ],
+   "pRulesRecognise": 0.4,
+   "profitMultiple": [
+    8,
+    12,
+    18
+   ]
+  }
+ },
  "decision": {
   "experiment": [
    {

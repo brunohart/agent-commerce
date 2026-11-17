@@ -301,7 +301,9 @@ const STAGES = [
 ];
 
 export function renderPage({ results, BETS, BET_KEYS, CONTROLS, FAILURE_MODES }) {
-  const { value, headline, brownout, ablation, modeCost, trace, meta, decision } = results;
+  const { value, headline, brownout, ablation, modeCost, trace, meta, decision, thesis } = results;
+  const usd = (v) => (v >= 1e9 ? `US$${(v / 1e9).toFixed(1)}bn` : `US$${(v / 1e6).toFixed(0)}m`);
+  const claimMax = Math.max(...thesis.guarantee.map((g) => g.claimsBps));
   const exp = Object.fromEntries(decision.experiment.map((r) => [r.key, r]));
   const ex = decision.example;
   const groups = [...new Set(decision.experiment.map((r) => r.group))];
@@ -677,6 +679,29 @@ value(bets) = E[ Σₜ intentsₜ × netPerIntent(bets, agentShareₜ, ticket) �
   <h2>Every failure mode, priced</h2>
   <p>Cost is gateway cost plus merchant loss plus lost sales, per 1,000 purchase intents, averaged over both segments. Two entries have no mitigation in this model and one exists only because a control was added. Those are listed on purpose. The figures are at normal issuer conditions, where the retry storm and the dispute-ratio cliff cost nothing. The brownout section shows what they do under stress.</p>
   <div class="figure"><div class="scroll"><table><thead><tr><th>ID</th><th>Failure mode</th><th>Trigger</th><th>Addressed by</th><th class="num">Today</th><th class="num">Recommended</th></tr></thead><tbody>${registerRows}</tbody></table></div></div>
+</section>
+
+<section>
+  <div class="eyebrow">Beyond one gateway</div>
+  <h2>What it would take to be worth a billion</h2>
+  <p>Everything above values the stack on one gateway’s own traffic. That is a feature, and a feature is not worth a billion. It becomes worth more than the product it started in only if other people’s payments run through it. The part that can travel is the conformance receipt: a signed record, issued at authorisation, of the mandate, the pinned model, what it was asked, what it said and what the gateway did. It is committed to an append-only log, so it cannot be written after a dispute arrives.</p>
+  <p>Today no card network rule says who is liable when an agent buys the wrong thing. Disputes are won or lost on proving what the customer authorised the agent to do. A receipt is that proof. Whether it is worth anything to anyone else depends on whether the rules come to recognise it.</p>
+  <div class="figure"><h3>Agent-dispute claims, basis points of agent volume</h3><p class="muted">Merchant losses from disputes about authorisation or scope. A guarantee is only a business where this number is small.</p>
+    <div class="scroll"><table><tbody>${thesis.guarantee.map((g) => `<tr><th scope="row">${esc(g.label)}</th><td><div class="barcell"><div class="track"><span class="bar" style="width:${Math.max(0.6, (g.claimsBps / claimMax) * 100).toFixed(1)}%" tabindex="0" data-tip="${esc(`${g.label}\n${g.claimsBps.toFixed(0)} basis points of agent volume`)}"></span></div><span class="num">${g.claimsBps.toFixed(0)}</span></div></td></tr>`).join('')}</tbody></table></div>
+  </div>
+  <p>The stack turns a loss rate nobody would insure, ${thesis.guarantee[0].claimsBps.toFixed(0)} basis points, into ${thesis.claims.today.toFixed(0)}. If rules recognise receipts it falls to ${thesis.claims.recognised.toFixed(0)}, and a guarantee priced at 40 basis points becomes a business. Under today’s rules it does not.</p>
+  <p>Two engines then scale with other people’s volume: a fee per receipt, and a fee for carrying agent-dispute losses on receipted payments. Both depend on one number nobody knows, which is the share of the world’s agent payments that carry this receipt. Across ${(20000).toLocaleString('en-NZ')} simulated worlds:</p>
+  <div class="stats">
+    <div class="stat"><b>${usd(thesis.all.p50)}</b><span>Median value, all worlds</span></div>
+    <div class="stat"><b>${pct(thesis.all.pOver1bn)}</b><span>Worlds in which it is worth a billion or more</span></div>
+    <div class="stat"><b>${pct(thesis.recognised.pOver1bn)}</b><span>If rules recognise receipts (median ${usd(thesis.recognised.p50)})</span></div>
+    <div class="stat"><b>${prob(thesis.today.pOver1bn)}</b><span>If rules stay as they are (median ${usd(thesis.today.p50)})</span></div>
+  </div>
+  <div class="figure"><h3>Share of global agent volume the receipt must carry to be worth US$1bn</h3><p class="muted">Every other input at its prior mode. Above 100% means it cannot be done at that market size.</p>
+    <div class="scroll"><table><thead><tr><th>Agent-executed volume, year five</th><th class="num">If rules recognise receipts</th><th class="num">Receipts a year</th><th class="num">If rules stay as they are</th></tr></thead>
+    <tbody>${thesis.required.recognised.map((r, i) => `<tr><th scope="row">US$${r.gmvTrillion}tn</th><td class="num">${pct(r.share, 1)}</td><td class="num">${r.receiptsBn.toFixed(1)}bn</td><td class="num">${thesis.required.today[i].reachable ? pct(thesis.required.today[i].share, 1) : 'not reachable'}</td></tr>`).join('')}</tbody></table></div>
+  </div>
+  <p>A billion is the tail and not the base case. It needs about ${thesis.required.recognised[0].receiptsBn.toFixed(1)} billion receipted agent payments a year in a world where the rules recognise them. That is a standard, not a product, and the work that moves the odds is done with schemes and issuers more than in code. The open specification is in <span class="mono">docs/RECEIPT-SPEC.md</span>.</p>
 </section>
 
 <section>
