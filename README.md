@@ -273,6 +273,8 @@ Micro-settlement is a hold. Within my prior range for unattended volume elastici
 | How failures are injected and priced | [`src/sim/simulate.js`](src/sim/simulate.js) |
 | The valuation maths | [`src/value/model.js`](src/value/model.js) |
 | Why it is built this way | [`docs/adr/`](docs/adr/) |
+| What is being worked on next | [`ROADMAP.md`](ROADMAP.md) |
+| How the repo is run day to day | [`docs/operations/`](docs/operations/) |
 
 ## Limits
 
@@ -288,6 +290,21 @@ Micro-settlement is a hold. Within my prior range for unattended volume elastici
 - Dispute thresholds and penalties are illustrative. Each scheme's monitoring programme has its own definitions.
 - Liability for agent-initiated payments is unsettled, and the model holds it fixed.
 - With intent-derived idempotency in place, the retry budget adds almost nothing in this model. It stays as defence in depth, and the ablation table says so plainly.
+
+## Get involved
+
+The project gets better when people disagree with it in specific ways. The first two of these need no code:
+
+- **Argue with a label.** The borderline labels are mine and some are arguable. Is a rideshare to the office a public-transport fare? Open a label dispute.
+- **Break it.** Find a way to forge a receipt, spend a budget twice, or lose the gateway money that the register does not list.
+- **Verify a receipt somewhere else.** Write a verifier in your language from the spec. Wherever you had to guess, the spec is wrong.
+- **Propose a change to the spec.** It is a draft, and its open questions are listed.
+
+[`CONTRIBUTING.md`](CONTRIBUTING.md) has the detail. [`ROADMAP.md`](ROADMAP.md) is the queue, in priority order.
+
+## How this repo is run
+
+One maintainer and a roster of scheduled agent runs: one desk a day, each with a written playbook and a narrow remit, each ending in at most one draft pull request that I read before anything reaches `main`. The playbooks are public, in [`docs/operations/`](docs/operations/), and they follow the rules this repo argues for in a payment path: code where code will do, one narrow job for the model, outside text treated as data, and a record of every run.
 
 ## Licence
 

@@ -15,3 +15,15 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm test
       - run: node src/cli.js trace
+  # The report, the results and the failure-mode register are generated. This fails
+  # if what is committed differs from what the code produces, so a figure in the
+  # docs cannot drift from the code behind it. About two minutes.
+  generated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run report
+      - run: git diff --exit-code -- docs/

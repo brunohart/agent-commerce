@@ -1,0 +1,34 @@
+name: Failure mode
+description: A way the pipeline, the guard, the receipt or the log breaks or loses money that the register does not list.
+title: "Failure mode: "
+labels: ["red-team"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Twenty-one failure modes are in `docs/FAILURE-MODES.md`. If you have found another, this is the place. If it would let someone forge or alter a receipt that still verifies, please use the private route in `SECURITY.md` first.
+  - type: textarea
+    id: trigger
+    attributes:
+      label: What triggers it
+      description: Who does what. An agent's operator, a merchant, a cardholder, the gateway itself, or nobody (it just happens).
+    validations:
+      required: true
+  - type: textarea
+    id: effect
+    attributes:
+      label: What happens
+      description: Who loses what. A wrong decision, a forged or unverifiable receipt, money in the wrong place, a dispute that cannot be answered.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to see it
+      description: A failing test is ideal. A few lines of code or a precise description is fine.
+      render: javascript
+  - type: textarea
+    id: guard
+    attributes:
+      label: What might stop it
+      description: Optional. "Nothing" is a legitimate answer, and the register has entries that say so.
