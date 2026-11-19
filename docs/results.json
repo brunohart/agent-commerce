@@ -580,6 +580,34 @@
    "full": 0
   }
  },
+ "receipts": {
+  "guarantee": [
+   {
+    "key": "naive",
+    "label": "Today’s gateway",
+    "claimsBps": 477.644718
+   },
+   {
+    "key": "railsOnly",
+    "label": "Rails only",
+    "claimsBps": 480.115516
+   },
+   {
+    "key": "core",
+    "label": "Full stack, today’s rules",
+    "claimsBps": 38.176388
+   },
+   {
+    "key": "recognised",
+    "label": "Full stack, receipts recognised",
+    "claimsBps": 12.073038
+   }
+  ],
+  "claims": {
+   "today": 38.176388,
+   "recognised": 12.073038
+  }
+ },
  "decision": {
   "experiment": [
    {

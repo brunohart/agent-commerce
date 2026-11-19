@@ -1,12 +1,20 @@
 # agent-commerce
 
-A System One model in the payment path: Jev's Noul primitive as the decision layer of an agent-payment gateway, measured on the real model, attacked on purpose, and priced.
+**Making human-to-human transactions more valuable, more personable and more secure.**
+
+An agent may carry the payment, but there is still a person who asked for something at one end and a person who provided it at the other. Everything in this repo exists to keep their agreement intact while software stands between them.
+
+- **More valuable.** More of the payments people actually meant go through. With the full stack, 83% of honest agent payments complete, against 78% under today's static rule, and merchant losses from agent disputes fall from 478 basis points of agent volume to 38.
+- **More personable.** The mandate is the person's instruction in their own words: "the weekly household shop". The one question put to the model is whether this purchase is what they meant. Every decision comes with its reasons, so a decline can be explained to the person it affected.
+- **More secure.** The person's mandate is signed. What can be checked is checked by rule and never guessed. Every decision leaves a signed receipt that cannot be altered or written afterwards.
+
+A System One model in the payment path, and the receipt it makes possible: Jev's Noul primitive as the decision layer of an agent-payment gateway, measured on the real model, attacked on purpose, and priced.
 
 When software starts buying on people's behalf, a gateway gets more transactions, smaller ones, and a set of failures it has never had to price. Most of an agent payment can be checked by rule. One part cannot: whether the purchase is what the human actually meant. This repo gives that one judgement to [Jev](https://typesafe.ai/), TypeSafe AI's System One model, inside a working payment pipeline, and then works out what a gateway shaped like Windcave's (online checkout plus a large unattended estate) should build, and in what order.
 
 > Independent personal project. Not affiliated with or endorsed by Windcave or TypeSafe AI. Jev's behaviour here is measured from 234 real API calls to `jev-1.14.0` on synthetic labelled payments. Every other number is a stated prior in [`src/assumptions.js`](src/assumptions.js), not company data.
 
-**Read the report:** [`docs/index.html`](docs/index.html) (one page, all the figures). **Read the argument:** [`docs/THESIS.md`](docs/THESIS.md).
+**Read the report:** [`docs/index.html`](docs/index.html) (one page, all the figures). **Read the thesis:** [`docs/THESIS.md`](docs/THESIS.md). **Read the spec:** [`docs/RECEIPT-SPEC.md`](docs/RECEIPT-SPEC.md).
 
 ## The technology: System One and its primitives
 
@@ -142,15 +150,50 @@ Differences of a few dollars are within the noise of the simulation. F19 is not 
 
 A fifth failure, **F21 selective labels**, has no guard here. Only approved payments ever produce an outcome, weeks later, so calibration is measured on a biased and stale sample. The simulator understates it by handing the guard every label immediately, and the register says so.
 
+## Beyond one gateway: the conformance receipt
+
+Everything above is worth what it is worth on one gateway's own traffic. The part that can travel is the receipt.
+
+No card network rule currently says who is liable when an agent buys the wrong thing. Disputes are won or lost on proving what the customer authorised the agent to do. A **conformance receipt** is that proof: a signed record, issued at authorisation, of the mandate, the pinned model, what it was asked (as hashes), what it said and what the gateway did. Receipts go into an append-only Merkle log, so one cannot be altered or written after a dispute arrives. It is specified in [`docs/RECEIPT-SPEC.md`](docs/RECEIPT-SPEC.md) and implemented in [`src/receipt/`](src/receipt/).
+
+```
+$ node src/cli.js receipt
+  the weekly household shop -> supermarket-branded prepaid Visa card, $120
+  model jev-1.14.0   said 0.92 outside the mandate   action decline
+
+  verify with the public key only:           {"ok":true}
+  verify with the state revealed:            {"ok":true}
+  change the action to "approve":            {"ok":false,"reason":"bad_signature"}
+  reveal a different item than was asked:    {"ok":false,"reason":"state_mismatch"}
+
+  in a log of 1501 receipts, the proof is 11 hashes
+  a receipt written after the fact:          inclusion false
+```
+
+What the stack does to merchant losses from disputes about authorisation or scope, in basis points of agent volume:
+
+| | Claims |
+|---|---:|
+| Today's gateway | 478 bps |
+| Agent-ready rails only | 480 bps |
+| Full stack, today's rules | 38 bps |
+| Full stack, receipts recognised by the rules | 12 bps |
+
+A loss rate of 478 basis points cannot be insured. One of 12 can.
+
+Whether a receipt is worth anything to anyone but the gateway that issued it depends on whether the rules come to recognise it. That is why the format is an open specification and not a proprietary one. [`docs/THESIS.md`](docs/THESIS.md) says what recognition would take and what would stop it.
+
 ## Run it
 
 Node 20 or later. No dependencies, nothing to install. Everything except `measure` runs offline.
 
 ```bash
-npm test                   # 63 tests, about 3 seconds
+npm test                   # 72 tests, about 3 seconds
 node src/cli.js trace      # one payment, two gateways, 1 second
 node src/cli.js decision   # the decision layer under attack
 node src/cli.js measure    # run the real Jev on 234 labelled payments (needs TYPESAFE_API_KEY)
+node src/cli.js receipt    # issue a conformance receipt, verify it, tamper with it, prove inclusion
+node src/cli.js claims     # agent-dispute losses with and without the stack
 npm run demo               # trace, scenarios, decision layer and the full ranking
 npm run report             # regenerates docs/index.html, docs/results.json, docs/FAILURE-MODES.md
 ```
@@ -165,14 +208,14 @@ npm run report             # regenerates docs/index.html, docs/results.json, doc
      ┌───────────────┬───┴────────────┬──────────────────┐
      ▼               ▼                ▼                  ▼
 src/gateway/    src/decision/    src/sim/           src/value/
-the pipeline    Jev              fault injection    which bets to fund
+the pipeline    Jev              fault injection    what it is worth
 ────────────    ─────────────    ──────────────     ──────────────────
 mandate.js      request.js       simulate.js        surface.js
 idempotency.js  jev-client.js    failure-modes.js   model.js
 risk.js         guard.js         scenarios.js
 ledger.js       calibration.js
-pipeline.js     cases.js, measure.js
-                simulated.js
+pipeline.js     cases.js, measure.js     src/receipt/
+                simulated.js             receipt.js, log.js
 ```
 
 ```
@@ -224,6 +267,7 @@ Micro-settlement is a hold. Within my prior range for unattended volume elastici
 | Whether the numbers are defensible | [`src/assumptions.js`](src/assumptions.js) |
 | The state and the two Nouls Jev is sent | [`src/decision/request.js`](src/decision/request.js) |
 | What Jev actually answered | [`docs/jev-measured.json`](docs/jev-measured.json), [`src/decision/cases.js`](src/decision/cases.js) |
+| The receipt format and how to verify one | [`docs/RECEIPT-SPEC.md`](docs/RECEIPT-SPEC.md), [`src/receipt/`](src/receipt/), [`test/receipt.test.js`](test/receipt.test.js) |
 | What stands between the model and the money | [`src/decision/guard.js`](src/decision/guard.js), [`test/decision.test.js`](test/decision.test.js) |
 | Whether the pipeline is real | [`src/gateway/pipeline.js`](src/gateway/pipeline.js), [`test/gateway.test.js`](test/gateway.test.js) |
 | How failures are injected and priced | [`src/sim/simulate.js`](src/sim/simulate.js) |
@@ -237,6 +281,8 @@ Micro-settlement is a hold. Within my prior range for unattended volume elastici
 - Only one of the two Nouls could be scored. Every test payment was authorised, so `unauthorised` has no positive cases here.
 - Only the Noul primitive is used. Choice, Score and Box are untested here, as are images in the state.
 - Latency was measured from a cloud build environment, not from a gateway's own network.
+- The receipt has no standing with any card network, regulator or standards body.
+- The description of network rules comes from merchant-facing commentary, not the rulebooks.
 - The other inputs are priors. Windcave is privately held and I have no inside data.
 - The pipeline is a reference implementation. It implements none of the live agent-payment protocols and talks to no card network.
 - Dispute thresholds and penalties are illustrative. Each scheme's monitoring programme has its own definitions.

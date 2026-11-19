@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// node src/cli.js <trace|sim|ablation|decision|measure|value|report|demo>
+// node src/cli.js <trace|sim|ablation|decision|measure|receipt|claims|value|report|demo>
 
-import { headline, trace, ablation, decisionExperiment, skillSweep } from './sim/scenarios.js';
+import { headline, trace, ablation, decisionExperiment, skillSweep, guarantee } from './sim/scenarios.js';
 import { buildSurface } from './value/surface.js';
 import { monteCarlo, sequence, sensitivity, breakeven } from './value/model.js';
 import { BETS, BET_KEYS, CONTROLS } from './assumptions.js';
@@ -93,6 +93,46 @@ function cmdDecision() {
   }
 }
 
+async function cmdReceipt() {
+  rule('A conformance receipt');
+  const { createGatewayKey, issueReceipt, verifyReceipt, receiptLeaf } = await import('./receipt/receipt.js');
+  const { ReceiptLog, verifyInclusion } = await import('./receipt/log.js');
+  const { buildDecisionRequest } = await import('./decision/request.js');
+  const { labelledCases } = await import('./decision/cases.js');
+  const c = labelledCases().find((x) => x.id === 'hard-0-out-0-1');
+  const wire = buildDecisionRequest(c.req, c.ctx).wire;
+  const mandate = { id: 'mandate-7731', signature: 'ZXhhbXBsZS1zaWduYXR1cmU=' };
+  const key = createGatewayKey();
+  const log = new ReceiptLog();
+  for (let i = 0; i < 1000; i++) log.append(`earlier-receipt-${i}`);
+  const receipt = issueReceipt({
+    key, paymentId: 'pay_8841#0', issuedAt: 1794800000, wire, mandate,
+    answer: { stated: { unauthorised: 0.04, outside_mandate: 0.92 }, p: { unauthorised: 0.02, outside_mandate: 0.97 }, version: wire.model },
+    decision: { action: 'decline', ev: { approve: -121.84, stepUp: -10.09, decline: 0 } },
+  });
+  const index = log.append(receiptLeaf(receipt));
+  for (let i = 0; i < 500; i++) log.append(`later-receipt-${i}`);
+  const root = log.root();
+  console.log(`  ${c.req.mandate.purpose} -> ${c.item}, $${c.req.amount}`);
+  console.log(`  model ${receipt.model}   said ${receipt.stated.outside_mandate} outside the mandate   action ${receipt.action}`);
+  console.log(`  state hash ${receipt.stateHash.slice(0, 16)}...   signature ${receipt.signature.slice(0, 16)}...`);
+  console.log(`\n  verify with the public key only:           ${JSON.stringify(verifyReceipt(receipt, key.publicKeyPem))}`);
+  console.log(`  verify with the state revealed:            ${JSON.stringify(verifyReceipt(receipt, key.publicKeyPem, { wire, mandate }))}`);
+  console.log(`  change the action to "approve":            ${JSON.stringify(verifyReceipt({ ...receipt, action: 'approve' }, key.publicKeyPem))}`);
+  const edited = { ...wire, state: { ...wire.state, item: { description: 'groceries' } } };
+  console.log(`  reveal a different item than was asked:    ${JSON.stringify(verifyReceipt(receipt, key.publicKeyPem, { wire: edited }))}`);
+  const proof = log.proof(index);
+  console.log(`\n  in a log of ${log.size} receipts, the proof is ${proof.length} hashes`);
+  console.log(`  published root ${root.slice(0, 16)}...   inclusion ${verifyInclusion(receiptLeaf(receipt), proof, root)}`);
+  console.log(`  a receipt written after the fact:          inclusion ${verifyInclusion(receiptLeaf({ ...receipt, action: 'approve' }), proof, root)}`);
+}
+
+function cmdClaims() {
+  rule('Agent-dispute claims, basis points of agent volume');
+  console.log('  Merchant losses from disputes about authorisation or scope.\n');
+  for (const r of guarantee()) console.log(`    ${pad(r.label, 36)} ${lpad(r.claimsBps.toFixed(0), 5)} bps`);
+}
+
 async function cmdMeasure() {
   rule('Measure the real Jev');
   const { JevClient } = await import('./decision/jev-client.js');
@@ -151,6 +191,8 @@ const commands = {
   value: cmdValue,
   decision: cmdDecision,
   measure: cmdMeasure,
+  receipt: cmdReceipt,
+  claims: cmdClaims,
   report: cmdReport,
   demo: () => {
     cmdTrace();

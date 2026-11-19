@@ -301,7 +301,8 @@ const STAGES = [
 ];
 
 export function renderPage({ results, BETS, BET_KEYS, CONTROLS, FAILURE_MODES }) {
-  const { value, headline, brownout, ablation, modeCost, trace, meta, decision } = results;
+  const { value, headline, brownout, ablation, modeCost, trace, meta, decision, receipts } = results;
+  const claimMax = Math.max(...receipts.guarantee.map((g) => g.claimsBps));
   const exp = Object.fromEntries(decision.experiment.map((r) => [r.key, r]));
   const ex = decision.example;
   const groups = [...new Set(decision.experiment.map((r) => r.group))];
@@ -402,6 +403,7 @@ h1 { font: 600 clamp(32px, 6vw, 52px)/1.05 var(--display); letter-spacing: -0.01
 h2 { font: 600 26px/1.15 var(--display); margin: 0; text-wrap: balance }
 h3 { font: 600 15px/1.3 var(--body); margin: 0 }
 .eyebrow { font: 500 12px/1.4 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3) }
+.mantra { font: 600 22px/1.3 var(--display); color: var(--accent); max-width: 30ch; text-wrap: balance }
 .lead { font-size: 19px; line-height: 1.5; color: var(--ink) }
 .muted { color: var(--ink-2); font-size: 14px }
 .mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums }
@@ -511,6 +513,13 @@ footer { border-top: 1px solid var(--rule); padding-top: 20px; font-size: 13.5px
 <header>
   <div class="eyebrow">Independent project · not affiliated with Windcave or TypeSafe AI · illustrative priors, not company data</div>
   <h1>What agentic commerce is worth to a gateway, after everything that breaks</h1>
+  <p class="mantra">Making human-to-human transactions more valuable, more personable and more secure.</p>
+  <p>An agent may carry the payment, but there is still a person who asked for something at one end and a person who provided it at the other. Everything here exists to keep their agreement intact while software stands between them.</p>
+  <ul class="steps">
+    <li><span class="n">More valuable</span><p>More of the payments people actually meant go through: ${pct(exp.jev.completion)} of honest agent payments complete, against ${pct(exp.static.completion)} under today’s static rule. Merchant losses from agent disputes fall from ${receipts.guarantee[0].claimsBps.toFixed(0)} basis points of agent volume to ${receipts.claims.today.toFixed(0)}.</p></li>
+    <li><span class="n">More personable</span><p>The mandate is the person’s instruction in their own words. The one question put to the model is whether this purchase is what they meant, and every decision comes with its reasons.</p></li>
+    <li><span class="n">More secure</span><p>The mandate is signed. What can be checked is checked by rule and never guessed. Every decision leaves a signed receipt that cannot be altered or written afterwards.</p></li>
+  </ul>
   <p class="lead">When software starts buying on people’s behalf, a payment gateway gets more transactions, smaller ones, and a set of failures it has never had to price. This project puts Jev, TypeSafe AI’s decision model, at the one point in a payment where a rule cannot decide, for a gateway shaped like Windcave’s (online checkout plus a large unattended estate). Then it breaks the whole thing on purpose and works out what to build and in what order.</p>
   <p>The answer the model gives: build <strong>${esc(order.map((s) => BETS[s.bet].label.toLowerCase()).join(', then '))}</strong>. Agent-ready rails on their own lose money in ${pct(railsOnly.pLoss)} of simulated worlds, because they bring in the volume and its failure modes together. Micro-settlement is a real option and the model says when to exercise it.</p>
   <div class="stats">
@@ -677,6 +686,17 @@ value(bets) = E[ Σₜ intentsₜ × netPerIntent(bets, agentShareₜ, ticket) �
   <h2>Every failure mode, priced</h2>
   <p>Cost is gateway cost plus merchant loss plus lost sales, per 1,000 purchase intents, averaged over both segments. Two entries have no mitigation in this model and one exists only because a control was added. Those are listed on purpose. The figures are at normal issuer conditions, where the retry storm and the dispute-ratio cliff cost nothing. The brownout section shows what they do under stress.</p>
   <div class="figure"><div class="scroll"><table><thead><tr><th>ID</th><th>Failure mode</th><th>Trigger</th><th>Addressed by</th><th class="num">Today</th><th class="num">Recommended</th></tr></thead><tbody>${registerRows}</tbody></table></div></div>
+</section>
+
+<section>
+  <div class="eyebrow">Beyond one gateway</div>
+  <h2>The conformance receipt</h2>
+  <p>Everything above is worth what it is worth on one gateway’s own traffic. The part that can travel is the receipt: a signed record, issued at authorisation, of the mandate, the pinned model, what it was asked, what it said and what the gateway did. It is committed to an append-only log, so it cannot be altered or written after a dispute arrives. It carries hashes and not payment details, so it reveals nothing until the gateway chooses to reveal the state.</p>
+  <p>Today no card network rule says who is liable when an agent buys the wrong thing. Disputes are won or lost on proving what the customer authorised the agent to do. A receipt is that proof, made at the time.</p>
+  <div class="figure"><h3>Agent-dispute claims, basis points of agent volume</h3><p class="muted">Merchant losses from disputes about authorisation or scope.</p>
+    <div class="scroll"><table><tbody>${receipts.guarantee.map((g) => `<tr><th scope="row">${esc(g.label)}</th><td><div class="barcell"><div class="track"><span class="bar" style="width:${Math.max(0.6, (g.claimsBps / claimMax) * 100).toFixed(1)}%" tabindex="0" data-tip="${esc(`${g.label}\n${g.claimsBps.toFixed(0)} basis points of agent volume`)}"></span></div><span class="num">${g.claimsBps.toFixed(0)}</span></div></td></tr>`).join('')}</tbody></table></div>
+  </div>
+  <p>The stack turns a loss rate of ${receipts.guarantee[0].claimsBps.toFixed(0)} basis points into ${receipts.claims.today.toFixed(0)}. If the rules come to recognise receipts as evidence, it falls to ${receipts.claims.recognised.toFixed(0)}. Whether a receipt is worth anything to anyone but the gateway that issued it depends on that recognition, which is why the format is published as an open specification in <span class="mono">docs/RECEIPT-SPEC.md</span> and not kept proprietary.</p>
 </section>
 
 <section>

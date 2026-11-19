@@ -133,7 +133,25 @@ export function skillSweep({ intents = 24000, seeds = 6 } = {}) {
   }));
 }
 
-// 6. One payment, traced. A scripted issuer loses the first response (the charge
+// 6. Could agent-payment disputes be underwritten? Claims are merchant losses from
+//    disputes about authorisation or scope, in basis points of agent volume. A
+//    guarantee is only a business if that number is small and stable.
+export function guarantee({ intents = 24000, seeds = 6 } = {}) {
+  const configs = [
+    { key: 'naive', label: 'Today’s gateway', run: { bets: [] } },
+    { key: 'railsOnly', label: 'Rails only', run: { bets: ['rails'] } },
+    { key: 'core', label: 'Full stack, today’s rules', run: { bets: CORE } },
+    { key: 'recognised', label: 'Full stack, receipts recognised', run: { bets: CORE, behaviour: { evidenceRecognised: true } } },
+  ];
+  return configs.map(({ key, label, run }) => {
+    const rs = Object.keys(SEGMENTS).map((segment) => simulateMean({ segment, ...REFERENCE, intents, ...run }, seeds));
+    const claims = rs.reduce((a, r) => a + r.agentClaims, 0);
+    const volume = rs.reduce((a, r) => a + r.agentGdv, 0);
+    return { key, label, claimsBps: volume ? (claims / volume) * 1e4 : 0 };
+  });
+}
+
+// 7. One payment, traced. A scripted issuer loses the first response (the charge
 //    went through) and answers the second. Same agent, same behaviour, two gateways.
 export function trace() {
   const principal = createPrincipal('principal-trace');

@@ -12,6 +12,7 @@ import { decide } from '../gateway/risk.js';
 import { existsSync, readFileSync } from 'node:fs';
 import { MEASURED_PATH } from '../decision/measure.js';
 import { labelledCases } from '../decision/cases.js';
+import { guarantee } from '../sim/scenarios.js';
 import { BETS, BET_KEYS, CONTROLS, ECONOMICS, BASELINE_TXNS, HORIZON_YEARS } from '../assumptions.js';
 import { FAILURE_MODES } from '../sim/failure-modes.js';
 import { renderPage } from './page.js';
@@ -78,6 +79,16 @@ export function collect({ log = () => {} } = {}) {
     chargebackFee: ECONOMICS.chargebackFee, stepUpCompletion: 0.85, stepUpCatch: 0.9,
   });
 
+  log('pricing agent-dispute claims');
+  const guaranteeRows = guarantee();
+  const receipts = {
+    guarantee: guaranteeRows,
+    claims: {
+      today: guaranteeRows.find((x) => x.key === 'core').claimsBps,
+      recognised: guaranteeRows.find((x) => x.key === 'recognised').claimsBps,
+    },
+  };
+
   log('simulating the response surface (16 portfolios x 2 segments x 12 conditions)');
   const surface = buildSurface();
   log('running the Monte Carlo');
@@ -123,6 +134,7 @@ export function collect({ log = () => {} } = {}) {
     ablation: abl,
     brownout: brown,
     modeCost,
+    receipts,
     decision: {
       experiment,
       skill,

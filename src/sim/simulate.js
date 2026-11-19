@@ -195,10 +195,12 @@ export function simulate(o = {}) {
     refunds: 0, retries: 0, prevented: 0, aggregated: 0,
   };
   let gdv = 0;
+  let agentGdv = 0;
   let revenue = 0;
   let opsCost = 0;
   let merchantLoss = 0;
   const mandateCount = Math.max(8, Math.ceil((intents * agentShare) / 5));
+  const hasReceipt = controls.mandateEvidence && controls.mandateVerify && controls.decisionLayer;
   const truthSpent = new Map();
 
   // Small tickets are disputed less: below the write-off level many issuers
@@ -368,6 +370,7 @@ export function simulate(o = {}) {
     if (kind === 'honest' || kind === 'stale') n.honestAgentCompleted++;
     if (aggregated) n.aggregated++;
     gdv += amount;
+    if (isAgent) agentGdv += amount;
     revenue += caps[0].fee;
     if (isAgent) truthSpent.set(mandate.id, (truthSpent.get(mandate.id) ?? 0) + amount);
 
@@ -389,7 +392,11 @@ export function simulate(o = {}) {
     if (kind === 'impersonator') {
       if (disputes(beh.disputeGivenFraud, amount)) dispute('impersonation', amount, true);
     } else if (kind === 'drift') {
-      if (disputes(beh.disputeGivenDrift, amount)) dispute('mandate_drift', amount, true);
+      // A receipt shows the purchase passed a scope check at the time. Whether that
+      // wins the dispute depends on whether the rules recognise it.
+      if (disputes(beh.disputeGivenDrift, amount)) {
+        dispute('mandate_drift', amount, !(hasReceipt && beh.evidenceRecognised && rng.bool(beh.recognisedDriftWin)));
+      }
     } else if (kind === 'overcap' || (kind === 'honest' && overBudgetAtStart)) {
       if (disputes(beh.disputeGivenOverBudget, amount)) dispute('overspend', amount, true);
     } else if (kind === 'stale') {
@@ -397,7 +404,8 @@ export function simulate(o = {}) {
     } else if (kind === 'honest') {
       if (disputes(beh.friendlyFraudRate, amount)) {
         const hasEvidence = controls.mandateEvidence && controls.mandateVerify;
-        const win = rng.bool(hasEvidence ? beh.friendlyFraudWinWithEvidence : beh.friendlyFraudWinWithout);
+        const withEvidence = hasReceipt && beh.evidenceRecognised ? beh.recognisedFriendlyWin : beh.friendlyFraudWinWithEvidence;
+        const win = rng.bool(hasEvidence ? withEvidence : beh.friendlyFraudWinWithout);
         dispute('friendly_fraud', amount, !win);
       }
     } else if (disputes(beh.humanDisputeRate, amount)) {
@@ -438,6 +446,10 @@ export function simulate(o = {}) {
     penalties,
     gatewayNet,
     merchantLoss,
+    agentGdv,
+    // What a guarantee on agent payments would have to pay out: merchant losses
+    // from disputes about authorisation or scope.
+    agentClaims: ['impersonation', 'mandate_drift', 'overspend', 'stale_mandate', 'friendly_fraud'].reduce((s, k) => s + mode[k].merchant, 0),
     disputeRatio,
     peakTimeoutRate,
     timeoutRate: authAttempts ? timeouts / authAttempts : 0,
@@ -485,6 +497,8 @@ export function simulateMean(o, seeds = 3) {
     gatewayNet: avg((r) => r.gatewayNet),
     penalties: avg((r) => r.penalties),
     merchantLoss: avg((r) => r.merchantLoss),
+    agentGdv: avg((r) => r.agentGdv),
+    agentClaims: avg((r) => r.agentClaims),
     disputeRatio: avg((r) => r.disputeRatio),
     duplicateRate: avg((r) => r.duplicateRate),
     peakTimeoutRate: avg((r) => r.peakTimeoutRate),
