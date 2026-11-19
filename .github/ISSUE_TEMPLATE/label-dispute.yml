@@ -1,0 +1,46 @@
+name: Label dispute
+description: A purchase whose label you would argue with, or a borderline purchase the corpus should have.
+title: "Is <the purchase> inside \"<the mandate>\"?"
+labels: ["label-dispute", "cases"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The borderline labels in the corpus are one person's judgement. If you would label a purchase the other way, say so here. Put the question in the title.
+  - type: input
+    id: mandate
+    attributes:
+      label: The mandate
+      description: What the person asked their agent to do, in their words.
+      placeholder: public transport fares for commuting to work
+    validations:
+      required: true
+  - type: input
+    id: purchase
+    attributes:
+      label: The purchase
+      placeholder: rideshare trip to the office
+    validations:
+      required: true
+  - type: dropdown
+    id: label
+    attributes:
+      label: How would you label it?
+      options:
+        - Inside the mandate
+        - Outside the mandate
+        - It depends, and I can say on what
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why
+      description: What would the person who wrote the mandate say if they saw this on their statement?
+    validations:
+      required: true
+  - type: input
+    id: existing
+    attributes:
+      label: Is it already in the corpus?
+      description: The case id or the current label, if you know it. Leave blank for a new case.

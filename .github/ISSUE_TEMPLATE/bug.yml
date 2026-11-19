@@ -1,0 +1,23 @@
+name: Bug
+description: Something does not do what the README or the docs say it does.
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: did
+    attributes:
+      label: What you ran
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and what happened
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node version
+      placeholder: v22.11.0

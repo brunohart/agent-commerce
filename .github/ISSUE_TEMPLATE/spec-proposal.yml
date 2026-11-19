@@ -1,0 +1,34 @@
+name: Spec proposal
+description: A change to the conformance receipt specification, or a place where it left you guessing.
+title: "Spec: "
+labels: ["spec"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        `docs/RECEIPT-SPEC.md` is a draft. Its open questions are at the end of the document and in `ROADMAP.md`. If you tried to implement it and had to guess, that is a defect in the spec and worth an issue on its own.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What the current text gets wrong, leaves unsaid or makes impossible. Quote the sentence if there is one.
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: The change
+      description: What the spec should say. If a published standard already answers this, name it and the section.
+    validations:
+      required: true
+  - type: textarea
+    id: breaks
+    attributes:
+      label: What it breaks
+      description: Would a receipt issued under the current draft still verify? Who has to change what?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What else was considered

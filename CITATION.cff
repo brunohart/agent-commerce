@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it using these metadata."
+title: "agent-commerce: a System One decision layer and conformance receipt for agent payments"
+type: software
+authors:
+  - family-names: Hart
+    given-names: Bruno
+repository-code: "https://github.com/brunohart/agent-commerce"
+license: MIT
+version: 0.1.0
+date-released: "2026-11-19"
+keywords:
+  - agentic commerce
+  - payments
+  - conformance receipt
+  - transparency log
+  - calibration

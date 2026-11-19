@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How to contribute
+    url: https://github.com/brunohart/agent-commerce/blob/main/CONTRIBUTING.md
+    about: Five ways in. Two of them need no code.
+  - name: Report a way to forge or alter a receipt
+    url: https://github.com/brunohart/agent-commerce/security/advisories/new
+    about: Privately, please. See SECURITY.md for what counts.
