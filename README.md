@@ -188,7 +188,7 @@ Whether a receipt is worth anything to anyone but the gateway that issued it dep
 Node 20 or later. No dependencies, nothing to install. Everything except `measure` runs offline.
 
 ```bash
-npm test                   # 72 tests, about 3 seconds
+npm test                   # 76 tests, about 3 seconds
 node src/cli.js trace      # one payment, two gateways, 1 second
 node src/cli.js decision   # the decision layer under attack
 node src/cli.js measure    # run the real Jev on 234 labelled payments (needs TYPESAFE_API_KEY)
@@ -266,7 +266,7 @@ Micro-settlement is a hold. Within my prior range for unattended volume elastici
 |---|---|
 | Whether the numbers are defensible | [`src/assumptions.js`](src/assumptions.js) |
 | The state and the two Nouls Jev is sent | [`src/decision/request.js`](src/decision/request.js) |
-| What Jev actually answered | [`docs/jev-measured.json`](docs/jev-measured.json), [`src/decision/cases.js`](src/decision/cases.js) |
+| What Jev actually answered | [`docs/jev-measured.json`](docs/jev-measured.json), [`cases/baseline.json`](cases/baseline.json) |
 | The receipt format and how to verify one | [`docs/RECEIPT-SPEC.md`](docs/RECEIPT-SPEC.md), [`src/receipt/`](src/receipt/), [`test/receipt.test.js`](test/receipt.test.js) |
 | What stands between the model and the money | [`src/decision/guard.js`](src/decision/guard.js), [`test/decision.test.js`](test/decision.test.js) |
 | Whether the pipeline is real | [`src/gateway/pipeline.js`](src/gateway/pipeline.js), [`test/gateway.test.js`](test/gateway.test.js) |
