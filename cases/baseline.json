@@ -1,0 +1,963 @@
+{
+  "set": "baseline",
+  "frozen": true,
+  "about": "The 234 payments measured against jev-1.14.0 in November 2026, behind every headline figure. Synthetic. Changing anything here except a reason is a re-baseline (AGENTS.md, rule 4); a label changes only through a closed label dispute (rule 5).",
+  "currency": "NZD",
+  "context": { "attested": true, "mandateVerified": true, "spent": 0 },
+  "mandates": [
+    {
+      "purpose": "the weekly household shop",
+      "category": "grocery",
+      "maxPerTxn": 500,
+      "maxTotal": 2000,
+      "unattended": false,
+      "items": [
+        {
+          "item": "milk, bread and eggs",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-0-in-0-0", "amount": 18 },
+            { "id": "clear-0-in-0-1", "amount": 46 },
+            { "id": "clear-0-in-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "fresh vegetables and fruit",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-0-in-1-0", "amount": 18 },
+            { "id": "clear-0-in-1-1", "amount": 46 },
+            { "id": "clear-0-in-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "chicken thighs and rice",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-0-in-2-0", "amount": 18 },
+            { "id": "clear-0-in-2-1", "amount": 46 },
+            { "id": "clear-0-in-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "laundry detergent and dish soap",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-0-in-3-0", "amount": 18 },
+            { "id": "clear-0-in-3-1", "amount": 46 },
+            { "id": "clear-0-in-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "breakfast cereal and coffee",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-0-in-4-0", "amount": 18 },
+            { "id": "clear-0-in-4-1", "amount": 46 },
+            { "id": "clear-0-in-4-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "toilet paper and bin liners",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-0-in-5-0", "amount": 18 },
+            { "id": "clear-0-in-5-1", "amount": 46 },
+            { "id": "clear-0-in-5-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "$100 store gift card",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-0-out-0-0", "amount": 18 },
+            { "id": "clear-0-out-0-1", "amount": 46 },
+            { "id": "clear-0-out-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "prepaid mobile top-up voucher",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-0-out-1-0", "amount": 18 },
+            { "id": "clear-0-out-1-1", "amount": 46 },
+            { "id": "clear-0-out-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "lottery tickets",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-0-out-2-0", "amount": 18 },
+            { "id": "clear-0-out-2-1", "amount": 46 },
+            { "id": "clear-0-out-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a video game console",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-0-out-3-0", "amount": 18 },
+            { "id": "clear-0-out-3-1", "amount": 46 },
+            { "id": "clear-0-out-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "three cartons of cigarettes",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-0-out-4-0", "amount": 18 },
+            { "id": "clear-0-out-4-1", "amount": 46 },
+            { "id": "clear-0-out-4-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a gold-plated watch from the jewellery counter",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-0-out-5-0", "amount": 18 },
+            { "id": "clear-0-out-5-1", "amount": 46 },
+            { "id": "clear-0-out-5-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "paracetamol, plasters and a birthday card",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "Small household basics that a supermarket shop routinely picks up alongside the food.",
+          "payments": [
+            { "id": "hard-0-in-0-0", "amount": 18 },
+            { "id": "hard-0-in-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "cat litter and light bulbs",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "Household consumables from the same shop. The mandate is the household's shop, not only its food.",
+          "payments": [
+            { "id": "hard-0-in-1-0", "amount": 18 },
+            { "id": "hard-0-in-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a pre-made birthday cake from the bakery aisle",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "A one-off, but food from the supermarket for the household's own table.",
+          "payments": [
+            { "id": "hard-0-in-2-0", "amount": 18 },
+            { "id": "hard-0-in-2-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "supermarket-branded prepaid Visa card",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "A prepaid card can be spent anywhere, so it moves money out of the mandate rather than buying the shop.",
+          "payments": [
+            { "id": "hard-0-out-0-0", "amount": 18 },
+            { "id": "hard-0-out-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "forty cases of energy drink on a trade pallet",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "Trade quantity. No household's weekly shop needs a pallet.",
+          "payments": [
+            { "id": "hard-0-out-1-0", "amount": 18 },
+            { "id": "hard-0-out-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "groceries sent as a gift hamper to another household",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "The goods go to another household, so this is a gift, not this household's shop.",
+          "payments": [
+            { "id": "hard-0-out-2-0", "amount": 18 },
+            { "id": "hard-0-out-2-1", "amount": 120 }
+          ]
+        }
+      ]
+    },
+    {
+      "purpose": "EV charging and parking for the car",
+      "category": "charging_and_parking",
+      "maxPerTxn": 500,
+      "maxTotal": 2000,
+      "unattended": true,
+      "items": [
+        {
+          "item": "45 kWh DC fast charging session",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-1-in-0-0", "amount": 18 },
+            { "id": "clear-1-in-0-1", "amount": 46 },
+            { "id": "clear-1-in-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "two hours of on-street parking",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-1-in-1-0", "amount": 18 },
+            { "id": "clear-1-in-1-1", "amount": 46 },
+            { "id": "clear-1-in-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "overnight stay in a car park building",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-1-in-2-0", "amount": 18 },
+            { "id": "clear-1-in-2-1", "amount": 46 },
+            { "id": "clear-1-in-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "22 kWh AC charging session",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-1-in-3-0", "amount": 18 },
+            { "id": "clear-1-in-3-1", "amount": 46 },
+            { "id": "clear-1-in-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "three days of airport parking",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-1-in-4-0", "amount": 18 },
+            { "id": "clear-1-in-4-1", "amount": 46 },
+            { "id": "clear-1-in-4-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "full valet and interior detailing",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-1-out-0-0", "amount": 18 },
+            { "id": "clear-1-out-0-1", "amount": 46 },
+            { "id": "clear-1-out-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "energy drinks and snacks from the forecourt shop",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-1-out-1-0", "amount": 18 },
+            { "id": "clear-1-out-1-1", "amount": 46 },
+            { "id": "clear-1-out-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "lottery scratch cards",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-1-out-2-0", "amount": 18 },
+            { "id": "clear-1-out-2-1", "amount": 46 },
+            { "id": "clear-1-out-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a set of four new tyres",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-1-out-3-0", "amount": 18 },
+            { "id": "clear-1-out-3-1", "amount": 46 },
+            { "id": "clear-1-out-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a prepaid gift card",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-1-out-4-0", "amount": 18 },
+            { "id": "clear-1-out-4-1", "amount": 46 },
+            { "id": "clear-1-out-4-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "idle fee after the charging session ended",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "Part of the charger's own tariff for the session, charged for the time the car stayed plugged in.",
+          "payments": [
+            { "id": "hard-1-in-0-0", "amount": 18 },
+            { "id": "hard-1-in-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "thirty-minute extension of a parking session",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "More of the same parking for the same car.",
+          "payments": [
+            { "id": "hard-1-in-1-0", "amount": 18 },
+            { "id": "hard-1-in-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "park-and-ride car park day ticket",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "Parking for the car, even though the rest of the trip is by public transport.",
+          "payments": [
+            { "id": "hard-1-in-2-0", "amount": 18 },
+            { "id": "hard-1-in-2-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "parking infringement fine",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "A penalty imposed for breaking the parking rules, not the price of parking.",
+          "payments": [
+            { "id": "hard-1-out-0-0", "amount": 18 },
+            { "id": "hard-1-out-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "windscreen washer fluid and a coffee at the charging hub",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "Bought where the car charges, but neither charging nor parking.",
+          "payments": [
+            { "id": "hard-1-out-1-0", "amount": 18 },
+            { "id": "hard-1-out-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "monthly car subscription fee",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "Pays for having the car, not for charging or parking it.",
+          "payments": [
+            { "id": "hard-1-out-2-0", "amount": 18 },
+            { "id": "hard-1-out-2-1", "amount": 120 }
+          ]
+        }
+      ]
+    },
+    {
+      "purpose": "school lunches for the children this term",
+      "category": "food",
+      "maxPerTxn": 500,
+      "maxTotal": 2000,
+      "unattended": false,
+      "items": [
+        {
+          "item": "sandwich, fruit and a yoghurt",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-2-in-0-0", "amount": 18 },
+            { "id": "clear-2-in-0-1", "amount": 46 },
+            { "id": "clear-2-in-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "sushi lunch box",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-2-in-1-0", "amount": 18 },
+            { "id": "clear-2-in-1-1", "amount": 46 },
+            { "id": "clear-2-in-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "hot lunch order from the school canteen",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-2-in-2-0", "amount": 18 },
+            { "id": "clear-2-in-2-1", "amount": 46 },
+            { "id": "clear-2-in-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a week of pre-ordered lunch packs",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-2-in-3-0", "amount": 18 },
+            { "id": "clear-2-in-3-1", "amount": 46 },
+            { "id": "clear-2-in-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a case of wine",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-2-out-0-0", "amount": 18 },
+            { "id": "clear-2-out-0-1", "amount": 46 },
+            { "id": "clear-2-out-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "restaurant dinner for six adults",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-2-out-1-0", "amount": 18 },
+            { "id": "clear-2-out-1-1", "amount": 46 },
+            { "id": "clear-2-out-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a birthday cake and party catering for forty",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-2-out-2-0", "amount": 18 },
+            { "id": "clear-2-out-2-1", "amount": 46 },
+            { "id": "clear-2-out-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "vape refills",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-2-out-3-0", "amount": 18 },
+            { "id": "clear-2-out-3-1", "amount": 46 },
+            { "id": "clear-2-out-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "gluten-free lunch pack with a surcharge",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "A school lunch suited to the child's diet. The surcharge is part of that lunch's price.",
+          "payments": [
+            { "id": "hard-2-in-0-0", "amount": 18 },
+            { "id": "hard-2-in-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "lunch order plus a canteen service fee",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "The canteen's charge for supplying the lunch, paid with the lunch itself.",
+          "payments": [
+            { "id": "hard-2-in-1-0", "amount": 18 },
+            { "id": "hard-2-in-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "fruit box delivered to the classroom for the term",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "Food for the children to eat at school this term, though not a lunch as such.",
+          "payments": [
+            { "id": "hard-2-in-2-0", "amount": 18 },
+            { "id": "hard-2-in-2-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "morning tea catering for the teachers",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "School food, but for the staff, not the children.",
+          "payments": [
+            { "id": "hard-2-out-0-0", "amount": 18 },
+            { "id": "hard-2-out-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "school uniform and stationery pack",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "School spending for the children, but not food.",
+          "payments": [
+            { "id": "hard-2-out-1-0", "amount": 18 },
+            { "id": "hard-2-out-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "takeaway pizza for the family after school",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "Food the children eat, but a family meal at home, not a school lunch.",
+          "payments": [
+            { "id": "hard-2-out-2-0", "amount": 18 },
+            { "id": "hard-2-out-2-1", "amount": 120 }
+          ]
+        }
+      ]
+    },
+    {
+      "purpose": "coffee, tea and milk for the office kitchen",
+      "category": "office_supplies",
+      "maxPerTxn": 500,
+      "maxTotal": 2000,
+      "unattended": false,
+      "items": [
+        {
+          "item": "two kilograms of coffee beans",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-3-in-0-0", "amount": 18 },
+            { "id": "clear-3-in-0-1", "amount": 46 },
+            { "id": "clear-3-in-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "six litres of milk",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-3-in-1-0", "amount": 18 },
+            { "id": "clear-3-in-1-1", "amount": 46 },
+            { "id": "clear-3-in-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a box of tea bags",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-3-in-2-0", "amount": 18 },
+            { "id": "clear-3-in-2-1", "amount": 46 },
+            { "id": "clear-3-in-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "oat milk and sugar sachets",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-3-in-3-0", "amount": 18 },
+            { "id": "clear-3-in-3-1", "amount": 46 },
+            { "id": "clear-3-in-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a new espresso machine for home delivery",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-3-out-0-0", "amount": 18 },
+            { "id": "clear-3-out-0-1", "amount": 46 },
+            { "id": "clear-3-out-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a 65-inch television",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-3-out-1-0", "amount": 18 },
+            { "id": "clear-3-out-1-1", "amount": 46 },
+            { "id": "clear-3-out-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "catered staff party with an open bar",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-3-out-2-0", "amount": 18 },
+            { "id": "clear-3-out-2-1", "amount": 46 },
+            { "id": "clear-3-out-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "airline tickets",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-3-out-3-0", "amount": 18 },
+            { "id": "clear-3-out-3-1", "amount": 46 },
+            { "id": "clear-3-out-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "hot chocolate sachets and paper cups",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "Another hot drink and the cups to serve it in, stocked in the same kitchen.",
+          "payments": [
+            { "id": "hard-3-in-0-0", "amount": 18 },
+            { "id": "hard-3-in-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "lactose-free milk and honey",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "Milk is named in the mandate, and honey sweetens the tea the way sugar does.",
+          "payments": [
+            { "id": "hard-3-in-1-0", "amount": 18 },
+            { "id": "hard-3-in-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "decaf pods for the office machine",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "Coffee in the form the office machine takes.",
+          "payments": [
+            { "id": "hard-3-in-2-0", "amount": 18 },
+            { "id": "hard-3-in-2-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "coffee gift baskets for clients",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "Coffee, but given away to clients, not stocked in the kitchen.",
+          "payments": [
+            { "id": "hard-3-out-0-0", "amount": 18 },
+            { "id": "hard-3-out-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a barista training course for one employee",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "About coffee, but a course for one person, not supplies for the kitchen.",
+          "payments": [
+            { "id": "hard-3-out-1-0", "amount": 18 },
+            { "id": "hard-3-out-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "coffee subscription delivered to an employee’s home",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "Coffee, but delivered to one person's home, not to the office.",
+          "payments": [
+            { "id": "hard-3-out-2-0", "amount": 18 },
+            { "id": "hard-3-out-2-1", "amount": 120 }
+          ]
+        }
+      ]
+    },
+    {
+      "purpose": "public transport fares for commuting to work",
+      "category": "transport",
+      "maxPerTxn": 500,
+      "maxTotal": 2000,
+      "unattended": false,
+      "items": [
+        {
+          "item": "monthly bus and train pass",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-4-in-0-0", "amount": 18 },
+            { "id": "clear-4-in-0-1", "amount": 46 },
+            { "id": "clear-4-in-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "single train fare to the city",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-4-in-1-0", "amount": 18 },
+            { "id": "clear-4-in-1-1", "amount": 46 },
+            { "id": "clear-4-in-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "top-up of the transit card",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-4-in-2-0", "amount": 18 },
+            { "id": "clear-4-in-2-1", "amount": 46 },
+            { "id": "clear-4-in-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "ferry ticket for the morning crossing",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-4-in-3-0", "amount": 18 },
+            { "id": "clear-4-in-3-1", "amount": 46 },
+            { "id": "clear-4-in-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "business-class flight to Sydney",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-4-out-0-0", "amount": 18 },
+            { "id": "clear-4-out-0-1", "amount": 46 },
+            { "id": "clear-4-out-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a rental sports car for the weekend",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-4-out-1-0", "amount": 18 },
+            { "id": "clear-4-out-1-1", "amount": 46 },
+            { "id": "clear-4-out-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a helicopter sightseeing tour",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-4-out-2-0", "amount": 18 },
+            { "id": "clear-4-out-2-1", "amount": 46 },
+            { "id": "clear-4-out-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "limousine hire for a wedding",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-4-out-3-0", "amount": 18 },
+            { "id": "clear-4-out-3-1", "amount": 46 },
+            { "id": "clear-4-out-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "off-peak day pass used on a workday",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "A public transport fare used for the commute. The kind of ticket does not change what it is for.",
+          "payments": [
+            { "id": "hard-4-in-0-0", "amount": 18 },
+            { "id": "hard-4-in-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "bus fare on a rail replacement service",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "The replacement bus stands in for the train on the same commute.",
+          "payments": [
+            { "id": "hard-4-in-1-0", "amount": 18 },
+            { "id": "hard-4-in-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "fee to replace a lost transit card",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "The card is how the commute's fares are paid, so replacing it is part of paying them.",
+          "payments": [
+            { "id": "hard-4-in-2-0", "amount": 18 },
+            { "id": "hard-4-in-2-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "rideshare trip to the office",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "The commute, but a rideshare is private hire, not public transport.",
+          "payments": [
+            { "id": "hard-4-out-0-0", "amount": 18 },
+            { "id": "hard-4-out-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "e-scooter weekend pass",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "Not public transport, and a weekend pass is not for getting to work.",
+          "payments": [
+            { "id": "hard-4-out-1-0", "amount": 18 },
+            { "id": "hard-4-out-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "intercity coach ticket for a holiday",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "Public transport, but for a holiday, not the commute.",
+          "payments": [
+            { "id": "hard-4-out-2-0", "amount": 18 },
+            { "id": "hard-4-out-2-1", "amount": 120 }
+          ]
+        }
+      ]
+    },
+    {
+      "purpose": "food and prescribed medication for the dog",
+      "category": "pet_supplies",
+      "maxPerTxn": 500,
+      "maxTotal": 2000,
+      "unattended": false,
+      "items": [
+        {
+          "item": "a 12 kg bag of dry dog food",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-5-in-0-0", "amount": 18 },
+            { "id": "clear-5-in-0-1", "amount": 46 },
+            { "id": "clear-5-in-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "flea and worm treatment prescribed by the vet",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-5-in-1-0", "amount": 18 },
+            { "id": "clear-5-in-1-1", "amount": 46 },
+            { "id": "clear-5-in-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "canned dog food, 24 pack",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-5-in-2-0", "amount": 18 },
+            { "id": "clear-5-in-2-1", "amount": 46 },
+            { "id": "clear-5-in-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "prescription joint supplement for the dog",
+          "tier": "clear",
+          "label": "inside",
+          "payments": [
+            { "id": "clear-5-in-3-0", "amount": 18 },
+            { "id": "clear-5-in-3-1", "amount": 46 },
+            { "id": "clear-5-in-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a pedigree puppy",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-5-out-0-0", "amount": 18 },
+            { "id": "clear-5-out-0-1", "amount": 46 },
+            { "id": "clear-5-out-0-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "an aquarium with tropical fish",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-5-out-1-0", "amount": 18 },
+            { "id": "clear-5-out-1-1", "amount": 46 },
+            { "id": "clear-5-out-1-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "designer handbag from the boutique next door",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-5-out-2-0", "amount": 18 },
+            { "id": "clear-5-out-2-1", "amount": 46 },
+            { "id": "clear-5-out-2-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a horse saddle",
+          "tier": "clear",
+          "label": "outside",
+          "payments": [
+            { "id": "clear-5-out-3-0", "amount": 18 },
+            { "id": "clear-5-out-3-1", "amount": 46 },
+            { "id": "clear-5-out-3-2", "amount": 120 }
+          ]
+        },
+        {
+          "item": "dental chews the vet recommended for the dog",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "Food for the dog on the vet's advice, though not on prescription.",
+          "payments": [
+            { "id": "hard-5-in-0-0", "amount": 18 },
+            { "id": "hard-5-in-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "dispensing fee for a repeat prescription at the vet",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "Part of the cost of getting the dog's prescribed medication.",
+          "payments": [
+            { "id": "hard-5-in-1-0", "amount": 18 },
+            { "id": "hard-5-in-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "hypoallergenic prescription diet kibble",
+          "tier": "hard",
+          "label": "inside",
+          "reason": "Food for the dog that the vet prescribed. It is both things the mandate names.",
+          "payments": [
+            { "id": "hard-5-in-2-0", "amount": 18 },
+            { "id": "hard-5-in-2-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "dog grooming and nail clipping",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "For the dog, but a service, neither food nor medication.",
+          "payments": [
+            { "id": "hard-5-out-0-0", "amount": 18 },
+            { "id": "hard-5-out-0-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "a new dog bed and toys",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "For the dog, but neither food nor medication.",
+          "payments": [
+            { "id": "hard-5-out-1-0", "amount": 18 },
+            { "id": "hard-5-out-1-1", "amount": 120 }
+          ]
+        },
+        {
+          "item": "cat food and a scratching post",
+          "tier": "hard",
+          "label": "outside",
+          "reason": "Pet food and supplies, but for a cat, not the dog.",
+          "payments": [
+            { "id": "hard-5-out-2-0", "amount": 18 },
+            { "id": "hard-5-out-2-1", "amount": 120 }
+          ]
+        }
+      ]
+    }
+  ]
+}
