@@ -188,7 +188,7 @@ Whether a receipt is worth anything to anyone but the gateway that issued it dep
 Node 20 or later. No dependencies, nothing to install. Everything except `measure` runs offline.
 
 ```bash
-npm test                   # 72 tests, about 3 seconds
+npm test                   # 75 tests, about 3 seconds
 node src/cli.js trace      # one payment, two gateways, 1 second
 node src/cli.js decision   # the decision layer under attack
 node src/cli.js measure    # run the real Jev on 234 labelled payments (needs TYPESAFE_API_KEY)

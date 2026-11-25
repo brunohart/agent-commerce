@@ -50,7 +50,7 @@ export const FAILURE_MODES = {
     effect: 'Human disputes a purchase the agent really made.',
     feeds: ['monitoring_cliff'],
     mitigatedBy: ['mandateVerify', 'decisionLayer'],
-    note: 'Half of drift keeps a matching merchant category. Rules cannot see it; that half is the decision model’s job.',
+    note: 'Half of drift keeps a matching merchant category. Rules cannot see it; that half is the decision model’s job. The model judges the item as the caller describes it. Drift that arrives with a false description is not caught, and is not priced here.',
   },
   overspend: {
     id: 'F06',
@@ -183,6 +183,7 @@ export const FAILURE_MODES = {
     effect: 'The model is talked into a low estimate on exactly the payments that matter.',
     feeds: ['impersonation', 'mandate_drift'],
     mitigatedBy: ['decisionGuards'],
+    note: 'The guard removes the agent’s note. The item description is also written by the caller, and is still sent.',
   },
   selective_labels: {
     id: 'F21',
