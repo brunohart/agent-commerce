@@ -48,6 +48,12 @@ export const QUESTIONS = {
  *   2. Text supplied by the agent or the merchant is untrusted. With `hygiene` on
  *      it is left out entirely; with it off it is passed through, which is how a
  *      decision model gets talked into an answer (failure mode F20).
+ *
+ * Known gap: `item.description` breaks both rules. The caller writes it, the
+ * gateway checks it against nothing, and it goes in as a fact with hygiene on or
+ * off. The outside_mandate judgement turns on it, so a purchase described as
+ * something else is judged as that something else. See test/red-team.test.js and
+ * https://github.com/brunohart/agent-commerce/issues/15.
  */
 export function buildDecisionRequest(req, ctx, { model = PINNED_MODEL, hygiene = true } = {}) {
   const state = {

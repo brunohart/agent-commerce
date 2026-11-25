@@ -28,6 +28,7 @@ Desk: [Spec](docs/operations/desks/spec.md), Mondays. Target: `docs/RECEIPT-SPEC
 - [ ] **Recalibration.** A receipt records the calibrated number and not how it was produced ([ADR 0007](docs/adr/0007-conformance-receipts.md)). Commit to the calibration in force, by hash and version, so a reviewer can recompute it.
 - [ ] **Selective reveal.** Revealing the state reveals all of it. Consider a commitment per field, so a gateway can show the item without showing the rest.
 - [ ] **Conformance language.** Rewrite the requirements as MUST and SHOULD for issuers and for verifiers, with a threat model that names each adversary and what each proof holds against them.
+- [ ] **Who described the item.** The state says what is being bought in the caller's words, and a receipt commits to it without saying whose words they are. A gift card described as groceries is approved, and its receipt verifies ([#15](https://github.com/brunohart/agent-commerce/issues/15), found by the Red-team desk). Specify how the state and the receipt record who described the item and what the gateway checked it against, and correct "What a receipt does not prove". Changing the state changes what the model is asked, so the change needs a new measurement.
 
 ## Interop
 

@@ -32,11 +32,12 @@ Figures are at normal issuer conditions, where F09 and F16 cost nothing. The bro
 
 ## Notes
 
-- **F05 Mandate drift.** Half of drift keeps a matching merchant category. Rules cannot see it; that half is the decision model’s job.
+- **F05 Mandate drift.** Half of drift keeps a matching merchant category. Rules cannot see it; that half is the decision model’s job. The model judges the item as the caller describes it. Drift that arrives with a false description is not caught, and is not priced here.
 - **F07 Stale mandate.** Verification converts this from a dispute into a lost sale. It does not remove it.
 - **F14 Service before authorisation.** Unmitigated in this model. A residual risk the unattended segment already carries.
 - **F15 Friendly fraud.** Evidence only exists if the mandate was verified. mandateEvidence without mandateVerify is worth nothing.
 - **F17 Miscalibrated confidence.** Has no line of its own in the accounts. It shows up as more of the failures it feeds.
 - **F19 Version drift under a moving alias.** Not hypothetical. The jev-latest alias now resolves to jev-1.14.0, released 14 October 2026, a month after launch.
+- **F20 State injection.** The guard removes the agent’s note. The item description is also written by the caller, and is still sent.
 - **F21 Selective labels.** Unmitigated, and understated here: the simulator hands the guard every label immediately.
 - **F16 Dispute-ratio cliff.** Emergent. Nothing causes it directly; every dispute-producing failure feeds it.
